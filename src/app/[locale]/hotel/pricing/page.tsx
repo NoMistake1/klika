@@ -91,8 +91,8 @@ export default async function PricingPage({
               </h2>
               <PricingList rows={extraRows} locale={locale} dict={dict} />
 
-              <p className="mt-8 flex gap-3 border-l-2 border-terracotta pl-4 text-sm opacity-75">
-                <Info aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-terracotta" />
+              <p className="mt-8 flex gap-3 border-l-2 border-sand-ink pl-4 text-sm opacity-75">
+                <Info aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-sand-ink" />
                 {dict.pricingPage.exceptionNote}
               </p>
             </div>
@@ -103,7 +103,7 @@ export default async function PricingPage({
                 <ul className="mt-4 space-y-2">
                   {dict.pricingPage.included.map((item) => (
                     <li key={item} className="flex items-center gap-2.5 text-sm">
-                      <Check aria-hidden="true" className="size-4 shrink-0 text-terracotta" />
+                      <Check aria-hidden="true" className="size-4 shrink-0 text-sand-ink" />
                       {item}
                     </li>
                   ))}

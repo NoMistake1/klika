@@ -36,12 +36,20 @@ export function GalleryGrid({
   locale,
   dict,
   showFilter = true,
+  swipeOnMobile = false,
 }: {
   items: readonly GalleryItem[];
   categories: readonly GalleryCategory[];
   locale: Locale;
   dict: Dictionary;
   showFilter?: boolean;
+  /**
+   * Swipe sideways on phones instead of stacking. For previews embedded in a
+   * page, where eight stacked images would push the rest of the page away.
+   * The gallery page itself stays a grid — there, browsing everything at once
+   * is the whole point.
+   */
+  swipeOnMobile?: boolean;
 }) {
   const [filter, setFilter] = useState<Filter>("all");
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -100,7 +108,17 @@ export function GalleryGrid({
           <p className="mt-2 text-sm opacity-70">{dict.gallery.emptyHint}</p>
         </div>
       ) : (
-        <ul className="grid auto-rows-auto grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+        <ul
+          className={cn(
+            swipeOnMobile
+              ? // Full-bleed swipe row on phones; the negative margin exactly
+                // cancels the Container gutter, so it reaches the viewport edge
+                // and never overflows the page.
+                "scrollbar-none -mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-1 [scroll-padding-inline:1.25rem] sm:mx-0 sm:grid sm:overflow-x-visible sm:px-0 sm:pb-0"
+              : "grid",
+            "auto-rows-auto grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4",
+          )}
+        >
           {visible.map((item, index) => {
             const ratio = item.image.width / item.image.height;
             const isLandscape = ratio > 1.15;
@@ -113,6 +131,7 @@ export function GalleryGrid({
                   // Landscape images earn a double column on desktop; the
                   // resulting uneven rhythm is the point.
                   isLandscape ? "col-span-2" : "col-span-1",
+                  swipeOnMobile && "snap-start shrink-0 basis-[72%] sm:basis-auto",
                   "group relative",
                 )}
               >

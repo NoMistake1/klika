@@ -211,7 +211,7 @@ export const de: Dictionary = {
     mapPlaceholderText:
       "Die Karte lädt erst nach dem Klick, damit die Seite schnell bleibt.",
     loadMap: "Karte laden",
-    mapAttribution: "Kartendaten © OpenStreetMap-Mitwirkende",
+    mapAttribution: "Kartendaten © Google",
     openInMaps: "In Karten öffnen",
     gps: "GPS",
     address: "Adresse",

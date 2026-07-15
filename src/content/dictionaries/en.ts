@@ -209,7 +209,7 @@ export const en: Dictionary = {
     mapPlaceholderText:
       "The map loads on click so it does not slow the page down.",
     loadMap: "Load map",
-    mapAttribution: "Map data © OpenStreetMap contributors",
+    mapAttribution: "Map data © Google",
     openInMaps: "Open in maps",
     gps: "GPS",
     address: "Address",

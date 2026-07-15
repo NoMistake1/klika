@@ -30,6 +30,7 @@ import { RoomSlider } from "@/components/hotel/RoomSlider";
 import { PricingList } from "@/components/hotel/PricingList";
 import { GalleryGrid } from "@/components/gallery/GalleryGrid";
 import { Waves } from "@/components/illustrations";
+import { cn } from "@/lib/utils";
 
 export async function generateMetadata({
   params,
@@ -143,9 +144,21 @@ export default async function HotelPage({
             lede={dict.hotelPage.areasSubtitle}
           />
 
-          <ol className="mt-12 grid gap-px bg-navy/10 sm:grid-cols-2">
+          {/* Four detailed cards stack into most of a phone screen each, so on
+              mobile they swipe; from sm up they return to the hairline grid. */}
+          <ol
+            className={cn(
+              "scrollbar-none -mx-5 mt-12 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-1 [scroll-padding-inline:1.25rem]",
+              "sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-px sm:overflow-x-visible sm:bg-navy/10 sm:px-0 sm:pb-0",
+            )}
+          >
             {accommodationAreas.map((area, index) => (
-              <Reveal key={area.id} as="li" delay={index * 60} className="bg-cream p-6 sm:p-8">
+              <Reveal
+                key={area.id}
+                as="li"
+                delay={index * 60}
+                className="card-float snap-start shrink-0 basis-[82%] bg-cream p-6 sm:basis-auto sm:rounded-none sm:p-8 sm:shadow-none"
+              >
                 <p
                   aria-hidden="true"
                   className="font-display text-3xl leading-none text-navy/25"
@@ -161,7 +174,7 @@ export default async function HotelPage({
                     <li key={detail} className="flex items-baseline gap-2.5 text-sm">
                       <span
                         aria-hidden="true"
-                        className="size-1 shrink-0 translate-y-1.5 rounded-full bg-terracotta"
+                        className="size-1 shrink-0 translate-y-1.5 rounded-full bg-sand-ink"
                       />
                       <span className="opacity-80">{detail}</span>
                     </li>
@@ -192,7 +205,7 @@ export default async function HotelPage({
                   <li key={item} className="flex items-baseline gap-3 text-sm">
                     <span
                       aria-hidden="true"
-                      className="size-1.5 shrink-0 translate-y-1.5 rounded-full bg-terracotta"
+                      className="size-1.5 shrink-0 translate-y-1.5 rounded-full bg-sand-ink"
                     />
                     {item}
                   </li>
@@ -240,7 +253,7 @@ export default async function HotelPage({
                   <li key={fact} className="flex items-baseline gap-3 text-sm">
                     <span
                       aria-hidden="true"
-                      className="size-1.5 shrink-0 translate-y-1.5 rounded-full bg-terracotta"
+                      className="size-1.5 shrink-0 translate-y-1.5 rounded-full bg-sand-ink"
                     />
                     {fact}
                   </li>
@@ -259,7 +272,7 @@ export default async function HotelPage({
                   <li key={fact} className="flex items-baseline gap-3 text-sm">
                     <span
                       aria-hidden="true"
-                      className="size-1.5 shrink-0 translate-y-1.5 rounded-full bg-terracotta"
+                      className="size-1.5 shrink-0 translate-y-1.5 rounded-full bg-sand-ink"
                     />
                     {fact}
                   </li>
@@ -282,14 +295,14 @@ export default async function HotelPage({
                 <p className="mt-2 text-sm leading-relaxed opacity-75">
                   {offer.description[locale]}
                 </p>
-                <p className="mt-3 text-xs font-medium text-terracotta">
+                <p className="mt-3 text-xs font-medium text-sand-ink">
                   {offer.conditions[locale]}
                 </p>
               </div>
             ))}
           </div>
 
-          <p className="mt-8 max-w-2xl border-l-2 border-terracotta pl-4 text-sm opacity-70">
+          <p className="mt-8 max-w-2xl border-l-2 border-sand-ink pl-4 text-sm opacity-70">
             {dict.hotelPage.offersNote}
           </p>
         </Container>
@@ -342,6 +355,7 @@ export default async function HotelPage({
               locale={locale}
               dict={dict}
               showFilter={false}
+              swipeOnMobile
             />
           </div>
           <div className="mt-8">

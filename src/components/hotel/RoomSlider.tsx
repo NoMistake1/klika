@@ -139,7 +139,9 @@ export function RoomSlider({
                   : "pointer-events-none absolute inset-0 opacity-0",
               )}
             >
-              <div className="relative aspect-[4/3] overflow-hidden bg-blue lg:col-span-7">
+              {/* The room photograph reads as a print laid on the page — a
+                  floating card rather than a full-bleed panel. */}
+              <div className="card-float relative aspect-[4/3] overflow-hidden bg-blue lg:col-span-7">
                 <SafeImage
                   image={room.image}
                   locale={locale}
@@ -221,8 +223,11 @@ export function RoomSlider({
         })}
       </div>
 
-      {/* Controls */}
-      <div className="mt-8 flex items-center justify-between gap-4 border-t border-current/10 pt-5">
+      {/* Controls.
+          Wraps on purpose: the arrows/pause group (~152px) plus six 32px dots
+          (~222px) exceed the 350px content width of a 390px phone, and without
+          wrapping the dots ran past the viewport edge. */}
+      <div className="mt-8 flex flex-wrap items-center justify-between gap-x-4 gap-y-4 border-t border-current/10 pt-5">
         <div className="flex items-center gap-2">
           <button
             type="button"

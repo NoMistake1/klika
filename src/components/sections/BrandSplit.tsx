@@ -108,7 +108,7 @@ export function BrandSplit({ locale, dict }: { locale: Locale; dict: Dictionary 
             <p className="mt-5 text-base leading-relaxed text-pretty opacity-85 sm:text-lg">
               {dict.split.restaurantText}
             </p>
-            <HandwrittenNote className="mt-6" tone="blue" arrow="left">
+            <HandwrittenNote className="mt-6" tone="beigeLight" arrow="left">
               {dict.split.restaurantNote}
             </HandwrittenNote>
             <div className="mt-8 flex flex-wrap gap-3">

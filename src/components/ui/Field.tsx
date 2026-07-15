@@ -13,14 +13,18 @@ import { cn } from "@/lib/utils";
  */
 
 const controlClasses = cn(
-  "min-h-11 w-full rounded-[2px] border bg-warm-white px-3 py-2.5 text-base text-ink",
-  "border-navy/25 transition-colors",
-  "hover:border-navy/50",
+  // Roomier than a default input and softly rounded, to match the cards and
+  // buttons around it. 16px text on purpose: anything smaller makes iOS Safari
+  // zoom the whole page when the field takes focus.
+  "min-h-12 w-full rounded-lg border bg-warm-white px-3.5 py-2.5 text-base text-ink",
+  "border-navy/20 shadow-[inset_0_1px_2px_rgba(11,29,53,0.04)]",
+  "transition-[border-color,box-shadow,background-color] duration-200",
+  "hover:border-navy/40",
   "focus:border-navy focus:outline-none",
   "disabled:opacity-50",
 );
 
-const errorClasses = "border-terracotta bg-terracotta/5";
+const errorClasses = "border-alert bg-alert/5";
 
 function FieldShell({
   id,
@@ -46,7 +50,7 @@ function FieldShell({
       <label htmlFor={id} className="text-sm font-medium">
         {label}
         {required ? (
-          <span className="ml-1 text-terracotta" aria-hidden="true">
+          <span className="ml-1 text-alert" aria-hidden="true">
             *
           </span>
         ) : null}
@@ -61,7 +65,7 @@ function FieldShell({
       {error ? (
         <p
           id={`${id}-error`}
-          className="flex items-center gap-1.5 text-xs font-medium text-terracotta"
+          className="flex items-center gap-1.5 text-xs font-medium text-alert"
         >
           <AlertCircle aria-hidden="true" className="size-3.5 shrink-0" />
           {error}
@@ -211,12 +215,12 @@ export function ValidationSummary({
   return (
     <div aria-live="assertive" aria-atomic="true" className={className}>
       {errors.length > 0 ? (
-        <div className="rounded-[2px] border border-terracotta bg-terracotta/5 p-4">
-          <p className="flex items-center gap-2 text-sm font-semibold text-terracotta">
+        <div className="rounded-lg border border-alert bg-alert/5 p-4">
+          <p className="flex items-center gap-2 text-sm font-semibold text-alert">
             <AlertCircle aria-hidden="true" className="size-4 shrink-0" />
             {title}
           </p>
-          <ul className="mt-2 list-inside list-disc space-y-1 text-sm text-terracotta/90">
+          <ul className="mt-2 list-inside list-disc space-y-1 text-sm text-alert/90">
             {errors.map((error) => (
               <li key={error}>{error}</li>
             ))}

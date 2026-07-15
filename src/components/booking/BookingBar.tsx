@@ -56,7 +56,8 @@ export function BookingBar({
       noValidate
       aria-label={dict.bookingBar.title}
       className={cn(
-        "rounded-[3px] border border-cream/25 bg-navy/70 p-3 backdrop-blur-md sm:p-4",
+        // Sits on the hero video: a frosted navy slab, lifted off the footage.
+        "rounded-xl border border-cream/20 bg-navy/65 p-3 shadow-[0_20px_50px_-20px_rgba(11,29,53,0.9)] backdrop-blur-xl sm:p-4",
         className,
       )}
     >
@@ -123,10 +124,13 @@ export function BookingBar({
 
         <button
           type="submit"
-          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[2px] bg-cream px-6 py-2.5 text-sm font-medium text-navy transition-colors hover:bg-warm-white"
+          className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-cream px-6 py-2.5 text-sm font-medium text-navy shadow-[0_2px_10px_-2px_rgba(0,0,0,0.35)] transition-[background-color,box-shadow,transform] duration-200 hover:bg-warm-white hover:shadow-[0_6px_18px_-4px_rgba(0,0,0,0.45)] active:translate-y-px motion-reduce:active:translate-y-0"
         >
           {dict.bookingBar.submit}
-          <ArrowRight aria-hidden="true" className="size-4" />
+          <ArrowRight
+            aria-hidden="true"
+            className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none"
+          />
         </button>
       </div>
 
@@ -141,10 +145,13 @@ export function BookingBar({
 
 function inputClasses(hasError: boolean): string {
   return cn(
-    "min-h-11 w-full rounded-[2px] border bg-navy/40 px-3 py-2 text-sm text-cream",
-    "[color-scheme:dark] transition-colors",
-    "focus:outline-none focus:ring-0",
-    hasError ? "border-terracotta" : "border-cream/30 hover:border-cream/60 focus:border-cream",
+    "min-h-11 w-full rounded-lg border bg-navy/45 px-3.5 py-2 text-sm text-cream",
+    // [color-scheme:dark] gives the native date picker a dark UI, so the popup
+    // matches the field it drops out of instead of flashing white.
+    "[color-scheme:dark] transition-[border-color,background-color] duration-200",
+    "hover:bg-navy/60",
+    // An error here is a real error, so it keeps the semantic alert colour.
+    hasError ? "border-alert" : "border-cream/25 hover:border-cream/50 focus:border-cream",
   );
 }
 
@@ -166,7 +173,7 @@ function BarField({
       </label>
       {children}
       {error ? (
-        <p id={`${id}-error`} className="text-xs font-medium text-terracotta">
+        <p id={`${id}-error`} className="text-xs font-medium text-sand-ink">
           {error}
         </p>
       ) : null}

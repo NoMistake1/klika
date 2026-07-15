@@ -49,8 +49,8 @@ export function AllergenList({
 }
 
 const dietaryToneClasses: Record<DietaryLabel, string> = {
-  vegetarian: "border-terracotta/40 text-terracotta",
-  vegan: "border-terracotta/40 text-terracotta",
+  vegetarian: "border-sand-ink/40 text-sand-ink",
+  vegan: "border-sand-ink/40 text-sand-ink",
   "gluten-free": "border-navy/30 text-navy/70",
 };
 

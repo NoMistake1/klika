@@ -29,7 +29,7 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
         <div className="max-w-4xl">
           <p className="mb-5 flex items-center gap-3">
             <span aria-hidden="true" className="h-px w-10 bg-blue" />
-            <HandwrittenNote tone="blue" className="text-2xl sm:text-3xl">
+            <HandwrittenNote tone="beigeLight" className="text-2xl sm:text-3xl">
               {dict.hero.handwritten}
             </HandwrittenNote>
           </p>

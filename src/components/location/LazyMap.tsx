@@ -8,19 +8,17 @@ import { Rooftops, Waves } from "@/components/illustrations";
 import { cn } from "@/lib/utils";
 
 /**
- * Map that costs nothing until it is wanted.
+ * Google Maps embed that costs nothing until it is wanted.
  *
- * A third-party map iframe pulls in scripts, tiles and cookies on every page
- * load, for a widget most visitors never touch. So the default state is a
- * lightweight local illustration; the real embed mounts only on click.
+ * The embed pulls in Google's scripts, tiles and cookies on every page load,
+ * for a widget most visitors never touch. So the default state is a lightweight
+ * local illustration and the real iframe mounts only on click.
  *
- * That also keeps the privacy default right — no request reaches OpenStreetMap
- * until the guest asks for it. The static "open in maps" link always works,
- * including without JavaScript.
+ * That also keeps the privacy default right — no request reaches Google until
+ * the guest asks for it — and it is why the map never delays the initial
+ * render. The "open in maps" link always works, including without JavaScript.
  *
- * FUTURE: to swap in another provider (Google Maps, Mapbox), replace the
- * iframe src below. Everything else — the placeholder, the deferral, the
- * attribution — stays as is.
+ * The hotel and the restaurant share an address, so both use the same embed.
  */
 export function LazyMap({
   dict,
@@ -34,20 +32,28 @@ export function LazyMap({
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <figure className={cn("relative overflow-hidden bg-blue-light", aspect, className)}>
+    <figure
+      className={cn(
+        // Rounded and lifted to match the floating card surfaces elsewhere.
+        "card-float relative overflow-hidden bg-blue-light",
+        aspect,
+        className,
+      )}
+    >
       {loaded ? (
         <iframe
           src={mapEmbedUrl}
           title={dict.locationPreview.mapPlaceholderTitle}
           loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
           className="absolute inset-0 size-full border-0"
         />
       ) : (
         <button
           type="button"
           onClick={() => setLoaded(true)}
-          className="group absolute inset-0 flex flex-col items-center justify-center gap-4 text-navy transition-colors hover:bg-blue/30"
+          className="group absolute inset-0 flex flex-col items-center justify-center gap-4 text-navy transition-colors duration-300 hover:bg-blue/30"
         >
           {/* Local, decorative stand-in — no network request. */}
           <Rooftops
@@ -56,10 +62,10 @@ export function LazyMap({
           />
           <Waves
             aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 bottom-6 mx-auto h-8 w-[85%] text-navy opacity-25"
+            className="pointer-events-none absolute inset-x-0 bottom-8 mx-auto h-8 w-[85%] text-navy opacity-25"
           />
 
-          <span className="relative flex size-12 items-center justify-center rounded-full bg-navy text-blue-light transition-transform duration-300 group-hover:scale-110">
+          <span className="relative flex size-12 items-center justify-center rounded-full bg-navy text-blue-light shadow-[0_6px_20px_-6px_rgba(11,29,53,0.6)] transition-transform duration-300 group-hover:scale-110 motion-reduce:group-hover:scale-100">
             <MapPin aria-hidden="true" className="size-5" />
           </span>
           <span className="relative text-center">
@@ -73,15 +79,15 @@ export function LazyMap({
         </button>
       )}
 
-      <figcaption className="absolute right-0 bottom-0 left-0 flex items-center justify-between gap-3 bg-navy/85 px-3 py-2 text-[0.65rem] text-cream/80 backdrop-blur-sm">
-        <span>
+      <figcaption className="absolute right-0 bottom-0 left-0 flex items-center justify-between gap-3 bg-navy/85 px-4 py-2.5 text-[0.7rem] text-cream/80 backdrop-blur-sm">
+        <span className="truncate">
           {loaded ? dict.locationPreview.mapAttribution : coordinates.display}
         </span>
         <a
           href={mapLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="link-underline inline-flex shrink-0 items-center gap-1"
+          className="link-underline inline-flex shrink-0 items-center gap-1.5"
         >
           {dict.locationPreview.openInMaps}
           <ExternalLink aria-hidden="true" className="size-3" />

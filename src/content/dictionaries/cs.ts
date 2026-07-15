@@ -211,7 +211,7 @@ export const cs = {
     mapPlaceholderText:
       "Mapa se načte po kliknutí, aby nezdržovala načtení stránky.",
     loadMap: "Načíst mapu",
-    mapAttribution: "Mapová data © přispěvatelé OpenStreetMap",
+    mapAttribution: "Mapová data © Google",
     openInMaps: "Otevřít v mapách",
     gps: "GPS",
     address: "Adresa",

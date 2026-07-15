@@ -96,11 +96,13 @@ export default async function LocaleLayout({
       className={fontVariables}
       suppressHydrationWarning
     >
-      <head>
-        {/* Runs before first paint so the intro never flashes in or out. */}
-        <IntroGate />
-      </head>
+      {/* No manual <head>: React reconciles that subtree on hydration and
+          strips the tags Next injected there — including the viewport meta,
+          which silently drops mobile to the 980px fallback layout. The intro
+          script therefore lives at the top of <body>, where it still runs
+          before the rest of the body is parsed or painted. */}
       <body className="min-h-dvh bg-warm-white antialiased">
+        <IntroGate />
         <LoadingScreen />
         <SkipLink label={dict.a11y.skipToContent} />
         <Header items={mainNavigation} locale={locale} dict={dict} />

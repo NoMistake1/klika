@@ -56,7 +56,7 @@ export function MenuList({
                       ) : null}
 
                       {item.canBeGlutenFree ? (
-                        <p className="mt-2 text-xs font-medium text-terracotta">
+                        <p className="mt-2 text-xs font-medium text-sand-ink">
                           {dict.menuPage.glutenFreeOption}
                         </p>
                       ) : null}

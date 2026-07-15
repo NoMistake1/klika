@@ -205,44 +205,62 @@ export function HotelBookingWizard({ locale, dict }: { locale: Locale; dict: Dic
   return (
     <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
       <div className="lg:col-span-7">
-        {/* Progress */}
-        <ol
-          aria-label={dict.hotelBooking.progressLabel}
-          className="mb-10 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs"
-        >
-          {STEPS.map((entry, index) => {
-            const isCurrent = entry === step;
-            const isDone = index < stepIndex;
-            return (
-              <li key={entry} className="flex items-center gap-2">
-                {index > 0 ? (
-                  <span aria-hidden="true" className="h-px w-4 bg-current/25" />
-                ) : null}
-                <span
-                  aria-current={isCurrent ? "step" : undefined}
-                  className={cn(
-                    "inline-flex items-center gap-1.5 whitespace-nowrap",
-                    isCurrent ? "font-semibold" : "opacity-45",
-                  )}
-                >
+        {/* Progress. A continuous rail that fills as the guest advances, rather
+            than six disconnected pills — the journey reads as one movement. */}
+        <div className="mb-10">
+          <div
+            aria-hidden="true"
+            className="relative h-px w-full bg-navy/12"
+          >
+            <span
+              className="absolute inset-y-0 left-0 bg-navy transition-[width] duration-500 ease-[cubic-bezier(0.22,0.61,0.36,1)] motion-reduce:transition-none"
+              style={{ width: `${(stepIndex / (STEPS.length - 1)) * 100}%` }}
+            />
+          </div>
+
+          <ol
+            aria-label={dict.hotelBooking.progressLabel}
+            className="mt-4 flex items-start justify-between gap-1"
+          >
+            {STEPS.map((entry, index) => {
+              const isCurrent = entry === step;
+              const isDone = index < stepIndex;
+
+              return (
+                <li key={entry} className="flex min-w-0 flex-1 flex-col items-center gap-2">
                   <span
+                    aria-current={isCurrent ? "step" : undefined}
                     className={cn(
-                      "inline-flex size-5 items-center justify-center rounded-full border text-[0.6rem] tabular-nums",
+                      "inline-flex size-6 shrink-0 items-center justify-center rounded-full border text-[0.65rem] font-medium tabular-nums",
+                      "transition-[background-color,border-color,transform] duration-300",
                       isCurrent && "border-navy bg-navy text-warm-white",
-                      isDone && "border-terracotta bg-terracotta text-warm-white",
-                      !isCurrent && !isDone && "border-current/30",
+                      // A completed step is confirmed, not active: light blue
+                      // keeps it legible without competing with the current one.
+                      isDone && "border-blue bg-blue text-navy",
+                      !isCurrent && !isDone && "border-navy/25 text-navy/40",
                     )}
                   >
                     {isDone ? <Check aria-hidden="true" className="size-3" /> : index + 1}
+                    <span className="sr-only">
+                      {": "}
+                      {dict.hotelBooking.steps[entry]}
+                    </span>
                   </span>
-                  <span className="hidden sm:inline">{dict.hotelBooking.steps[entry]}</span>
-                </span>
-              </li>
-            );
-          })}
-        </ol>
+                  <span
+                    className={cn(
+                      "hidden text-center text-[0.7rem] leading-tight text-balance sm:block",
+                      isCurrent ? "font-semibold text-navy" : "text-navy/45",
+                    )}
+                  >
+                    {dict.hotelBooking.steps[entry]}
+                  </span>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
 
-        <p className="mb-2 text-xs tracking-wide opacity-55 sm:hidden">
+        <p className="mb-2 text-xs tracking-[0.15em] uppercase opacity-45 sm:hidden">
           {interpolate(dict.hotelBooking.stepOf, {
             current: stepIndex + 1,
             total: STEPS.length,
@@ -258,13 +276,15 @@ export function HotelBookingWizard({ locale, dict }: { locale: Locale; dict: Dic
         </h2>
 
         {!storageAvailable && hydrated ? (
-          <p className="mt-4 flex gap-2 border-l-2 border-terracotta pl-3 text-xs opacity-70">
-            <Info aria-hidden="true" className="mt-0.5 size-3.5 shrink-0 text-terracotta" />
+          <p className="mt-4 flex gap-2 border-l-2 border-sand-ink pl-3 text-xs opacity-70">
+            <Info aria-hidden="true" className="mt-0.5 size-3.5 shrink-0 text-sand-ink" />
             {dict.hotelBooking.storageUnavailable}
           </p>
         ) : null}
 
-        <div className="mt-8">
+        {/* key restarts the entrance animation, so each step arrives rather
+            than snapping into place. */}
+        <div key={step} className="mt-8 animate-fade-up motion-reduce:animate-none">
           {step === "dates" ? (
             <DatesStep
               draft={draft}
@@ -306,9 +326,10 @@ export function HotelBookingWizard({ locale, dict }: { locale: Locale; dict: Dic
           {step === "contact" ? (
             <div className="mt-8">
               {/* The one thing this prototype must never do is imply the room
-                  is held. It says so, prominently, at the end of the flow. */}
-              <p className="flex gap-3 border-l-2 border-terracotta bg-terracotta/5 p-4 text-sm font-medium">
-                <Info aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-terracotta" />
+                  is held. It says so, prominently, at the end of the flow —
+                  carried by a solid navy panel rather than a colour shout. */}
+              <p className="flex gap-3 rounded-md bg-navy p-5 text-sm leading-relaxed font-medium text-cream">
+                <Info aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-blue" />
                 {dict.hotelBooking.notConfirmed}
               </p>
 
@@ -386,7 +407,7 @@ export function HotelBookingWizard({ locale, dict }: { locale: Locale; dict: Dic
 
       {/* Live summary rail */}
       <aside className="lg:col-span-5">
-        <div className="sticky top-24 bg-cream p-6 text-navy sm:p-8">
+        <div className="card-float sticky top-24 bg-cream p-6 text-navy sm:p-8">
           <h2 className="text-xs font-semibold tracking-[0.2em] uppercase opacity-55">
             {dict.hotelBooking.summaryTitle}
           </h2>
@@ -562,10 +583,14 @@ function RoomStep({
             <label
               key={room.id}
               className={cn(
-                "flex cursor-pointer items-start gap-4 border p-4 transition-colors",
+                "flex cursor-pointer items-start gap-4 rounded-lg border p-4",
+                "transition-[border-color,background-color,box-shadow,transform] duration-200",
+                "hover:-translate-y-px motion-reduce:hover:translate-y-0",
                 isSelected
-                  ? "border-navy bg-navy/[0.04]"
-                  : "border-current/15 hover:border-current/40",
+                  ? "border-navy bg-navy/[0.04] shadow-[0_6px_20px_-8px_rgba(11,29,53,0.4)]"
+                  : "border-navy/15 hover:border-navy/45 hover:shadow-[0_4px_14px_-8px_rgba(11,29,53,0.3)]",
+                // Dimmed, not disabled: the guest may still want it and
+                // reception can advise — we do not know their party's needs.
                 tooSmall && "opacity-55",
               )}
             >

@@ -57,7 +57,7 @@ export function Accordion({
                 aria-expanded={isOpen}
                 aria-controls={panelId}
                 onClick={() => toggle(item.id)}
-                className="group flex min-h-14 w-full items-center justify-between gap-4 py-4 text-left transition-colors hover:text-terracotta"
+                className="group flex min-h-14 w-full items-center justify-between gap-4 py-4 text-left transition-colors hover:text-sand-ink"
               >
                 <span className="flex flex-col gap-0.5">
                   <span className="font-medium">{item.title}</span>

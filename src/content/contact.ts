@@ -147,11 +147,17 @@ export const billingEntities: readonly BillingEntity[] = [
 /** Google Maps directions link, built from the published coordinates. */
 export const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${coordinates.latitude},${coordinates.longitude}`;
 
-/** OpenStreetMap embed, loaded only on user interaction (see <LazyMap />). */
-export const mapEmbedUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${
-  coordinates.longitude - 0.004
-},${coordinates.latitude - 0.002},${coordinates.longitude + 0.004},${
-  coordinates.latitude + 0.002
-}&layer=mapnik&marker=${coordinates.latitude},${coordinates.longitude}`;
+/**
+ * Google Maps embed, centred on the Klika Kitchen & Coffee place record.
+ *
+ * The hotel and the restaurant share one address, and the supplied embed is
+ * identical for both, so a single URL serves every map on the site.
+ *
+ * Loaded only on user interaction (see <LazyMap />): the embed pulls Google
+ * scripts and cookies, and most visitors never open the map.
+ */
+export const mapEmbedUrl =
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2618.8067585041886!2d14.471404699999999!3d48.976202799999996!2m3!1f0!2f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47734f8bdf71d905%3A0x3ee2295cda9cdcd7!2sKlika%20Kitchen%20%26%20Coffee!5e0!3m2!1scs!2scz!4v1784116250915!5m2!1scs!2scz";
 
-export const mapLink = `https://www.openstreetmap.org/?mlat=${coordinates.latitude}&mlon=${coordinates.longitude}#map=17/${coordinates.latitude}/${coordinates.longitude}`;
+/** Opens the place record itself, for guests who prefer the full app. */
+export const mapLink = `https://www.google.com/maps/search/?api=1&query=${coordinates.latitude},${coordinates.longitude}&query_place_id=ChIJBdlx34tPc0cR19yc2lwp4j4`;

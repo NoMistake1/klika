@@ -13,16 +13,24 @@ export function HandwrittenNote({
   children,
   className,
   arrow,
-  tone = "terracotta",
+  tone = "beige",
 }: {
   children: ReactNode;
   className?: string;
   /** Direction the arrow points, relative to the note. */
   arrow?: "left" | "right" | "none";
-  tone?: "terracotta" | "navy" | "blue" | "cream";
+  /**
+   * `beige` for light surfaces, `beigeLight` for navy ones. Beige is the brand
+   * accent for handwriting, but a single tone cannot serve both: plain sand on
+   * cream is 1.49:1 — invisible. So the beige deepens on light surfaces
+   * (3.4–4.1:1) and stays light on navy (9.9:1). Same colour family, legible
+   * either way.
+   */
+  tone?: "beige" | "beigeLight" | "navy" | "blue" | "cream";
 }) {
   const toneClass = {
-    terracotta: "text-terracotta",
+    beige: "text-sand-ink",
+    beigeLight: "text-sand",
     navy: "text-navy",
     blue: "text-blue",
     cream: "text-cream",

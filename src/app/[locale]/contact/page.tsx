@@ -169,8 +169,8 @@ export default async function ContactPage({
               />
               {/* Guests arriving outside reception hours need this, so it is
                   stated where they will look, not buried. */}
-              <p className="mt-6 flex gap-3 border-l-2 border-terracotta pl-4 text-sm opacity-80">
-                <Info aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-terracotta" />
+              <p className="mt-6 flex gap-3 border-l-2 border-sand-ink pl-4 text-sm opacity-80">
+                <Info aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-sand-ink" />
                 {dict.contactPage.afterHoursNotice}
               </p>
             </div>

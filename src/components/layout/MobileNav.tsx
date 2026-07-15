@@ -2,13 +2,12 @@
 
 import Link from "next/link";
 import { useEffect, useRef } from "react";
-import { X } from "lucide-react";
+import { ArrowUpRight, Check, X } from "lucide-react";
 import type { NavItem } from "@/types";
 import type { Dictionary } from "@/content/dictionaries";
-import { localePath, type Locale } from "@/lib/i18n";
+import { localeLabels, localePath, locales, switchLocalePath, type Locale } from "@/lib/i18n";
 import { bookStayHref, bookTableHref } from "@/content/navigation";
 import { Button } from "@/components/ui/Button";
-import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { HandwrittenNote } from "@/components/ui/HandwrittenNote";
 import { Waves } from "@/components/illustrations";
 import { useFocusTrap } from "@/lib/use-focus-trap";
@@ -17,10 +16,16 @@ import { cn } from "@/lib/utils";
 /**
  * Mobile navigation panel.
  *
- * A modal dialog in the accessibility sense: focus is trapped inside it, the
- * background is inert to scroll, Escape closes it, and focus returns to the
- * trigger on close. Styled as a warm editorial index rather than a generic
- * fullscreen gradient — numbered entries, hairlines, one handwritten aside.
+ * A modal dialog in the accessibility sense: focus is trapped inside, the
+ * background is inert, Escape closes it, and focus returns to the trigger.
+ *
+ * The motion is what makes it feel like an application rather than a website
+ * menu: the panel eases in on a spring-like curve while its rows stagger in
+ * behind it, each on a small delay. Every one of those transforms is disabled
+ * under prefers-reduced-motion, where the panel simply appears.
+ *
+ * Rows are full-width touch targets with a pressed state, so a thumb gets the
+ * same feedback it would in a native app.
  */
 export function MobileNav({
   open,
@@ -42,15 +47,13 @@ export function MobileNav({
 
   useFocusTrap({ active: open, containerRef: panelRef, onEscape: onClose });
 
-  // Move focus into the panel when it opens.
   useEffect(() => {
     if (open) closeButtonRef.current?.focus();
   }, [open]);
 
   return (
     <div
-      // Kept mounted so the open/close transition can run; hidden from AT and
-      // pointer input entirely while closed.
+      // Kept mounted so the transition can run; fully inert while closed.
       inert={!open}
       aria-hidden={!open}
       className={cn(
@@ -62,7 +65,7 @@ export function MobileNav({
         onClick={onClose}
         aria-hidden="true"
         className={cn(
-          "absolute inset-0 bg-navy/40 backdrop-blur-[2px] transition-opacity duration-300",
+          "absolute inset-0 bg-navy/50 backdrop-blur-md transition-opacity duration-500",
           open ? "opacity-100" : "opacity-0",
         )}
       />
@@ -73,18 +76,24 @@ export function MobileNav({
         aria-modal={open || undefined}
         aria-label={dict.a11y.mainNavigation}
         className={cn(
-          "absolute inset-y-0 right-0 flex w-full max-w-sm flex-col bg-blue-light text-navy shadow-2xl",
-          "transition-transform duration-400 ease-[cubic-bezier(0.22,0.61,0.36,1)]",
+          "absolute inset-y-0 right-0 flex w-full max-w-[26rem] flex-col bg-blue-light text-navy",
+          "shadow-[-24px_0_60px_-20px_rgba(11,29,53,0.45)]",
+          // A slightly overshooting ease is what reads as "app" rather than "CSS transition".
+          "transition-transform duration-[450ms] ease-[cubic-bezier(0.32,0.72,0,1)]",
+          "motion-reduce:transition-none",
           open ? "translate-x-0" : "translate-x-full",
         )}
       >
-        <div className="flex items-center justify-between px-6 pt-6 pb-4">
-          <LanguageSwitcher locale={locale} dict={dict} tone="navy" />
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 pt-5 pb-4">
+          <span className="text-[0.7rem] font-semibold tracking-[0.2em] text-navy/45 uppercase">
+            {dict.a11y.mainNavigation}
+          </span>
           <button
             ref={closeButtonRef}
             type="button"
             onClick={onClose}
-            className="-mr-2 inline-flex size-11 items-center justify-center rounded-[2px] transition-colors hover:bg-navy/10"
+            className="-mr-2 inline-flex size-11 items-center justify-center rounded-full transition-[background-color,transform] duration-200 hover:bg-navy/10 active:scale-90 motion-reduce:active:scale-100"
           >
             <X aria-hidden="true" className="size-5" />
             <span className="sr-only">{dict.a11y.closeMenu}</span>
@@ -93,45 +102,57 @@ export function MobileNav({
 
         <nav
           aria-label={dict.a11y.mainNavigation}
-          className="flex-1 overflow-y-auto overscroll-contain px-6 pb-4"
+          className="flex-1 overflow-y-auto overscroll-contain px-4 pb-4"
         >
-          <ul className="divide-y divide-navy/10 border-y border-navy/10">
+          <ul className="flex flex-col gap-0.5">
             {items.map((item, index) => {
               const href = localePath(locale, item.href);
-              const isCurrent = currentPath === href;
+              const isCurrent = currentPath === href || currentPath.startsWith(`${href}/`);
 
               return (
-                <li key={item.id} className="py-1">
+                <li
+                  key={item.id}
+                  className={cn(
+                    "transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
+                    "motion-reduce:transition-none motion-reduce:translate-x-0 motion-reduce:opacity-100",
+                    open ? "translate-x-0 opacity-100" : "translate-x-6 opacity-0",
+                  )}
+                  // Rows arrive just behind the panel, one after another.
+                  style={{ transitionDelay: open ? `${120 + index * 45}ms` : "0ms" }}
+                >
                   <Link
                     href={href}
                     onClick={onClose}
                     aria-current={isCurrent ? "page" : undefined}
-                    className="group flex min-h-12 items-baseline gap-4 py-2"
+                    className={cn(
+                      "group flex min-h-14 items-center justify-between gap-4 rounded-xl px-3 py-2",
+                      "transition-[background-color,transform] duration-200",
+                      "active:scale-[0.98] motion-reduce:active:scale-100",
+                      isCurrent ? "bg-navy text-warm-white" : "hover:bg-navy/[0.06]",
+                    )}
                   >
-                    <span
-                      aria-hidden="true"
-                      className="w-5 shrink-0 text-xs tabular-nums opacity-40"
-                    >
-                      {`0${index + 1}`}
-                    </span>
-                    <span
-                      className={cn(
-                        "text-2xl font-medium transition-colors group-hover:text-terracotta",
-                        isCurrent && "text-terracotta",
-                      )}
-                    >
+                    <span className="text-[1.35rem] leading-tight font-medium tracking-tight">
                       {item.label[locale]}
                     </span>
+                    <ArrowUpRight
+                      aria-hidden="true"
+                      className={cn(
+                        "size-4 shrink-0 transition-[opacity,transform] duration-200",
+                        isCurrent
+                          ? "opacity-70"
+                          : "opacity-0 -translate-x-1 group-hover:translate-x-0 group-hover:opacity-40",
+                      )}
+                    />
                   </Link>
 
                   {item.children ? (
-                    <ul className="mb-2 ml-9 flex flex-wrap gap-x-4 gap-y-1">
+                    <ul className="mt-0.5 mb-1 flex flex-wrap gap-x-1 gap-y-0.5 pl-3">
                       {item.children.map((child) => (
                         <li key={child.id}>
                           <Link
                             href={localePath(locale, child.href)}
                             onClick={onClose}
-                            className="link-underline inline-flex min-h-8 items-center text-sm opacity-70 hover:opacity-100"
+                            className="inline-flex min-h-9 items-center rounded-lg px-2 text-sm text-navy/60 transition-colors hover:bg-navy/[0.06] hover:text-navy"
                           >
                             {child.label[locale]}
                           </Link>
@@ -144,14 +165,57 @@ export function MobileNav({
             })}
           </ul>
 
-          <div className="mt-8 flex items-center justify-center">
+          <div className="mt-7 flex items-center justify-center">
             <HandwrittenNote arrow="right">{dict.hero.handwritten}</HandwrittenNote>
           </div>
         </nav>
 
-        <div className="relative overflow-hidden border-t border-navy/10 px-6 py-5">
+        {/* Language selector — inside the menu, as its own navigation landmark
+            so it is reachable directly rather than only by walking the list. */}
+        <nav aria-labelledby="mobile-language-label" className="px-6 pb-4">
+          <p
+            id="mobile-language-label"
+            className="mb-2 text-[0.7rem] font-semibold tracking-[0.2em] text-navy/45 uppercase"
+          >
+            {dict.a11y.chooseLanguage}
+          </p>
+          <ul className="flex gap-1.5">
+            {locales.map((target) => {
+              const isCurrent = target === locale;
+              return (
+                <li key={target} className="flex-1">
+                  <Link
+                    href={switchLocalePath(currentPath, target)}
+                    hrefLang={target}
+                    onClick={onClose}
+                    aria-current={isCurrent ? "true" : undefined}
+                    className={cn(
+                      "flex min-h-11 items-center justify-center gap-1.5 rounded-lg text-sm font-medium",
+                      "transition-[background-color,transform] duration-200 active:scale-[0.97] motion-reduce:active:scale-100",
+                      isCurrent
+                        ? "bg-navy text-warm-white"
+                        : "bg-navy/[0.06] text-navy/70 hover:bg-navy/[0.12] hover:text-navy",
+                    )}
+                  >
+                    {isCurrent ? (
+                      <Check aria-hidden="true" className="size-3.5" />
+                    ) : null}
+                    <span aria-hidden="true">{localeLabels[target].short}</span>
+                    <span className="sr-only">
+                      {localeLabels[target].full}
+                      {isCurrent ? ` — ${dict.a11y.currentLanguage}` : ""}
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+
+        {/* Actions */}
+        <div className="relative overflow-hidden border-t border-navy/10 px-6 pt-4 pb-6">
           <Waves
-            className="absolute -bottom-2 left-0 h-8 w-full text-navy opacity-10"
+            className="pointer-events-none absolute -bottom-3 left-0 h-8 w-full text-navy opacity-10"
             aria-hidden="true"
           />
           <div className="relative flex flex-col gap-2.5">

@@ -6,12 +6,12 @@ import { isLocale, localePath, resolveLocale, type Locale } from "@/lib/i18n";
 import { buildPageMetadata } from "@/lib/metadata";
 import { JsonLdScript, breadcrumbSchema, restaurantSchema } from "@/lib/structured-data";
 import { getMenuByCategory, getUsedAllergens, menuItems } from "@/content/menu";
+import { getDailyMenu, isDemoDailyMenu } from "@/content/daily-menu";
 import { bookTableHref } from "@/content/navigation";
 import { Button } from "@/components/ui/Button";
 import { Container, Section } from "@/components/ui/Section";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { MenuList } from "@/components/restaurant/MenuList";
-import { AllergenLegend } from "@/components/ui/MenuBadges";
+import { MenuSwitcher } from "@/components/restaurant/MenuSwitcher";
 
 export async function generateMetadata({
   params,
@@ -39,8 +39,11 @@ export default async function MenuPage({
 
   const locale: Locale = raw;
   const dict = getDictionary(locale);
+
   const groups = getMenuByCategory();
-  const usedAllergens = getUsedAllergens(menuItems);
+  const dailyMenu = getDailyMenu();
+  const permanentAllergens = getUsedAllergens(menuItems);
+  const dailyAllergens = dailyMenu ? getUsedAllergens(dailyMenu.items) : [];
 
   return (
     <>
@@ -49,57 +52,33 @@ export default async function MenuPage({
         dict={dict}
         eyebrow={dict.menuPage.eyebrow}
         title={dict.menuPage.title}
-        lede={dict.menuPage.intro}
+        lede={dict.restaurantPage.menuTeaserText}
         crumbs={[
           { label: dict.restaurantPage.eyebrow, path: "/restaurant" },
           { label: dict.menuPage.title },
         ]}
         tone="cream"
         aside={
-          <div className="flex flex-col items-start gap-3 lg:items-end">
-            <Button href={localePath(locale, bookTableHref)} size="lg" variant="secondary">
-              {dict.actions.bookTable}
-              <ArrowRight aria-hidden="true" className="size-4" />
-            </Button>
-            <Button href={localePath(locale, "/restaurant/daily-menu")} variant="ghost">
-              {dict.actions.fullDailyMenu}
-            </Button>
-          </div>
+          <Button href={localePath(locale, bookTableHref)} size="lg" variant="secondary">
+            {dict.actions.bookTable}
+            <ArrowRight aria-hidden="true" className="size-4" />
+          </Button>
         }
       />
 
       <Section tone="warm-white">
-        <Container>
-          <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
-            {/* Category jump list — a menu this long needs a way in. */}
-            <nav aria-label={dict.menuPage.jumpTo} className="lg:col-span-3">
-              <div className="lg:sticky lg:top-24">
-                <h2 className="mb-4 text-xs font-semibold tracking-[0.2em] uppercase opacity-55">
-                  {dict.menuPage.jumpTo}
-                </h2>
-                <ul className="flex flex-wrap gap-x-4 gap-y-1 lg:flex-col lg:gap-y-2">
-                  {groups.map((group) => (
-                    <li key={group.category}>
-                      <a
-                        href={`#menu-${group.category}`}
-                        className="link-underline inline-flex min-h-8 items-center text-sm opacity-75 hover:opacity-100"
-                      >
-                        {dict.menuPage.categories[group.category]}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </nav>
-
-            <div className="lg:col-span-9">
-              <MenuList groups={groups} locale={locale} dict={dict} />
-
-              <div className="mt-16">
-                <AllergenLegend allergens={usedAllergens} locale={locale} dict={dict} />
-              </div>
-            </div>
-          </div>
+        {/* A menu is read, not scanned edge to edge — a narrow measure keeps
+            the dish/price relationship legible on a wide screen. */}
+        <Container size="narrow">
+          <MenuSwitcher
+            dailyMenu={dailyMenu}
+            groups={groups}
+            dailyAllergens={dailyAllergens}
+            permanentAllergens={permanentAllergens}
+            isDemoDaily={isDemoDailyMenu}
+            locale={locale}
+            dict={dict}
+          />
         </Container>
       </Section>
 

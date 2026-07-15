@@ -8,8 +8,10 @@ import { Container, Section, SectionHeading } from "@/components/ui/Section";
 import { LazyMap } from "@/components/location/LazyMap";
 
 export function LocationPreview({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+  // Cream, not blue: FamilyFriendly directly above now carries the blue field,
+  // and two identical tones in a row would erase the section break.
   return (
-    <Section tone="blue-light">
+    <Section tone="cream">
       <Container>
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5">
@@ -47,7 +49,7 @@ export function LocationPreview({ locale, dict }: { locale: Locale; dict: Dictio
                 <li key={entry.id} className="flex items-baseline gap-3 text-sm">
                   <span
                     aria-hidden="true"
-                    className="size-1.5 shrink-0 translate-y-1.5 rounded-full bg-terracotta"
+                    className="size-1.5 shrink-0 translate-y-1.5 rounded-full bg-sand-ink"
                   />
                   {entry.text[locale]}
                 </li>

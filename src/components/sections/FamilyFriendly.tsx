@@ -6,16 +6,22 @@ import { SafeImage } from "@/components/ui/SafeImage";
 import { People } from "@/components/illustrations";
 
 /**
- * Families with children. Kept to a scannable list beside one image — the brief
- * is explicit that this must not become a long text section.
+ * Families with children. A scannable list beside one image — the brief is
+ * explicit that this must not become a long text section.
+ *
+ * Layout intent: the photograph floats as a card on the light-blue field
+ * rather than running edge to edge. The section deliberately keeps the Klika
+ * blue visible around it — the site should not become wall-to-wall photography,
+ * and the zones and hero already carry the edge-to-edge treatment.
  */
 export function FamilyFriendly({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   return (
-    <Section tone="warm-white">
+    <Section tone="blue-light" spacing="loose">
       <Container>
-        <div className="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-16">
-          <Reveal className="lg:col-span-5">
-            <div className="relative aspect-[4/5] overflow-hidden bg-cream">
+        <div className="grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-20">
+          <Reveal className="relative lg:col-span-5">
+            {/* Floating card: rounded, lifted, inset from the section edge. */}
+            <div className="card-float relative aspect-[4/5] overflow-hidden bg-cream lg:rotate-[-1.25deg] motion-reduce:rotate-0">
               <SafeImage
                 image={{
                   src: "/images/restaurant/garden-children.png",
@@ -35,7 +41,7 @@ export function FamilyFriendly({ locale, dict }: { locale: Locale; dict: Diction
             </div>
             <People
               aria-hidden="true"
-              className="pointer-events-none absolute -right-4 -bottom-6 hidden h-24 w-24 text-terracotta opacity-25 lg:block"
+              className="pointer-events-none absolute -right-3 -bottom-8 hidden h-24 w-24 text-navy opacity-20 lg:block"
             />
           </Reveal>
 
@@ -52,7 +58,7 @@ export function FamilyFriendly({ locale, dict }: { locale: Locale; dict: Diction
                   key={item}
                   className="flex items-center gap-3 border-b border-navy/10 py-3 text-sm"
                 >
-                  <span aria-hidden="true" className="size-1.5 rounded-full bg-terracotta" />
+                  <span aria-hidden="true" className="size-1.5 rounded-full bg-sand-ink" />
                   {item}
                 </li>
               ))}

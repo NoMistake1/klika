@@ -83,7 +83,7 @@ export default async function CateringPage({
                     key={item}
                     className="flex items-center gap-3 border-b border-navy/10 py-3.5 text-sm"
                   >
-                    <span aria-hidden="true" className="size-1.5 rounded-full bg-terracotta" />
+                    <span aria-hidden="true" className="size-1.5 rounded-full bg-sand-ink" />
                     {item}
                   </li>
                 ))}

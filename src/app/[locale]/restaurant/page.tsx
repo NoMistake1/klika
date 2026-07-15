@@ -217,7 +217,7 @@ export default async function RestaurantPage({
                 <ul className="mt-3 space-y-1.5">
                   {group.items.map((item) => (
                     <li key={item} className="flex items-center gap-2.5 text-sm">
-                      <span aria-hidden="true" className="size-1 rounded-full bg-terracotta" />
+                      <span aria-hidden="true" className="size-1 rounded-full bg-sand-ink" />
                       {item}
                     </li>
                   ))}
@@ -243,8 +243,9 @@ export default async function RestaurantPage({
 
       <FamilyFriendly locale={locale} dict={dict} />
 
-      {/* Events, catering and vouchers */}
-      <Section tone="blue-light">
+      {/* Events, catering and vouchers.
+          Cream, because FamilyFriendly above it is the blue field. */}
+      <Section tone="cream">
         <Container>
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
             <div>
@@ -294,6 +295,7 @@ export default async function RestaurantPage({
               locale={locale}
               dict={dict}
               showFilter={false}
+              swipeOnMobile
             />
           </div>
           <div className="mt-8 flex flex-wrap gap-3">

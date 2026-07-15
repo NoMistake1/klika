@@ -63,9 +63,9 @@ export default async function PrivacyPage({
 
       <Section tone="warm-white">
         <Container size="narrow">
-          <div className="border-l-2 border-terracotta pl-5">
+          <div className="border-l-2 border-sand-ink pl-5">
             <h2 className="flex items-center gap-2.5 text-lg font-semibold">
-              <Info aria-hidden="true" className="size-4 shrink-0 text-terracotta" />
+              <Info aria-hidden="true" className="size-4 shrink-0 text-sand-ink" />
               {dict.privacy.placeholderTitle}
             </h2>
             <p className="mt-3 leading-relaxed opacity-80">{dict.privacy.placeholderText}</p>

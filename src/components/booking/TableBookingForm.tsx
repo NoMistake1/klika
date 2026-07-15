@@ -103,12 +103,13 @@ export function TableBookingForm({ locale, dict }: { locale: Locale; dict: Dicti
       <div
         ref={summaryRef}
         tabIndex={-1}
-        className="max-w-2xl focus:outline-none"
+        className="focus:outline-none"
       >
         <h2 className="text-heading font-semibold">{dict.restaurantBooking.summaryTitle}</h2>
 
-        <p className="mt-5 flex gap-3 border-l-2 border-terracotta bg-terracotta/5 p-4 text-sm font-medium">
-          <Info aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-terracotta" />
+        {/* Never implies the table is held — see the component docblock. */}
+        <p className="mt-5 flex gap-3 rounded-md bg-navy p-5 text-sm leading-relaxed font-medium text-cream">
+          <Info aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-blue" />
           {dict.restaurantBooking.notConfirmed}
         </p>
 
@@ -165,7 +166,7 @@ export function TableBookingForm({ locale, dict }: { locale: Locale; dict: Dicti
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="max-w-2xl">
+    <form onSubmit={handleSubmit} noValidate>
       <ValidationSummary
         title={dict.validation.summaryTitle}
         errors={Object.values(errors).filter((error): error is string => Boolean(error))}
@@ -173,8 +174,8 @@ export function TableBookingForm({ locale, dict }: { locale: Locale; dict: Dicti
       />
 
       {!storageAvailable && hydrated ? (
-        <p className="mb-6 flex gap-2 border-l-2 border-terracotta pl-3 text-xs opacity-70">
-          <Info aria-hidden="true" className="mt-0.5 size-3.5 shrink-0 text-terracotta" />
+        <p className="mb-6 flex gap-2 border-l-2 border-sand-ink pl-3 text-xs opacity-70">
+          <Info aria-hidden="true" className="mt-0.5 size-3.5 shrink-0 text-sand-ink" />
           {dict.hotelBooking.storageUnavailable}
         </p>
       ) : null}

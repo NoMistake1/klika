@@ -14,9 +14,23 @@
   --color-blue-light: #d9ecfa;
   --color-cream: #f4efe5;
   --color-sand: #d9c3a2;
-  --color-terracotta: #b65f3d;
   --color-warm-white: #fffdf9;
   --color-ink: #111a27;
+
+  /*
+   * Beige used as ink rather than as a surface. Plain --color-sand on cream is
+   * 1.49:1 — invisible. This is the deepest tone that still reads as beige
+   * while clearing 3:1 large-text contrast on every light surface
+   * (cream 3.64, warm-white 4.10, blue-light 3.44).
+   */
+  --color-sand-ink: #96774b;
+
+  /*
+   * Semantic only: form validation. Never a button, never decoration — the
+   * brand accents are navy, light blue and beige. An error still has to look
+   * like an error, so it keeps a warm alert tone alongside its icon and text.
+   */
+  --color-alert: #a8422b;
 
   /* Tints derived from the brand palette, used for hairlines and washes */
   --color-navy-12: color-mix(in srgb, var(--color-navy) 12%, transparent);
@@ -110,11 +124,17 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* A single, consistent focus ring across the whole site. */
+  /*
+   * A single focus ring, built as two tones so it is always visible: the navy
+   * ring carries light surfaces (14.8:1 on cream, 14.0:1 on light blue) and
+   * the light-blue halo carries dark ones (14.0:1 on navy). Whichever surface
+   * the control sits on, one of the two reads clearly.
+   */
   :focus-visible {
-    outline: 2px solid var(--color-terracotta);
-    outline-offset: 3px;
-    border-radius: 2px;
+    outline: 2px solid var(--color-navy);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 5px var(--color-blue-light);
+    border-radius: 3px;
   }
 
   ::selection {
@@ -124,7 +144,7 @@
 
   /* Native form controls inherit the brand accent. */
   :is(input, select, textarea) {
-    accent-color: var(--color-terracotta);
+    accent-color: var(--color-navy);
   }
 
   /* Keep the date picker indicator visible on dark surfaces. */
@@ -153,6 +173,30 @@
 @utility font-hand {
   font-family: var(--font-hand);
   font-weight: 600;
+}
+
+/*
+ * Hides the scrollbar on horizontally swipeable rows. Tailwind has no built-in
+ * for this, so the class was previously a no-op wherever it was used.
+ * Only ever applied to rows that expose their overflow some other way (a
+ * peeking next card), never to hide a scrollbar the user needs.
+ */
+@utility scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Card surface used where an image or panel floats above a brand-colour
+   section rather than running edge to edge. */
+@utility card-float {
+  border-radius: 0.5rem;
+  box-shadow:
+    0 1px 2px color-mix(in srgb, var(--color-navy) 6%, transparent),
+    0 12px 32px -8px color-mix(in srgb, var(--color-navy) 18%, transparent);
 }
 
 /* Editorial hairline used instead of card borders. */

@@ -15,6 +15,7 @@ import { Tabs } from "@/components/ui/Tabs";
 import { Icon } from "@/components/ui/Icon";
 import { Reveal } from "@/components/ui/Reveal";
 import { SafeImage } from "@/components/ui/SafeImage";
+import { ScrollRow, scrollRowItem } from "@/components/ui/ScrollRow";
 
 export async function generateMetadata({
   params,
@@ -55,7 +56,7 @@ export default async function LocationPage({
             <li key={detail} className="flex items-baseline gap-3 text-sm">
               <span
                 aria-hidden="true"
-                className="size-1.5 shrink-0 translate-y-1.5 rounded-full bg-terracotta"
+                className="size-1.5 shrink-0 translate-y-1.5 rounded-full bg-sand-ink"
               />
               <span className="opacity-80">{detail}</span>
             </li>
@@ -135,7 +136,7 @@ export default async function LocationPage({
                   <li key={entry.id} className="flex items-baseline gap-3 text-sm">
                     <span
                       aria-hidden="true"
-                      className="size-1.5 shrink-0 translate-y-1.5 rounded-full bg-terracotta"
+                      className="size-1.5 shrink-0 translate-y-1.5 rounded-full bg-sand-ink"
                     />
                     {entry.text[locale]}
                   </li>
@@ -174,8 +175,8 @@ export default async function LocationPage({
           </div>
 
           {/* Timetables and lines change; the site does not pretend otherwise. */}
-          <p className="mt-10 flex max-w-2xl gap-3 border-l-2 border-terracotta pl-4 text-sm opacity-75">
-            <Info aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-terracotta" />
+          <p className="mt-10 flex max-w-2xl gap-3 border-l-2 border-sand-ink pl-4 text-sm opacity-75">
+            <Info aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-sand-ink" />
             {dict.locationPage.scheduleWarning}
           </p>
         </Container>
@@ -190,16 +191,18 @@ export default async function LocationPage({
             lede={dict.locationPage.tipsSubtitle}
           />
 
-          <ul className="mt-10 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-5">
+          {/* Swipes on a phone, five across on desktop — stacked, these five
+              portraits ran to several screens. */}
+          <ScrollRow className="mt-10 sm:gap-6" cols="sm:grid-cols-3 lg:grid-cols-5">
             {tripTips.map((tip, index) => (
-              <Reveal key={tip.id} as="li" delay={index * 60}>
+              <Reveal key={tip.id} as="li" delay={index * 60} className={scrollRowItem}>
                 <figure>
-                  <div className="relative aspect-[4/5] overflow-hidden bg-cream">
+                  <div className="card-float relative aspect-[4/5] overflow-hidden bg-cream">
                     <SafeImage
                       image={tip.image}
                       locale={locale}
                       fill
-                      sizes="(min-width: 1024px) 20vw, 50vw"
+                      sizes="(min-width: 1024px) 20vw, (min-width: 640px) 33vw, 78vw"
                     />
                   </div>
                   <figcaption className="mt-3">
@@ -209,7 +212,7 @@ export default async function LocationPage({
                 </figure>
               </Reveal>
             ))}
-          </ul>
+          </ScrollRow>
         </Container>
       </Section>
 

@@ -38,6 +38,7 @@ export function GalleryPreview({ locale, dict }: { locale: Locale; dict: Diction
             locale={locale}
             dict={dict}
             showFilter={false}
+            swipeOnMobile
           />
         </div>
       </Container>

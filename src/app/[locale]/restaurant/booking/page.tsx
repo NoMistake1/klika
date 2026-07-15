@@ -59,12 +59,14 @@ export default async function RestaurantBookingPage({
       <Section tone="warm-white">
         <Container>
           <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
-            <div className="lg:col-span-7">
+            {/* The form sits on its own raised surface so it reads as a single
+                task rather than loose fields on the page. */}
+            <div className="card-float bg-warm-white p-6 sm:p-8 lg:col-span-7">
               <TableBookingForm locale={locale} dict={dict} />
             </div>
 
             <aside className="lg:col-span-5">
-              <div className="bg-cream p-6 text-navy sm:p-8">
+              <div className="card-float bg-cream p-6 text-navy sm:p-8">
                 <h2 className="text-xs font-semibold tracking-[0.2em] uppercase opacity-55">
                   {dict.contactPage.restaurantTitle}
                 </h2>
