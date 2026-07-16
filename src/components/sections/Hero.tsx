@@ -17,19 +17,15 @@ import { BookingBar } from "@/components/booking/BookingBar";
 export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   return (
     <section className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden pt-28 pb-8 text-cream">
-      <HeroVideo
-        poster="/images/hero/poster.png"
-        posterAlt={dict.a11y.placeholderImage}
-        // Empty until the final video is supplied — the poster carries the hero
-        // on its own. See public/video/README.md.
-        sources={[]}
-      />
+      {/* Real production media: art-directed posters and the optimized
+          desktop/mobile video loops, selected per viewport inside. */}
+      <HeroVideo />
 
       <Container className="relative">
         <div className="max-w-4xl">
           <p className="mb-5 flex items-center gap-3">
             <span aria-hidden="true" className="h-px w-10 bg-blue" />
-            <HandwrittenNote tone="beigeLight" className="text-2xl sm:text-3xl">
+            <HandwrittenNote className="text-2xl sm:text-3xl">
               {dict.hero.handwritten}
             </HandwrittenNote>
           </p>
@@ -41,7 +37,7 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
           </p>
 
           <div className="mt-9 flex flex-wrap gap-3">
-            <Button href={localePath(locale, bookStayHref)} variant="cream" size="lg">
+            <Button href={localePath(locale, bookStayHref)} variant="conversion" size="lg">
               {dict.actions.bookStay}
             </Button>
             <Button href={localePath(locale, bookTableHref)} variant="secondary" size="lg">

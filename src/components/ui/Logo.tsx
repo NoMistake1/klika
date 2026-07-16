@@ -1,78 +1,91 @@
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 /**
- * Klika logo.
+ * The real Klika logo, from the supplied production artwork in
+ * /public/images/logos. Nothing here is recreated with text or CSS.
  *
- * PLACEHOLDER. The official logo has not been supplied, and the reference
- * screenshots must not be traced. Until the final artwork arrives the wordmark
- * is set in Lobster — the actual brand display face — which is honest
- * typography rather than an invented mark, and the monogram is a neutral
- * stand-in echoing the rounded script.
+ * The artwork is dark navy on transparency, so it disappears on navy and on
+ * the hero video. `onDark` applies a filter (see `.logo-on-dark` in
+ * globals.css) that renders the same file in warm white — one source of truth
+ * for the mark, both polarities.
  *
- * TO REPLACE with the official SVG: swap the body of `LogoMonogram` for the
- * final `<path>` data and render the wordmark from the supplied artwork. This
- * is the only file that needs to change — every call site uses this component.
- * Also replace src/app/icon.png, apple-icon.png and opengraph-image.png
- * (see scripts/generate-brand-assets.mjs).
+ * `width`/`height` passed to next/image are the *display* dimensions, not the
+ * intrinsic 2500–6000px of the files: Next then serves appropriately resized
+ * 1x/2x versions instead of the multi-megabyte originals, and the fixed
+ * dimensions prevent layout shift.
  */
 
-interface LogoProps {
-  /** `wordmark` for the header, `monogram` for tight spaces. */
-  variant?: "wordmark" | "monogram" | "stacked";
+interface LogoArt {
+  readonly src: string;
+  /** Intrinsic aspect ratio, width ÷ height. */
+  readonly ratio: number;
+  readonly alt: string;
+}
+
+const art = {
+  /** The K mark alone (2500×3000). */
+  symbol: {
+    src: "/images/logos/web/logo-symbol.webp",
+    ratio: 2500 / 3000,
+    alt: "Klika",
+  },
+  /** The script wordmark (3000×1450). */
+  wordmark: {
+    src: "/images/logos/web/logo-wordmark.webp",
+    ratio: 3000 / 1450,
+    alt: "Klika",
+  },
+  /** The full lockup (3000×1450). */
+  full: {
+    src: "/images/logos/web/logo-full.webp",
+    ratio: 3000 / 1450,
+    alt: "Hotel Klika — Klika Kitchen & Coffee",
+  },
+  /**
+   * The original PNG of the full lockup, for the large loading screen where
+   * it renders sharpest. Still served resized through next/image.
+   */
+  fullOriginal: {
+    src: "/images/logos/original/logo-full.png",
+    ratio: 3000 / 1450,
+    alt: "Hotel Klika — Klika Kitchen & Coffee",
+  },
+} satisfies Record<string, LogoArt>;
+
+export type LogoVariant = keyof typeof art;
+
+export function Logo({
+  variant = "wordmark",
+  height = 32,
+  onDark = false,
+  priority = false,
+  decorative = false,
+  className,
+}: {
+  variant?: LogoVariant;
+  /** Display height in CSS pixels; width follows the intrinsic ratio. */
+  height?: number;
+  /** Renders the navy artwork in warm white for navy/video surfaces. */
+  onDark?: boolean;
+  priority?: boolean;
+  /** Hides the image from assistive tech when a text label sits beside it. */
+  decorative?: boolean;
   className?: string;
-  /** Draws the monogram stroke on mount. Ignored under reduced motion. */
-  animated?: boolean;
-}
-
-function LogoMonogram({ animated = false }: { animated?: boolean }) {
-  return (
-    <svg
-      viewBox="0 0 48 48"
-      className="h-full w-auto shrink-0"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={5}
-      strokeLinecap="round"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <g
-        className={animated ? "[stroke-dasharray:120] animate-draw" : undefined}
-        style={animated ? { ["--draw-length" as string]: "120" } : undefined}
-      >
-        <path d="M17.5 9.5 L14.5 38.5" />
-        <path d="M38.5 9.5 L16 26" />
-        <path d="M25.5 22.5 A11 11 0 1 0 37 38" />
-      </g>
-    </svg>
-  );
-}
-
-export function Logo({ variant = "wordmark", className, animated = false }: LogoProps) {
-  if (variant === "monogram") {
-    return (
-      <span className={cn("block", className)}>
-        <LogoMonogram animated={animated} />
-      </span>
-    );
-  }
-
-  if (variant === "stacked") {
-    return (
-      <span className={cn("flex flex-col items-center gap-2", className)}>
-        <span className="h-12">
-          <LogoMonogram animated={animated} />
-        </span>
-        <span className="font-display text-3xl leading-none">Klika</span>
-      </span>
-    );
-  }
+}) {
+  const { src, ratio, alt } = art[variant];
+  const width = Math.round(height * ratio);
 
   return (
-    <span className={cn("flex items-baseline gap-1.5", className)}>
-      <span className="font-display text-2xl leading-none tracking-normal">Klika</span>
-    </span>
+    <Image
+      src={src}
+      alt={decorative ? "" : alt}
+      aria-hidden={decorative || undefined}
+      width={width}
+      height={height}
+      priority={priority}
+      quality={90}
+      className={cn("select-none", onDark && "logo-on-dark", className)}
+    />
   );
 }
-
-export { LogoMonogram };

@@ -23,6 +23,7 @@ import { ZoneShowcase } from "@/components/restaurant/ZoneShowcase";
 import { LocalProducers } from "@/components/sections/LocalProducers";
 import { FamilyFriendly } from "@/components/sections/FamilyFriendly";
 import { GalleryGrid } from "@/components/gallery/GalleryGrid";
+import { SafeImage } from "@/components/ui/SafeImage";
 import { Cup, Waves } from "@/components/illustrations";
 import { formatDate, formatWeekday } from "@/lib/utils";
 
@@ -204,39 +205,65 @@ export default async function RestaurantPage({
           className="pointer-events-none absolute -right-8 top-10 h-40 w-40 text-sand opacity-30"
         />
         <Container className="relative">
-          <SectionHeading
-            eyebrow={dict.restaurantPage.drinksTitle}
-            title={dict.restaurantPage.drinksTitle}
-            lede={dict.restaurantPage.drinksSubtitle}
-          />
+          <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+            <div className="lg:col-span-8">
+              <SectionHeading
+                eyebrow={dict.restaurantPage.drinksTitle}
+                title={dict.restaurantPage.drinksTitle}
+                lede={dict.restaurantPage.drinksSubtitle}
+              />
 
-          <div className="mt-10 grid gap-10 sm:grid-cols-3">
-            {drinkGroups.map((group) => (
-              <div key={group.id} className="border-t border-navy/15 pt-5">
-                <h3 className="text-lg font-semibold">{group.title[locale]}</h3>
-                <ul className="mt-3 space-y-1.5">
-                  {group.items.map((item) => (
-                    <li key={item} className="flex items-center gap-2.5 text-sm">
-                      <span aria-hidden="true" className="size-1 rounded-full bg-sand-ink" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-                {group.note ? (
-                  <p className="mt-3 text-sm leading-relaxed opacity-70">
-                    {group.note[locale]}
-                  </p>
-                ) : null}
+              <div className="mt-10 grid gap-10 sm:grid-cols-3">
+                {drinkGroups.map((group) => (
+                  <div key={group.id} className="border-t border-navy/15 pt-5">
+                    <h3 className="text-lg font-semibold">{group.title[locale]}</h3>
+                    <ul className="mt-3 space-y-1.5">
+                      {group.items.map((item) => (
+                        <li key={item} className="flex items-center gap-2.5 text-sm">
+                          <span aria-hidden="true" className="size-1 rounded-full bg-sand-ink" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                    {group.note ? (
+                      <p className="mt-3 text-sm leading-relaxed opacity-70">
+                        {group.note[locale]}
+                      </p>
+                    ) : null}
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
 
-          <div className="mt-10 flex flex-wrap items-center gap-4">
-            {/* No prices are published for drinks, and none are invented. The
-                full list is on the table; this button is ready for a future
-                PDF or dedicated page. */}
-            <p className="text-sm opacity-70">{dict.restaurantPage.drinksNote}</p>
-            <p className="text-xs opacity-50">{dict.restaurantPage.drinksPending}</p>
+              <div className="mt-10 flex flex-wrap items-center gap-4">
+                {/* No prices are published for drinks, and none are invented.
+                    The full list is on the table; this note is ready for a
+                    future PDF or dedicated page. */}
+                <p className="text-sm opacity-70">{dict.restaurantPage.drinksNote}</p>
+                <p className="text-xs opacity-50">{dict.restaurantPage.drinksPending}</p>
+              </div>
+            </div>
+
+            {/* The bar itself, floating on the warm field beside the list. */}
+            <div className="lg:col-span-4 lg:self-center">
+              <div className="card-float relative aspect-[4/3] overflow-hidden bg-cream">
+                <SafeImage
+                  image={{
+                    src: "/images/restaurant/bar.png",
+                    alt: {
+                      cs: "Zástupný obrázek — bar s vitrínou dezertů",
+                      en: "Placeholder image — the bar with the dessert cabinet",
+                      de: "Platzhalterbild — Bar mit Dessertvitrine",
+                    },
+                    width: 1600,
+                    height: 1200,
+                    isPlaceholder: true,
+                  }}
+                  locale={locale}
+                  fill
+                  sizes="(min-width: 1024px) 30vw, 100vw"
+                />
+              </div>
+            </div>
           </div>
         </Container>
       </Section>

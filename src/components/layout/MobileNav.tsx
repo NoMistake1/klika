@@ -219,7 +219,7 @@ export function MobileNav({
             aria-hidden="true"
           />
           <div className="relative flex flex-col gap-2.5">
-            <Button href={localePath(locale, bookStayHref)} onClick={onClose} size="lg">
+            <Button href={localePath(locale, bookStayHref)} onClick={onClose} variant="conversion" size="lg">
               {dict.actions.bookStay}
             </Button>
             <Button

@@ -10,7 +10,7 @@ import { locationHighlights, travelOptions, tripTips, walkingDistances } from "@
 import { Button } from "@/components/ui/Button";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { LazyMap } from "@/components/location/LazyMap";
+import { MapEmbed } from "@/components/location/MapEmbed";
 import { Tabs } from "@/components/ui/Tabs";
 import { Icon } from "@/components/ui/Icon";
 import { Reveal } from "@/components/ui/Reveal";
@@ -115,7 +115,7 @@ export default async function LocationPage({
       {/* Map */}
       <Section tone="warm-white" spacing="tight">
         <Container>
-          <LazyMap dict={dict} aspect="aspect-[4/3] sm:aspect-[21/9]" />
+          <MapEmbed dict={dict} aspect="aspect-[4/3] sm:aspect-[21/9]" />
         </Container>
       </Section>
 

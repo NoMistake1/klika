@@ -31,15 +31,14 @@ export function BrandSplit({ locale, dict }: { locale: Locale; dict: Dictionary 
             <div className="relative aspect-[3/4] overflow-hidden bg-blue-light">
               <SafeImage
                 image={{
-                  src: "/images/hotel/split-hotel.png",
+                  src: "/images/hotel/split-hotel.webp",
                   alt: {
-                    cs: "Zástupný obrázek — Hotel Klika",
-                    en: "Placeholder image — Hotel Klika",
-                    de: "Platzhalterbild — Hotel Klika",
+                    cs: "Hotel Klika",
+                    en: "Hotel Klika",
+                    de: "Hotel Klika",
                   },
-                  width: 1200,
-                  height: 1600,
-                  isPlaceholder: true,
+                  width: 941,
+                  height: 1672,
                 }}
                 locale={locale}
                 fill
@@ -80,15 +79,14 @@ export function BrandSplit({ locale, dict }: { locale: Locale; dict: Dictionary 
             <div className="relative aspect-[3/4] overflow-hidden bg-cream">
               <SafeImage
                 image={{
-                  src: "/images/restaurant/split-restaurant.png",
+                  src: "/images/restaurant/split-restaurant.webp",
                   alt: {
-                    cs: "Zástupný obrázek — Klika Kitchen & Coffee",
-                    en: "Placeholder image — Klika Kitchen & Coffee",
-                    de: "Platzhalterbild — Klika Kitchen & Coffee",
+                    cs: "Klika Kitchen & Coffee",
+                    en: "Klika Kitchen & Coffee",
+                    de: "Klika Kitchen & Coffee",
                   },
-                  width: 1200,
-                  height: 1600,
-                  isPlaceholder: true,
+                  width: 1080,
+                  height: 1350,
                 }}
                 locale={locale}
                 fill
@@ -108,7 +106,7 @@ export function BrandSplit({ locale, dict }: { locale: Locale; dict: Dictionary 
             <p className="mt-5 text-base leading-relaxed text-pretty opacity-85 sm:text-lg">
               {dict.split.restaurantText}
             </p>
-            <HandwrittenNote className="mt-6" tone="beigeLight" arrow="left">
+            <HandwrittenNote className="mt-6" arrow="left">
               {dict.split.restaurantNote}
             </HandwrittenNote>
             <div className="mt-8 flex flex-wrap gap-3">

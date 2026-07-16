@@ -29,7 +29,7 @@ export function LocalProducers({ locale, dict }: { locale: Locale; dict: Diction
             <p className="text-xl leading-snug text-balance sm:text-2xl">
               {dict.producers.title}
             </p>
-            <HandwrittenNote tone="beigeLight" className="mt-5" arrow="right">
+            <HandwrittenNote className="mt-5" arrow="right">
               {dict.producers.note}
             </HandwrittenNote>
           </div>

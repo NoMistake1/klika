@@ -41,7 +41,7 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dictionary }) {
         {/* Booking CTAs */}
         <div className="flex flex-col gap-6 border-b border-cream/15 pb-12 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-md">
-            <Logo variant="monogram" className="mb-4 h-9 text-blue" />
+            <Logo variant="full" height={64} onDark className="mb-5" />
             <p className="text-lg leading-relaxed text-balance">{dict.footer.statement}</p>
           </div>
           <div className="flex shrink-0 flex-col gap-2.5 sm:flex-row">

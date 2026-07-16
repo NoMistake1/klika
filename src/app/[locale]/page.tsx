@@ -11,7 +11,6 @@ import { HotelNumbers } from "@/components/sections/HotelNumbers";
 import { FeaturedRooms } from "@/components/sections/FeaturedRooms";
 import { RestaurantZones } from "@/components/sections/RestaurantZones";
 import { LocalProducers } from "@/components/sections/LocalProducers";
-import { FamilyFriendly } from "@/components/sections/FamilyFriendly";
 import { LocationPreview } from "@/components/sections/LocationPreview";
 import { GalleryPreview } from "@/components/sections/GalleryPreview";
 import { FinalCta } from "@/components/sections/FinalCta";
@@ -54,7 +53,6 @@ export default async function HomePage({
       <FeaturedRooms locale={locale} dict={dict} />
       <RestaurantZones locale={locale} dict={dict} />
       <LocalProducers locale={locale} dict={dict} />
-      <FamilyFriendly locale={locale} dict={dict} />
       <LocationPreview locale={locale} dict={dict} />
       <GalleryPreview locale={locale} dict={dict} />
       <FinalCta locale={locale} dict={dict} />

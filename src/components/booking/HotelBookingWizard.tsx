@@ -336,7 +336,7 @@ export function HotelBookingWizard({ locale, dict }: { locale: Locale; dict: Dic
               <p className="mt-6 text-sm opacity-75">{dict.hotelBooking.contactText}</p>
 
               <div className="mt-5 flex flex-wrap gap-3">
-                <Button href={telLink(hotelMobile.e164)} size="lg">
+                <Button href={telLink(hotelMobile.e164)} variant="conversion" size="lg">
                   <Phone aria-hidden="true" className="size-4" />
                   {dict.actions.callReception}
                 </Button>

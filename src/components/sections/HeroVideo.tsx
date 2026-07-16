@@ -1,41 +1,48 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import { usePrefersReducedMotion } from "@/lib/use-media-query";
+import { getImageProps } from "next/image";
+import { useMediaQuery, usePrefersReducedMotion } from "@/lib/use-media-query";
+
+/** Matches Tailwind's `md` — below it the portrait mobile media is used. */
+const MOBILE_QUERY = "(max-width: 767px)";
+
+const VIDEO_DESKTOP = "/video/video-loop-desktop-optimized.mp4";
+const VIDEO_MOBILE = "/video/video-loop-mobile-optimized.mp4";
+const POSTER_DESKTOP = { src: "/images/hero/fallback-desktop.webp", width: 1535, height: 1025 };
+const POSTER_MOBILE = { src: "/images/hero/fallback-mobile.webp", width: 1440, height: 1796 };
 
 /**
- * Background video for the hero.
+ * Background video for the hero, art-directed for phone and desktop.
  *
- * The poster image is the real above-the-fold asset: it is priority-loaded and
- * always painted, and the video fades in on top only once it can actually play.
- * That means first paint never waits on video bytes, and every failure mode —
- * missing file, blocked autoplay, codec unsupported, reduced-motion, data
- * saver — simply leaves the poster in place. Nothing is lost but the movement.
+ * The poster is the real above-the-fold asset. It is served through a
+ * `<picture>` built with `getImageProps` — the documented art-direction
+ * pattern — so a phone downloads only the portrait fallback and a desktop only
+ * the landscape one, never both, while still getting Next's optimized URLs.
  *
- * No audio track, no controls, and `preload="metadata"` so we fetch headers
- * rather than the whole file up front.
+ * The video mounts client-side only (the server assumes reduced motion), and
+ * its source is chosen by the same viewport query, so the desktop loop is
+ * never fetched on a phone. Only the *-optimized.mp4 files are referenced
+ * anywhere; the raw exports stay in /public/video purely as backups.
+ *
+ * Every failure mode — missing file, blocked autoplay, unsupported codec,
+ * reduced motion, data saver — simply leaves the poster in place. Nothing is
+ * lost but the movement.
  */
-export function HeroVideo({
-  poster,
-  posterAlt,
-  sources,
-}: {
-  poster: string;
-  posterAlt: string;
-  /** Ordered by preference; the browser picks the first type it supports. */
-  sources: ReadonlyArray<{ src: string; type: string }>;
-}) {
+export function HeroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
 
-  // A looping background video is exactly the ambient movement this setting
-  // exists to suppress, so the video is never mounted when it is on.
   const prefersReducedMotion = usePrefersReducedMotion();
-  const enabled = !prefersReducedMotion && sources.length > 0;
+  // Assume mobile until the client says otherwise: the cheaper wrong guess.
+  const isMobile = useMediaQuery(MOBILE_QUERY, true);
+
+  const videoEnabled = !prefersReducedMotion;
+  const videoSrc = isMobile ? VIDEO_MOBILE : VIDEO_DESKTOP;
+  const posterSrc = isMobile ? POSTER_MOBILE.src : POSTER_DESKTOP.src;
 
   useEffect(() => {
-    if (!enabled) return;
+    if (!videoEnabled) return;
     const video = videoRef.current;
     if (!video) return;
 
@@ -45,24 +52,41 @@ export function HeroVideo({
     if (attempt && typeof attempt.catch === "function") {
       attempt.catch(() => setPlaying(false));
     }
-  }, [enabled]);
+  }, [videoEnabled, videoSrc]);
+
+  // Art-directed poster. Shared props keep both variants identical apart
+  // from the artwork itself.
+  const common = { alt: "", sizes: "100vw", quality: 80 } as const;
+  const {
+    props: { srcSet: mobileSrcSet },
+  } = getImageProps({ ...common, ...POSTER_MOBILE });
+  const {
+    props: { srcSet: desktopSrcSet, ...desktopRest },
+  } = getImageProps({ ...common, ...POSTER_DESKTOP, priority: true });
 
   return (
     <div className="absolute inset-0 overflow-hidden bg-navy">
-      <Image
-        src={poster}
-        alt={posterAlt}
-        fill
-        priority
-        sizes="100vw"
-        quality={80}
-        className="object-cover"
-      />
+      <picture>
+        <source media={MOBILE_QUERY} srcSet={mobileSrcSet} sizes="100vw" />
+        {/* Decorative background: the hero's meaning is carried by the
+            heading beside it, so the poster is intentionally alt="". */}
+        <img
+          {...desktopRest}
+          srcSet={desktopSrcSet}
+          alt=""
+          // Explicit: getImageProps does not forward priority's fetch hint.
+          fetchPriority="high"
+          className="absolute inset-0 size-full object-cover"
+        />
+      </picture>
 
-      {enabled ? (
+      {videoEnabled ? (
         <video
           ref={videoRef}
-          poster={poster}
+          // key remounts the element when the viewport class changes, so the
+          // browser never keeps buffering the wrong file.
+          key={videoSrc}
+          poster={posterSrc}
           autoPlay
           muted
           loop
@@ -76,9 +100,7 @@ export function HeroVideo({
             playing ? "opacity-100" : "opacity-0"
           }`}
         >
-          {sources.map((source) => (
-            <source key={source.src} src={source.src} type={source.type} />
-          ))}
+          <source src={videoSrc} type="video/mp4" />
         </video>
       ) : null}
 

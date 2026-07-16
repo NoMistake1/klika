@@ -53,6 +53,18 @@ export async function generateMetadata({
       template: `%s | ${dict.siteName}`,
     },
     description: dict.hero.subheadline,
+    // The supplied favicon set. Android home-screen icons are wired through
+    // the manifest, whose relative icon paths resolve against its own URL.
+    icons: {
+      icon: [
+        { url: "/images/logos/favicon/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+        { url: "/images/logos/favicon/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+        { url: "/images/logos/favicon/favicon-48x48.png", sizes: "48x48", type: "image/png" },
+      ],
+      shortcut: "/images/logos/favicon/favicon.ico",
+      apple: "/images/logos/favicon/apple-touch-icon.png",
+    },
+    manifest: "/images/logos/favicon/site.webmanifest",
     applicationName: dict.siteName,
     authors: [{ name: dict.siteName }],
     creator: dict.siteName,

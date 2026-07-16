@@ -1,6 +1,6 @@
 import type { Dictionary } from "@/content/dictionaries";
 import { localePath, type Locale } from "@/lib/i18n";
-import { rooms } from "@/content/hotel";
+import { featuredRooms } from "@/content/hotel";
 import { Button } from "@/components/ui/Button";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
 import { RoomSlider } from "@/components/hotel/RoomSlider";
@@ -25,7 +25,7 @@ export function FeaturedRooms({ locale, dict }: { locale: Locale; dict: Dictiona
         </div>
 
         <div className="mt-12">
-          <RoomSlider rooms={rooms} locale={locale} dict={dict} />
+          <RoomSlider rooms={featuredRooms} locale={locale} dict={dict} />
         </div>
       </Container>
     </Section>

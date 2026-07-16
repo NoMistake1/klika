@@ -24,7 +24,7 @@ import {
 import { Button } from "@/components/ui/Button";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { LazyMap } from "@/components/location/LazyMap";
+import { MapEmbed } from "@/components/location/MapEmbed";
 import { telLink, whatsAppLink } from "@/lib/utils";
 
 export async function generateMetadata({
@@ -273,7 +273,7 @@ export default async function ContactPage({
             </div>
 
             <div className="lg:col-span-7">
-              <LazyMap dict={dict} aspect="aspect-[4/3]" />
+              <MapEmbed dict={dict} aspect="aspect-[4/3]" />
             </div>
           </div>
         </Container>

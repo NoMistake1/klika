@@ -69,15 +69,14 @@ export const rooms: readonly Room[] = [
     priceCzk: null,
     hasSeasonalException: false,
     image: {
-      src: "/images/rooms/single-limited.png",
+      src: "/images/rooms/single-limited.webp",
       alt: {
-        cs: "Zástupný obrázek jednolůžkového pokoje limited",
-        en: "Placeholder image of the limited single room",
-        de: "Platzhalterbild des Einzelzimmers limited",
+        cs: "Jednolůžkový pokoj limited",
+        en: "The limited single room",
+        de: "Einzelzimmer limited",
       },
-      width: 1600,
-      height: 1200,
-      isPlaceholder: true,
+      width: 1535,
+      height: 1024,
     },
   },
   {
@@ -101,15 +100,14 @@ export const rooms: readonly Room[] = [
     priceCzk: 2200,
     hasSeasonalException: true,
     image: {
-      src: "/images/rooms/double.png",
+      src: "/images/rooms/double.webp",
       alt: {
-        cs: "Zástupný obrázek dvoulůžkového pokoje",
-        en: "Placeholder image of the double room",
-        de: "Platzhalterbild des Doppelzimmers",
+        cs: "Dvoulůžkový pokoj",
+        en: "The double room",
+        de: "Doppelzimmer",
       },
       width: 1600,
-      height: 1200,
-      isPlaceholder: true,
+      height: 1068,
     },
   },
   {
@@ -133,15 +131,14 @@ export const rooms: readonly Room[] = [
     priceCzk: 3100,
     hasSeasonalException: true,
     image: {
-      src: "/images/rooms/triple.png",
+      src: "/images/rooms/triple.webp",
       alt: {
-        cs: "Zástupný obrázek třílůžkového pokoje",
-        en: "Placeholder image of the triple room",
-        de: "Platzhalterbild des Dreibettzimmers",
+        cs: "Třílůžkový pokoj",
+        en: "The triple room",
+        de: "Dreibettzimmer",
       },
-      width: 1600,
-      height: 1200,
-      isPlaceholder: true,
+      width: 1535,
+      height: 1024,
     },
   },
   {
@@ -183,15 +180,14 @@ export const rooms: readonly Room[] = [
     priceCzk: 3600,
     hasSeasonalException: true,
     image: {
-      src: "/images/rooms/apartment-sauna.png",
+      src: "/images/rooms/apartment-sauna.webp",
       alt: {
-        cs: "Zástupný obrázek dvoulůžkového apartmánu se saunou",
-        en: "Placeholder image of the double apartment with sauna",
-        de: "Platzhalterbild des Doppelapartments mit Sauna",
+        cs: "Dvoulůžkový apartmán se saunou",
+        en: "The double apartment with sauna",
+        de: "Doppelapartment mit Sauna",
       },
-      width: 1600,
-      height: 1200,
-      isPlaceholder: true,
+      width: 1537,
+      height: 1023,
     },
   },
   {
@@ -233,15 +229,14 @@ export const rooms: readonly Room[] = [
     priceCzk: 4500,
     hasSeasonalException: true,
     image: {
-      src: "/images/rooms/apartment-four.png",
+      src: "/images/rooms/apartment-four.webp",
       alt: {
-        cs: "Zástupný obrázek čtyřlůžkového apartmánu",
-        en: "Placeholder image of the four-person apartment",
-        de: "Platzhalterbild des Vierbettapartments",
+        cs: "Čtyřlůžkový apartmán",
+        en: "The four-person apartment",
+        de: "Vierbettapartment",
       },
-      width: 1600,
-      height: 1200,
-      isPlaceholder: true,
+      width: 1537,
+      height: 1023,
     },
   },
   {
@@ -272,7 +267,8 @@ export const rooms: readonly Room[] = [
     priceCzk: null,
     hasSeasonalException: false,
     image: {
-      src: "/images/rooms/apartment-long-stay.png",
+      // No production photo was supplied for this category yet.
+      src: "/images/placeholders/generic.png",
       alt: {
         cs: "Zástupný obrázek apartmánu pro delší pobyty",
         en: "Placeholder image of an apartment for longer stays",
@@ -288,6 +284,15 @@ export const rooms: readonly Room[] = [
 export function getRoomById(id: string): Room | undefined {
   return rooms.find((room) => room.id === id);
 }
+
+/**
+ * The landing-page carousel. The long-stay apartments are deliberately absent
+ * — they have no published rate or photo and belong on the hotel and rooms
+ * subpages, not in the homepage showcase.
+ */
+export const featuredRooms: readonly Room[] = rooms.filter(
+  (room) => room.id !== "apartment-long-stay",
+);
 
 /* -------------------------------------------------------------------------- */
 /* Pricing                                                                    */

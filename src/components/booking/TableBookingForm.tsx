@@ -129,7 +129,7 @@ export function TableBookingForm({ locale, dict }: { locale: Locale; dict: Dicti
         <p className="mt-8 text-sm opacity-75">{dict.restaurantBooking.contactText}</p>
 
         <div className="mt-5 flex flex-wrap gap-3">
-          <Button href={telLink(restaurantPhone.e164)} size="lg">
+          <Button href={telLink(restaurantPhone.e164)} variant="conversion" size="lg">
             <Phone aria-hidden="true" className="size-4" />
             {dict.actions.callRestaurant}
           </Button>
@@ -285,7 +285,7 @@ export function TableBookingForm({ locale, dict }: { locale: Locale; dict: Dicti
       </div>
 
       <div className="mt-8 flex flex-wrap items-center gap-4">
-        <Button type="submit" size="lg" variant="secondary">
+        <Button type="submit" size="lg" variant="conversion">
           {dict.restaurantBooking.submit}
         </Button>
         <p className="text-xs opacity-60">{dict.restaurantBooking.openingNote}</p>

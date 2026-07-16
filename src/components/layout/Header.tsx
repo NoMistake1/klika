@@ -94,13 +94,19 @@ export function Header({
         <div className="mx-auto flex w-full max-w-[85rem] items-center justify-between gap-4 px-5 sm:px-8 lg:px-12">
           <Link
             href={localePath(locale)}
-            className="inline-flex min-h-11 items-center rounded-[2px]"
+            className="inline-flex min-h-11 items-center gap-2.5 rounded-[2px]"
           >
-            {/* The mark is decorative; the link's accessible name is the sr-only text. */}
-            <span aria-hidden="true" className="flex items-center gap-2.5">
-              <Logo variant="monogram" className="h-7" />
-              <Logo variant="wordmark" />
-            </span>
+            {/* The marks are decorative; the link's accessible name is the
+                sr-only text. Inverted while the header floats over the video. */}
+            <Logo variant="symbol" height={30} onDark={overlay} priority decorative />
+            <Logo
+              variant="wordmark"
+              height={22}
+              onDark={overlay}
+              priority
+              decorative
+              className="mt-1"
+            />
             <span className="sr-only">{dict.siteName}</span>
           </Link>
 

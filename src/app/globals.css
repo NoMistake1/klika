@@ -7,15 +7,30 @@
    ========================================================================== */
 
 @theme {
-  /* Brand colours */
-  --color-navy: #0b1d35;
-  --color-navy-soft: #142944;
-  --color-blue: #9fc8ec;
-  --color-blue-light: #d9ecfa;
+  /*
+   * Brand colours — the two primaries are the authoritative Klika values
+   * supplied by the owner. Everything else is derived or supporting.
+   */
+  --color-navy: #0a1a31;
+  --color-navy-soft: #14304f;
+  --color-blue: #aed3fa;
+  --color-blue-light: #dceefe;
   --color-cream: #f4efe5;
   --color-sand: #d9c3a2;
   --color-warm-white: #fffdf9;
   --color-ink: #111a27;
+
+  /*
+   * Warm terracotta accent, used selectively: conversion CTAs, handwritten
+   * annotations and arrows, active dots and selected-state markers.
+   * Contrast facts that shape its use: with warm-white text it is 3.67:1 —
+   * below AA for normal text but above the 3:1 large-text bar, so the
+   * conversion button enforces large bold typography. As ink it is 3.1–3.7:1
+   * on the light surfaces (large text only) and 4.7:1 on navy; body-size
+   * accent text uses the darker hover tone (4.6:1 on cream).
+   */
+  --color-accent: #c56d3f;
+  --color-accent-hover: #a95531;
 
   /*
    * Beige used as ink rather than as a surface. Plain --color-sand on cream is
@@ -190,6 +205,15 @@
   }
 }
 
+/*
+ * Renders the navy logo artwork in warm white for dark surfaces (footer,
+ * hero video header). One brand file serves both polarities — no second
+ * "white version" asset to drift out of sync.
+ */
+@utility logo-on-dark {
+  filter: brightness(0) invert(0.98);
+}
+
 /* Card surface used where an image or panel floats above a brand-colour
    section rather than running edge to edge. */
 @utility card-float {
@@ -245,6 +269,38 @@
 
 html[data-intro="show"] .intro-screen {
   display: flex;
+}
+
+/* The refined intro motion: the lockup eases in once, then breathes very
+   gently while the hero loads. Never runs under prefers-reduced-motion — the
+   IntroGate script skips the whole overlay there. */
+.intro-logo {
+  animation:
+    intro-enter 0.7s var(--ease-editorial) both,
+    intro-breathe 2.6s ease-in-out 0.7s infinite;
+}
+
+@keyframes intro-enter {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes intro-breathe {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.88;
+    transform: scale(0.99);
+  }
 }
 
 /* ==========================================================================

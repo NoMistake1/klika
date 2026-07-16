@@ -30,11 +30,12 @@ export function FinalCta({ locale, dict }: { locale: Locale; dict: Dictionary })
         </div>
         <Button
           href={localePath(locale, bookStayHref)}
+          variant="conversion"
           size="lg"
           className="relative self-start"
         >
           {dict.actions.bookStay}
-          <ArrowRight aria-hidden="true" className="size-4" />
+          <ArrowRight aria-hidden="true" className="size-5" />
         </Button>
       </div>
 
@@ -57,12 +58,12 @@ export function FinalCta({ locale, dict }: { locale: Locale; dict: Dictionary })
         </div>
         <Button
           href={localePath(locale, bookTableHref)}
-          variant="secondary"
+          variant="conversion"
           size="lg"
           className="relative self-start"
         >
           {dict.actions.bookTable}
-          <ArrowRight aria-hidden="true" className="size-4" />
+          <ArrowRight aria-hidden="true" className="size-5" />
         </Button>
       </div>
     </section>

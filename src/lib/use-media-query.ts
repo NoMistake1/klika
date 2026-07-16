@@ -12,12 +12,39 @@ import { useSyncExternalStore } from "react";
 
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
-function subscribe(query: string) {
-  return (onChange: () => void) => {
-    const list = window.matchMedia(query);
-    list.addEventListener("change", onChange);
-    return () => list.removeEventListener("change", onChange);
-  };
+type Subscribe = (onChange: () => void) => () => void;
+
+/**
+ * One stable subscribe function per query string. A fresh closure on every
+ * render would make useSyncExternalStore tear down and resubscribe the
+ * matchMedia listener on each render.
+ */
+const subscribeCache = new Map<string, Subscribe>();
+
+function subscribe(query: string): Subscribe {
+  let cached = subscribeCache.get(query);
+  if (!cached) {
+    cached = (onChange) => {
+      const list = window.matchMedia(query);
+      list.addEventListener("change", onChange);
+      return () => list.removeEventListener("change", onChange);
+    };
+    subscribeCache.set(query, cached);
+  }
+  return cached;
+}
+
+/**
+ * Generic media-query subscription. `serverSnapshot` is what the server and
+ * the first client render assume; pick the value whose wrong guess costs
+ * least (e.g. assume mobile so a phone never downloads desktop media).
+ */
+export function useMediaQuery(query: string, serverSnapshot: boolean): boolean {
+  return useSyncExternalStore(
+    subscribe(query),
+    () => window.matchMedia(query).matches,
+    () => serverSnapshot,
+  );
 }
 
 /**

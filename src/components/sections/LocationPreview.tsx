@@ -5,11 +5,11 @@ import { address, coordinates, directionsUrl } from "@/content/contact";
 import { walkingDistances } from "@/content/location";
 import { Button } from "@/components/ui/Button";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
-import { LazyMap } from "@/components/location/LazyMap";
+import { MapEmbed } from "@/components/location/MapEmbed";
 
 export function LocationPreview({ locale, dict }: { locale: Locale; dict: Dictionary }) {
-  // Cream, not blue: FamilyFriendly directly above now carries the blue field,
-  // and two identical tones in a row would erase the section break.
+  // Cream: on the homepage this follows the navy producers band, and the warm
+  // tone keeps the section break legible.
   return (
     <Section tone="cream">
       <Container>
@@ -74,7 +74,7 @@ export function LocationPreview({ locale, dict }: { locale: Locale; dict: Dictio
           </div>
 
           <div className="lg:col-span-7">
-            <LazyMap dict={dict} aspect="aspect-[4/3] lg:aspect-[16/12]" />
+            <MapEmbed dict={dict} aspect="aspect-[4/3] lg:aspect-[16/12]" />
           </div>
         </div>
       </Container>
