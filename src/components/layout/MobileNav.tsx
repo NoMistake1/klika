@@ -8,7 +8,6 @@ import type { Dictionary } from "@/content/dictionaries";
 import { localeLabels, localePath, locales, switchLocalePath, type Locale } from "@/lib/i18n";
 import { bookStayHref, bookTableHref } from "@/content/navigation";
 import { Button } from "@/components/ui/Button";
-import { HandwrittenNote } from "@/components/ui/HandwrittenNote";
 import { Waves } from "@/components/illustrations";
 import { useFocusTrap } from "@/lib/use-focus-trap";
 import { cn } from "@/lib/utils";
@@ -164,15 +163,11 @@ export function MobileNav({
               );
             })}
           </ul>
-
-          <div className="mt-7 flex items-center justify-center">
-            <HandwrittenNote arrow="right">{dict.hero.handwritten}</HandwrittenNote>
-          </div>
         </nav>
 
         {/* Language selector — inside the menu, as its own navigation landmark
             so it is reachable directly rather than only by walking the list. */}
-        <nav aria-labelledby="mobile-language-label" className="px-6 pb-4">
+        <nav aria-labelledby="mobile-language-label" className="px-6 pt-2 pb-4">
           <p
             id="mobile-language-label"
             className="mb-2 text-[0.7rem] font-semibold tracking-[0.2em] text-navy/45 uppercase"

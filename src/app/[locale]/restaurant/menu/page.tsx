@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { ArrowRight } from "lucide-react";
 import { getDictionary } from "@/content/dictionaries";
 import { isLocale, localePath, resolveLocale, type Locale } from "@/lib/i18n";
@@ -57,7 +58,12 @@ export default async function MenuPage({
           { label: dict.restaurantPage.eyebrow, path: "/restaurant" },
           { label: dict.menuPage.title },
         ]}
-        tone="cream"
+        background={{
+          src: "/images/restaurant/menu.webp",
+          width: 1536,
+          height: 1024,
+          imgClassName: "object-center",
+        }}
         aside={
           <Button href={localePath(locale, bookTableHref)} size="lg" variant="secondary">
             {dict.actions.bookTable}
@@ -70,15 +76,18 @@ export default async function MenuPage({
         {/* A menu is read, not scanned edge to edge — a narrow measure keeps
             the dish/price relationship legible on a wide screen. */}
         <Container size="narrow">
-          <MenuSwitcher
-            dailyMenu={dailyMenu}
-            groups={groups}
-            dailyAllergens={dailyAllergens}
-            permanentAllergens={permanentAllergens}
-            isDemoDaily={isDemoDailyMenu}
-            locale={locale}
-            dict={dict}
-          />
+          {/* useSearchParams needs a Suspense boundary to keep the page static. */}
+          <Suspense fallback={<div className="min-h-96" aria-hidden="true" />}>
+            <MenuSwitcher
+              dailyMenu={dailyMenu}
+              groups={groups}
+              dailyAllergens={dailyAllergens}
+              permanentAllergens={permanentAllergens}
+              isDemoDaily={isDemoDailyMenu}
+              locale={locale}
+              dict={dict}
+            />
+          </Suspense>
         </Container>
       </Section>
 

@@ -46,7 +46,15 @@ export default async function GalleryPage({
         title={dict.gallery.title}
         lede={dict.gallery.subtitle}
         crumbs={[{ label: dict.gallery.eyebrow }]}
-        tone="cream"
+        background={{
+          src: "/images/gallery/window-desktop.webp",
+          width: 1672,
+          height: 941,
+          mobileSrc: "/images/gallery/window-mobile.webp",
+          mobileWidth: 1350,
+          mobileHeight: 1687,
+          imgClassName: "object-center",
+        }}
         aside={<HandwrittenNote arrow="left">{dict.hero.handwritten}</HandwrittenNote>}
       />
 

@@ -30,9 +30,12 @@ export function HotelNumbers({ locale, dict }: { locale: Locale; dict: Dictionar
             </p>
           </div>
 
+          {/* Each figure reveals in turn, left→right, ~110ms apart, once the
+              row enters view. Under reduced-motion / no JS they are just
+              visible (see the reveal utility). */}
           <dl className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4">
             {hotelStats.map((stat, index) => (
-              <Reveal key={stat.id} delay={index * 70}>
+              <Reveal key={stat.id} delay={index * 110}>
                 <div className="border-t border-navy/20 pt-4">
                   <dt className="sr-only">{stat.label[locale]}</dt>
                   <dd>

@@ -62,7 +62,12 @@ export default async function ContactPage({
         eyebrow={dict.contactPage.eyebrow}
         title={dict.contactPage.title}
         crumbs={[{ label: dict.contactPage.eyebrow }]}
-        tone="blue-light"
+        background={{
+          src: "/images/location/kontakt.webp",
+          width: 1828,
+          height: 860,
+          imgClassName: "object-center",
+        }}
       />
 
       <Section tone="warm-white">

@@ -75,9 +75,17 @@ export default async function LocationPage({
         title={dict.locationPage.title}
         lede={dict.locationPage.intro}
         crumbs={[{ label: dict.locationPage.eyebrow }]}
-        tone="blue-light"
+        background={{
+          src: "/images/hotel/facade-desktop.webp",
+          width: 1920,
+          height: 1280,
+          mobileSrc: "/images/hotel/facade.webp",
+          mobileWidth: 1023,
+          mobileHeight: 1537,
+          imgClassName: "object-center",
+        }}
         aside={
-          <div className="text-navy">
+          <div className="text-cream">
             <address className="flex gap-3 leading-relaxed not-italic">
               <MapPin aria-hidden="true" className="mt-1 size-4 shrink-0 opacity-60" />
               <span>

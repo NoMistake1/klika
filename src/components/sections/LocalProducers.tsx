@@ -3,8 +3,8 @@ import type { Locale } from "@/lib/i18n";
 import { producers } from "@/content/restaurant";
 import { Container, Section } from "@/components/ui/Section";
 import { HandwrittenNote } from "@/components/ui/HandwrittenNote";
+import { DecorImage } from "@/components/ui/DecorImage";
 import { Reveal } from "@/components/ui/Reveal";
-import { Sprig } from "@/components/illustrations";
 
 /**
  * Local producers.
@@ -15,9 +15,12 @@ import { Sprig } from "@/components/illustrations";
 export function LocalProducers({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   return (
     <Section tone="navy" spacing="tight" className="relative overflow-hidden">
-      <Sprig
-        aria-hidden="true"
-        className="pointer-events-none absolute -bottom-8 left-6 h-48 w-24 text-blue opacity-10"
+      {/* Decorative mushroom near the left edge, bleeding past it (clipped by
+          the section). The navy surface needs a light mark, so the brown line
+          art is inverted to a faint cream and kept low. */}
+      <DecorImage
+        src="/images/food/zampion.webp"
+        className="-bottom-10 -left-16 h-56 w-56 opacity-20 [filter:brightness(0)_invert(1)] sm:-left-20 sm:h-72 sm:w-72 lg:h-80 lg:w-80"
       />
 
       <Container className="relative">
@@ -29,7 +32,9 @@ export function LocalProducers({ locale, dict }: { locale: Locale; dict: Diction
             <p className="text-xl leading-snug text-balance sm:text-2xl">
               {dict.producers.title}
             </p>
-            <HandwrittenNote className="mt-5" arrow="right">
+            {/* Arrow leads left→right toward the supplier list; the arc is
+                flipped (curve="alt") per the mobile correction. */}
+            <HandwrittenNote className="mt-5" arrow="right" curve="alt">
               {dict.producers.note}
             </HandwrittenNote>
           </div>

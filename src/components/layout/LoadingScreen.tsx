@@ -4,27 +4,29 @@ import { useEffect, useState } from "react";
 import { Logo } from "@/components/ui/Logo";
 import { cn } from "@/lib/utils";
 
-/** Hard ceiling — the intro can never hold the page hostage. */
-const MAX_DURATION_MS = 1600;
+/** How long the intro holds before it begins fading out. */
+const HOLD_MS = 2000;
+/** The fade-out duration; must match the CSS transition below. */
+const FADE_MS = 700;
 
 /**
- * First-visit intro: the real Klika lockup breathing gently on the brand blue
- * (#AED3FA) while the critical hero media loads underneath.
+ * First-visit intro: the real Klika lockup fading in on the brand blue
+ * (#AED3FA), navy artwork, while the hero media loads underneath.
  *
  * The original PNG artwork is used here on purpose — this is the one place the
  * logo renders large — still resized through next/image, with `priority` so it
- * is fetched before anything below it.
+ * is fetched first.
  *
  * Visibility is decided before first paint by `IntroGate`, not by React state:
  * an overlay that appears a frame after the page paints would be worse than
- * none. This component only handles its own exit, which happens as soon as the
- * window load event fires — the poster (a priority image) is loaded by then —
- * capped by a hard timeout. The hero video autoplays underneath and is already
- * playing or ready when the fade completes.
+ * none. This component only handles its own exit: it holds for ~2s (long
+ * enough to read as intentional and for the hero poster/video to be ready
+ * underneath), then fades out, revealing the already-playing hero video. The
+ * hold is a plain timer, so it can never block the page.
  *
  * Rules it follows deliberately:
  * - shown once per browser session, never on internal navigation
- * - no artificial delay
+ * - the hero video autoplays underneath from mount, so there is no empty flash
  * - skipped entirely under prefers-reduced-motion (CSS gate) and without JS
  */
 export function LoadingScreen() {
@@ -32,29 +34,22 @@ export function LoadingScreen() {
   const [removed, setRemoved] = useState(false);
 
   useEffect(() => {
-    let hideTimer: number;
-
-    // Every setState below runs from a callback, never synchronously in the
+    // Both setState calls run from timer callbacks, never synchronously in the
     // effect body, so no cascading render is triggered.
-    const dismiss = () => {
+    const holdTimer = window.setTimeout(() => {
       setLeaving(true);
+      // Lets the hero underneath know the handoff has started.
+      document.documentElement.dataset.intro = "leaving";
+    }, HOLD_MS);
+
+    const removeTimer = window.setTimeout(() => {
+      setRemoved(true);
       document.documentElement.dataset.intro = "done";
-      hideTimer = window.setTimeout(() => setRemoved(true), 600);
-    };
-
-    const readyTimer = window.setTimeout(dismiss, 0);
-    if (document.readyState !== "complete") {
-      window.clearTimeout(readyTimer);
-      window.addEventListener("load", dismiss, { once: true });
-    }
-
-    const maxTimer = window.setTimeout(dismiss, MAX_DURATION_MS);
+    }, HOLD_MS + FADE_MS);
 
     return () => {
-      window.clearTimeout(readyTimer);
-      window.clearTimeout(maxTimer);
-      window.clearTimeout(hideTimer);
-      window.removeEventListener("load", dismiss);
+      window.clearTimeout(holdTimer);
+      window.clearTimeout(removeTimer);
     };
   }, []);
 
@@ -67,7 +62,7 @@ export function LoadingScreen() {
       className={cn(
         // bg-blue is the authoritative #AED3FA brand token.
         "intro-screen fixed inset-0 z-[100] items-center justify-center bg-blue",
-        "transition-opacity duration-600 ease-[cubic-bezier(0.22,0.61,0.36,1)]",
+        "transition-opacity duration-700 ease-[cubic-bezier(0.22,0.61,0.36,1)]",
         "data-[leaving=true]:pointer-events-none data-[leaving=true]:opacity-0",
       )}
     >
@@ -89,9 +84,11 @@ export function LoadingScreen() {
  * stays hidden and the site is simply usable — which is the point.
  */
 export function IntroGate() {
-  const script = `try{var d=document.documentElement;
+  // Also stamps `js` on <html> so the reveal-on-scroll utility can hide content
+  // only when JavaScript is running (progressive enhancement — see globals.css).
+  const script = `try{var d=document.documentElement;d.classList.add('js');
 if(sessionStorage.getItem('klika:intro-shown')==='1'||matchMedia('(prefers-reduced-motion: reduce)').matches){d.dataset.intro='skip'}
-else{sessionStorage.setItem('klika:intro-shown','1');d.dataset.intro='show'}}catch(e){document.documentElement.dataset.intro='skip'}`;
+else{sessionStorage.setItem('klika:intro-shown','1');d.dataset.intro='show'}}catch(e){document.documentElement.classList.add('js');document.documentElement.dataset.intro='skip'}`;
 
   return <script dangerouslySetInnerHTML={{ __html: script }} />;
 }

@@ -167,23 +167,3 @@ export function Underline({ className }: DecorProps) {
   );
 }
 
-/**
- * A single editorial corner bracket — two thin strokes forming an L, like the
- * corner of a photo frame. Deliberately not a full rectangle: placed offset
- * from an image so it frames the composition without enclosing it. Rotate with
- * a utility class to point it at any corner.
- */
-export function CornerMark({ className }: DecorProps) {
-  return (
-    <svg
-      viewBox="0 0 64 64"
-      className={cn("pointer-events-none", className)}
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      {...decorProps}
-    >
-      <path d="M2 40V2h38" />
-    </svg>
-  );
-}

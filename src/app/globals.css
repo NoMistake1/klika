@@ -244,15 +244,16 @@
 
 /* Reveal-on-scroll, driven by IntersectionObserver in <Reveal />. */
 @utility reveal {
-  opacity: 0;
-  transform: translate3d(0, 1.5rem, 0);
   transition:
     opacity 0.8s var(--ease-editorial),
     transform 0.8s var(--ease-editorial);
 
-  &[data-visible="true"] {
-    opacity: 1;
-    transform: none;
+  /* Progressive enhancement: only hide before reveal when JavaScript is
+     running (the inline gate stamps html.js before first paint). Without JS
+     the content is simply visible, never trapped at opacity 0. */
+  html.js &:not([data-visible="true"]) {
+    opacity: 0;
+    transform: translate3d(0, 1.5rem, 0);
   }
 }
 
@@ -274,32 +275,20 @@ html[data-intro="show"] .intro-screen {
 /* The refined intro motion: the lockup eases in once, then breathes very
    gently while the hero loads. Never runs under prefers-reduced-motion — the
    IntroGate script skips the whole overlay there. */
+/* A single, calm fade-in with a subtle 0.97→1 scale — no spin, bounce, or
+   pulsing. Plays once over the first ~0.9s of the ~2s hold. */
 .intro-logo {
-  animation:
-    intro-enter 0.7s var(--ease-editorial) both,
-    intro-breathe 2.6s ease-in-out 0.7s infinite;
+  animation: intro-enter 0.9s var(--ease-editorial) both;
 }
 
 @keyframes intro-enter {
   from {
     opacity: 0;
-    transform: translateY(0.5rem) scale(0.985);
+    transform: scale(0.97);
   }
   to {
     opacity: 1;
-    transform: none;
-  }
-}
-
-@keyframes intro-breathe {
-  0%,
-  100% {
-    opacity: 1;
     transform: scale(1);
-  }
-  50% {
-    opacity: 0.88;
-    transform: scale(0.99);
   }
 }
 

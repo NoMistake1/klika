@@ -94,6 +94,16 @@ export function Header({
         <div className="mx-auto flex w-full max-w-[85rem] items-center justify-between gap-4 px-5 sm:px-8 lg:px-12">
           <Link
             href={localePath(locale)}
+            onClick={(event) => {
+              // Already on the landing page: don't reload, just glide back to
+              // the top of the hero (instant under reduced motion).
+              if (!isHome) return;
+              event.preventDefault();
+              const reduce =
+                typeof window !== "undefined" &&
+                window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+              window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+            }}
             className="inline-flex min-h-11 items-center rounded-[2px]"
           >
             {/* Wordmark only, for a stronger single-mark presence. Decorative;

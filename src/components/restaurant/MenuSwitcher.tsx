@@ -1,6 +1,7 @@
 "use client";
 
-import { useId, useRef, useState, type KeyboardEvent } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useId, useRef, type KeyboardEvent } from "react";
 import { CalendarDays } from "lucide-react";
 import type { Allergen, DailyMenu, MenuCategory, MenuItem } from "@/types";
 import type { Dictionary } from "@/content/dictionaries";
@@ -23,6 +24,10 @@ type Panel = "daily" | "permanent";
  * rather than a styled div: the segmented look is presentation, the semantics
  * underneath are what a screen reader needs. Both panels stay mounted so
  * switching is instant and in-page search still finds either menu.
+ *
+ * The active tab is stored in the URL (`?view=daily|permanent`), not in local
+ * state, so a deep link opens the right menu, a refresh keeps it, and browser
+ * back/forward move between the two views.
  */
 export function MenuSwitcher({
   dailyMenu,
@@ -42,8 +47,20 @@ export function MenuSwitcher({
   dict: Dictionary;
 }) {
   const baseId = useId();
-  const [panel, setPanel] = useState<Panel>("daily");
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const tabRefs = useRef<Map<Panel, HTMLButtonElement>>(new Map());
+
+  // The URL is the source of truth; anything other than "permanent" is daily.
+  const panel: Panel = searchParams.get("view") === "permanent" ? "permanent" : "daily";
+
+  function selectPanel(next: Panel) {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("view", next);
+    // push (not replace) so browser back returns to the previous view.
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+  }
 
   const panels: ReadonlyArray<{ id: Panel; label: string }> = [
     { id: "daily", label: dict.dailyMenu.title },
@@ -76,7 +93,7 @@ export function MenuSwitcher({
     const target = panels[next];
     if (!target) return;
     event.preventDefault();
-    setPanel(target.id);
+    selectPanel(target.id);
     tabRefs.current.get(target.id)?.focus();
   }
 
@@ -122,7 +139,7 @@ export function MenuSwitcher({
                 aria-selected={isActive}
                 aria-controls={`${baseId}-${entry.id}-panel`}
                 tabIndex={isActive ? 0 : -1}
-                onClick={() => setPanel(entry.id)}
+                onClick={() => selectPanel(entry.id)}
                 onKeyDown={onKeyDown}
                 className={cn(
                   "relative z-10 inline-flex min-h-11 items-center justify-center rounded-md px-5 text-sm font-medium whitespace-nowrap sm:px-8",
