@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, Pause, Play, Users } from "lucide-react";
+import { ArrowLeft, ArrowRight, Users } from "lucide-react";
 import type { Room } from "@/types";
 import type { Dictionary } from "@/content/dictionaries";
 import { interpolate } from "@/content/dictionaries";
@@ -152,7 +152,9 @@ export function RoomSlider({
         <div
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
-          className="card-float relative aspect-[4/3] overflow-hidden bg-blue"
+          // pan-y lets the browser own vertical page scrolling while our
+          // handler reads horizontal swipes — the page never traps a scroll.
+          className="card-float relative aspect-[4/3] touch-pan-y overflow-hidden bg-blue"
         >
           {rooms.map((room, slideIndex) => {
             const isActive = slideIndex === index;
@@ -181,19 +183,14 @@ export function RoomSlider({
           })}
         </div>
 
-        {/* Controls row: arrows left, dots centred, pause right. Compact by
-            design so it never wraps, even at 375px. */}
-        <div className="mt-3 flex items-center gap-1">
-          <button type="button" onClick={() => interact(previous)} className={controlButton}>
-            <ArrowLeft aria-hidden="true" className="size-4" />
-            <span className="sr-only">{dict.a11y.previous}</span>
-          </button>
-          <button type="button" onClick={() => interact(next)} className={controlButton}>
-            <ArrowRight aria-hidden="true" className="size-4" />
-            <span className="sr-only">{dict.a11y.next}</span>
-          </button>
+        {/* Controls directly under the image. Dots are centred on every
+            viewport (middle column of an even three-column grid); the prev/next
+            arrows appear only from lg up. There is no play/pause button —
+            autoplay still pauses on hover, focus and manual interaction. */}
+        <div className="mt-3 grid grid-cols-[1fr_auto_1fr] items-center">
+          <span aria-hidden="true" />
 
-          <div className="flex flex-1 items-center justify-center">
+          <div className="flex items-center justify-center">
             {rooms.map((room, dotIndex) => (
               <button
                 key={room.id}
@@ -206,9 +203,7 @@ export function RoomSlider({
                   aria-hidden="true"
                   className={cn(
                     "block h-1.5 rounded-full transition-all duration-300",
-                    dotIndex === index
-                      ? "w-6 bg-accent"
-                      : "w-1.5 bg-current opacity-30",
+                    dotIndex === index ? "w-6 bg-accent" : "w-1.5 bg-current opacity-30",
                   )}
                 />
                 <span className="sr-only">
@@ -218,23 +213,16 @@ export function RoomSlider({
             ))}
           </div>
 
-          {!reducedMotion && count > 1 ? (
-            <button
-              type="button"
-              onClick={() => setUserPaused((value) => !value)}
-              aria-pressed={userPaused}
-              className={controlButton}
-            >
-              {userPaused ? (
-                <Play aria-hidden="true" className="size-4" />
-              ) : (
-                <Pause aria-hidden="true" className="size-4" />
-              )}
-              <span className="sr-only">
-                {userPaused ? dict.a11y.playSlider : dict.a11y.pauseSlider}
-              </span>
+          <div className="hidden justify-end gap-1 lg:flex">
+            <button type="button" onClick={() => interact(previous)} className={controlButton}>
+              <ArrowLeft aria-hidden="true" className="size-4" />
+              <span className="sr-only">{dict.a11y.previous}</span>
             </button>
-          ) : null}
+            <button type="button" onClick={() => interact(next)} className={controlButton}>
+              <ArrowRight aria-hidden="true" className="size-4" />
+              <span className="sr-only">{dict.a11y.next}</span>
+            </button>
+          </div>
         </div>
       </div>
 

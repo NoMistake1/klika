@@ -1,17 +1,16 @@
 import { ArrowRight } from "lucide-react";
 import type { Dictionary } from "@/content/dictionaries";
 import { localePath, type Locale } from "@/lib/i18n";
-import { galleryCategoryOrder, galleryItems } from "@/content/gallery";
+import { landingGalleryGroups, landingGalleryItems } from "@/content/gallery";
 import { Button } from "@/components/ui/Button";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
-import { GalleryGrid } from "@/components/gallery/GalleryGrid";
+import { EditorialGallery } from "@/components/gallery/EditorialGallery";
 
-/** A trimmed selection on the homepage; the full set lives on /gallery. */
-const PREVIEW_COUNT = 8;
-
+/**
+ * Homepage gallery preview — an irregular, swipeable editorial strip. The full
+ * browsable, filterable gallery lives on /gallery.
+ */
 export function GalleryPreview({ locale, dict }: { locale: Locale; dict: Dictionary }) {
-  const preview = galleryItems.slice(0, PREVIEW_COUNT);
-
   return (
     <Section tone="warm-white">
       <Container>
@@ -32,13 +31,11 @@ export function GalleryPreview({ locale, dict }: { locale: Locale; dict: Diction
         </div>
 
         <div className="mt-12">
-          <GalleryGrid
-            items={preview}
-            categories={galleryCategoryOrder}
+          <EditorialGallery
+            groups={landingGalleryGroups}
+            items={landingGalleryItems}
             locale={locale}
             dict={dict}
-            showFilter={false}
-            swipeOnMobile
           />
         </div>
       </Container>

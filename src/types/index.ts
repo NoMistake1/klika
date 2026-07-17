@@ -178,10 +178,10 @@ export type SeatingZoneId = "restaurant" | "conservatory" | "garden";
 export interface SeatingZone {
   readonly id: SeatingZoneId;
   readonly name: LocalizedText;
+  /** One concise paragraph carrying the zone's key facts. */
   readonly description: LocalizedText;
   /** `null` where the supplied content does not state an exact capacity. */
   readonly seats: number | null;
-  readonly features: LocalizedList;
   readonly image: ImageAsset;
 }
 
@@ -250,6 +250,16 @@ export interface GalleryItem {
   readonly category: GalleryCategory;
   readonly image: ImageAsset;
   readonly caption: LocalizedText;
+}
+
+/**
+ * One editorial group for the landing-page gallery: a tall lead image beside
+ * two stacked images. Rendered as an irregular, horizontally swipeable strip.
+ */
+export interface GalleryGroup {
+  readonly id: string;
+  readonly large: GalleryItem;
+  readonly stacked: readonly [GalleryItem, GalleryItem];
 }
 
 /* -------------------------------------------------------------------------- */

@@ -142,7 +142,7 @@ export const cs = {
     hotelTitle: "Hotel Klika",
     hotelText:
       "Rodinný hotel v historickém centru. Klid u Malše, soukromé parkování a snídaně, po které se nikam nespěchá.",
-    hotelNote: "Tady se dobře spí",
+    hotelNote: "Útulné spaní",
     restaurantTitle: "Klika Kitchen & Coffee",
     restaurantText:
       "Moderní jihočeská kuchyně od mladší generace Kliků. Vaříme podle sezóny, ze surovin od lidí, které známe jménem.",

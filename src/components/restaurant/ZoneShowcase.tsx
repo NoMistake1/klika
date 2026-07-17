@@ -105,9 +105,11 @@ export function ZoneShowcase({
                 )}
               />
 
+              {/* Shorter gradient, anchored to the bottom, so more of the
+                  photograph stays visible now the bullet list is gone. */}
               <span
                 aria-hidden="true"
-                className="absolute inset-0 bg-gradient-to-t from-navy via-navy/35 to-transparent"
+                className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-navy via-navy/55 to-transparent"
               />
 
               <span className="absolute inset-x-0 bottom-0 flex flex-col gap-2 p-5 sm:p-6">
@@ -124,27 +126,13 @@ export function ZoneShowcase({
 
                 <span
                   className={cn(
-                    "text-sm leading-relaxed text-cream/85 transition-opacity duration-500",
+                    "text-sm leading-relaxed text-cream/90 transition-opacity duration-500",
                     // Always readable on small screens; on desktop the copy
                     // belongs to the expanded zone.
                     isActive ? "opacity-100" : "opacity-100 lg:opacity-0",
                   )}
                 >
                   {zone.description[locale]}
-                </span>
-
-                <span
-                  className={cn(
-                    "flex flex-wrap gap-x-3 gap-y-1 text-xs text-cream/60 transition-opacity duration-500",
-                    isActive ? "opacity-100" : "opacity-0",
-                  )}
-                >
-                  {zone.features[locale].map((feature) => (
-                    <span key={feature} className="flex items-center gap-1.5">
-                      <span aria-hidden="true" className="size-1 rounded-full bg-blue" />
-                      {feature}
-                    </span>
-                  ))}
                 </span>
               </span>
             </button>

@@ -214,15 +214,20 @@ Extended-A so Czech and German render from one file each, with licences in
   `fallback-{desktop,mobile}.webp` are art-directed via `<picture>`, so each
   device downloads exactly one.
 - **Photography** — split images, all five carousel rooms, all three seating
-  zones (`.webp`), used on the landing page, hotel/rooms pages, restaurant page
-  and gallery.
+  zones, the hotel facade/reception/breakfast and the sauna-apartment detail
+  (all `.webp`), used across the landing page, hotel/rooms pages, restaurant
+  page and gallery.
+- **Decorative cutouts** — the hand-drawn `food/rajce.webp` (tomato, in the
+  daily-menu section) and `food/zampion.webp` (mushroom, behind the restaurant
+  split photo), rendered by `src/components/ui/DecorImage.tsx` as decorative,
+  overflow-clipped accents.
 
 **Still placeholders** (no production file was supplied for these names):
-`hotel/{facade,reception,breakfast}.png`, `food/*.png`, `location/*.png`,
+`food/{tartare,schnitzel,dessert}.png`, `location/*.png`,
 `restaurant/{bar,conservatory-detail,garden-children}.png`,
-`rooms/apartment-sauna-detail.png`, `placeholders/generic.png` (also standing
-in for the long-stay apartments, which have no photo). All remain marked
-`isPlaceholder: true` in `src/content` and visibly labelled.
+`placeholders/generic.png` (also standing in for the long-stay apartments,
+which have no photo). All remain marked `isPlaceholder: true` in `src/content`
+and visibly labelled.
 
 Replacing any image needs **no code change**: keep the filename and aspect
 ratio, drop the file in, and remove `isPlaceholder` from the matching entry in

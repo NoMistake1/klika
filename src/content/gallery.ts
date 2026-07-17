@@ -1,4 +1,4 @@
-import type { GalleryCategory, GalleryItem } from "@/types";
+import type { GalleryCategory, GalleryGroup, GalleryItem } from "@/types";
 
 /* ==========================================================================
    Gallery.
@@ -26,15 +26,14 @@ export const galleryItems: readonly GalleryItem[] = [
     id: "hotel-facade",
     category: "hotel",
     image: {
-      src: "/images/hotel/facade.png",
+      src: "/images/hotel/facade.webp",
       alt: {
-        cs: "Zástupný obrázek — fasáda Hotelu Klika",
-        en: "Placeholder image — the facade of Hotel Klika",
-        de: "Platzhalterbild — Fassade des Hotels Klika",
+        cs: "Fasáda Hotelu Klika",
+        en: "The facade of Hotel Klika",
+        de: "Fassade des Hotels Klika",
       },
-      width: 1200,
-      height: 1500,
-      isPlaceholder: true,
+      width: 1023,
+      height: 1537,
     },
     caption: {
       cs: "Hotel u Piaristického náměstí",
@@ -46,15 +45,14 @@ export const galleryItems: readonly GalleryItem[] = [
     id: "hotel-reception",
     category: "hotel",
     image: {
-      src: "/images/hotel/reception.png",
+      src: "/images/hotel/reception.webp",
       alt: {
-        cs: "Zástupný obrázek — recepce hotelu",
-        en: "Placeholder image — the hotel reception",
-        de: "Platzhalterbild — Rezeption des Hotels",
+        cs: "Recepce hotelu",
+        en: "The hotel reception",
+        de: "Rezeption des Hotels",
       },
-      width: 1600,
-      height: 1200,
-      isPlaceholder: true,
+      width: 1536,
+      height: 1024,
     },
     caption: {
       cs: "Recepce, otevřeno 07:00–22:00",
@@ -66,15 +64,14 @@ export const galleryItems: readonly GalleryItem[] = [
     id: "hotel-breakfast",
     category: "hotel",
     image: {
-      src: "/images/hotel/breakfast.png",
+      src: "/images/hotel/breakfast.webp",
       alt: {
-        cs: "Zástupný obrázek — snídaně formou bufetu",
-        en: "Placeholder image — buffet breakfast",
-        de: "Platzhalterbild — Frühstücksbuffet",
+        cs: "Snídaně formou bufetu",
+        en: "The buffet breakfast",
+        de: "Das Frühstücksbuffet",
       },
-      width: 1400,
-      height: 1400,
-      isPlaceholder: true,
+      width: 2400,
+      height: 1350,
     },
     caption: {
       cs: "Snídaně 07:00–10:00",
@@ -101,15 +98,14 @@ export const galleryItems: readonly GalleryItem[] = [
     id: "room-apartment-sauna",
     category: "rooms",
     image: {
-      src: "/images/rooms/apartment-sauna-detail.png",
+      src: "/images/rooms/apartment-sauna-detail.webp",
       alt: {
-        cs: "Zástupný obrázek — apartmán se saunou",
-        en: "Placeholder image — the apartment with sauna",
-        de: "Platzhalterbild — Apartment mit Sauna",
+        cs: "Apartmán s vlastní saunou",
+        en: "The apartment with a private sauna",
+        de: "Apartment mit eigener Sauna",
       },
-      width: 1200,
-      height: 1500,
-      isPlaceholder: true,
+      width: 1023,
+      height: 1537,
     },
     caption: {
       cs: "Apartmán s vlastní saunou",
@@ -155,15 +151,14 @@ export const galleryItems: readonly GalleryItem[] = [
     id: "restaurant-conservatory",
     category: "restaurant",
     image: {
-      src: "/images/restaurant/conservatory-detail.png",
+      src: "/images/restaurant/zone-conservatory.webp",
       alt: {
-        cs: "Zástupný obrázek — skleník",
-        en: "Placeholder image — the conservatory",
-        de: "Platzhalterbild — Wintergarten",
+        cs: "Skleník s výhledem na řeku",
+        en: "The conservatory with a river view",
+        de: "Wintergarten mit Blick auf den Fluss",
       },
-      width: 1200,
-      height: 1500,
-      isPlaceholder: true,
+      width: 1672,
+      height: 941,
     },
     caption: {
       cs: "Skleník s výhledem na řeku",
@@ -357,3 +352,37 @@ export function getGalleryByCategory(category: GalleryCategory | "all"): readonl
     ? galleryItems
     : galleryItems.filter((item) => item.category === category);
 }
+
+function item(id: string): GalleryItem {
+  const found = galleryItems.find((entry) => entry.id === id);
+  if (!found) throw new Error(`Unknown gallery item: ${id}`);
+  return found;
+}
+
+/**
+ * The landing-page gallery groups. Each is one tall lead image plus two
+ * stacked images, rendered as an irregular horizontally swipeable strip —
+ * deliberately not a uniform grid. No image repeats inside a group.
+ */
+export const landingGalleryGroups: readonly GalleryGroup[] = [
+  {
+    id: "group-hotel",
+    large: item("hotel-facade"),
+    stacked: [item("hotel-reception"), item("hotel-breakfast")],
+  },
+  {
+    id: "group-rooms",
+    large: item("room-apartment-sauna"),
+    stacked: [item("room-double"), item("restaurant-conservatory")],
+  },
+  {
+    id: "group-restaurant",
+    large: item("garden-terrace"),
+    stacked: [item("room-triple"), item("restaurant-wall")],
+  },
+];
+
+/** Flat item list for the lightbox, in the order the groups render. */
+export const landingGalleryItems: readonly GalleryItem[] = landingGalleryGroups.flatMap(
+  (group) => [group.large, ...group.stacked],
+);

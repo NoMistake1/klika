@@ -1,12 +1,12 @@
 import { ArrowRight, CalendarDays } from "lucide-react";
 import type { Dictionary } from "@/content/dictionaries";
 import { localePath, type Locale } from "@/lib/i18n";
-import { getDailyMenu, isDemoDailyMenu } from "@/content/daily-menu";
+import { getDailyMenu } from "@/content/daily-menu";
 import { Button } from "@/components/ui/Button";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
 import { HandwrittenNote } from "@/components/ui/HandwrittenNote";
+import { DecorImage } from "@/components/ui/DecorImage";
 import { Reveal } from "@/components/ui/Reveal";
-import { Sprig } from "@/components/illustrations";
 import { DailyMenuEmpty, DailyMenuList } from "@/components/restaurant/DailyMenuList";
 import { formatDate, formatWeekday } from "@/lib/utils";
 
@@ -20,9 +20,12 @@ export function DailyMenuPreview({ locale, dict }: { locale: Locale; dict: Dicti
 
   return (
     <Section tone="cream" id="explore" className="relative overflow-hidden">
-      <Sprig
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-6 right-4 h-56 w-28 text-navy opacity-[0.06] lg:right-16 lg:h-72 lg:w-36"
+      {/* Decorative tomato, upper-right, bleeding a little past the screen. The
+          section clips the overflow, so it never causes horizontal scroll. It
+          sits behind the relative Container, so text stays fully readable. */}
+      <DecorImage
+        src="/images/food/rajce.webp"
+        className="top-2 -right-16 h-52 w-52 opacity-45 sm:-right-20 sm:h-64 sm:w-64 lg:top-6 lg:-right-16 lg:h-80 lg:w-80"
       />
 
       <Container className="relative">
@@ -54,10 +57,10 @@ export function DailyMenuPreview({ locale, dict }: { locale: Locale; dict: Dicti
               <div className="grid gap-x-16 lg:grid-cols-[1fr_auto]">
                 <DailyMenuList menu={menu} locale={locale} dict={dict} />
 
-                <aside className="mt-10 flex flex-col justify-between gap-6 border-t border-navy/10 pt-6 lg:mt-0 lg:w-56 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-10">
-                  <HandwrittenNote arrow="left" className="lg:flex-col lg:items-start">
-                    {dict.dailyMenu.eyebrow}
-                  </HandwrittenNote>
+                <aside className="mt-10 flex flex-col gap-5 border-t border-navy/10 pt-6 lg:mt-0 lg:w-56 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-10">
+                  {/* Points down at the buttons directly below it, on both the
+                      stacked mobile layout and the desktop side column. */}
+                  <HandwrittenNote arrow="down">{dict.dailyMenu.eyebrow}</HandwrittenNote>
 
                   <div className="flex flex-col gap-3">
                     <Button
@@ -73,12 +76,6 @@ export function DailyMenuPreview({ locale, dict }: { locale: Locale; dict: Dicti
                   </div>
                 </aside>
               </div>
-
-              {isDemoDailyMenu ? (
-                <p className="mt-10 border-t border-navy/10 pt-4 text-xs opacity-50">
-                  {dict.dailyMenu.demoNotice}
-                </p>
-              ) : null}
             </>
           ) : (
             <DailyMenuEmpty dict={dict} />

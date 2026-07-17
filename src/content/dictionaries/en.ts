@@ -138,7 +138,7 @@ export const en: Dictionary = {
     hotelTitle: "Hotel Klika",
     hotelText:
       "A family hotel in the historic centre. Quiet by the Malše, private parking and a breakfast worth lingering over.",
-    hotelNote: "You sleep well here",
+    hotelNote: "Cosy sleep",
     restaurantTitle: "Klika Kitchen & Coffee",
     restaurantText:
       "Modern South Bohemian cooking from the younger Klika generation. We cook with the season, from producers we know by name.",

@@ -1,4 +1,3 @@
-import { ArrowDown } from "lucide-react";
 import type { Dictionary } from "@/content/dictionaries";
 import { localePath, type Locale } from "@/lib/i18n";
 import { bookStayHref, bookTableHref } from "@/content/navigation";
@@ -23,8 +22,9 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
 
       <Container className="relative">
         <div className="max-w-4xl">
-          <p className="mb-5 flex items-center gap-3">
-            <span aria-hidden="true" className="h-px w-10 bg-blue" />
+          <p className="mb-5 flex items-center gap-2.5">
+            {/* A short tick, not a divider — keeps the eye on the annotation. */}
+            <span aria-hidden="true" className="h-px w-5 bg-blue" />
             <HandwrittenNote className="text-2xl sm:text-3xl">
               {dict.hero.handwritten}
             </HandwrittenNote>
@@ -36,21 +36,24 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
             {dict.hero.subheadline}
           </p>
 
-          <div className="mt-9 flex flex-wrap gap-3">
-            <Button href={localePath(locale, bookStayHref)} variant="conversion" size="lg">
+          {/* Two intentional actions. They stretch to equal width on a phone
+              and sit as a balanced pair from sm up. */}
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <Button
+              href={localePath(locale, bookStayHref)}
+              variant="conversion"
+              size="lg"
+              className="justify-center sm:min-w-56"
+            >
               {dict.actions.bookStay}
             </Button>
-            <Button href={localePath(locale, bookTableHref)} variant="secondary" size="lg">
-              {dict.actions.bookTable}
-            </Button>
             <Button
-              href="#explore"
+              href={localePath(locale, bookTableHref)}
+              variant="secondary"
               size="lg"
-              className="border-cream/40 bg-transparent text-cream hover:bg-cream/10"
-              variant="outline"
+              className="justify-center sm:min-w-56"
             >
-              {dict.actions.explore}
-              <ArrowDown aria-hidden="true" className="size-4" />
+              {dict.actions.bookTable}
             </Button>
           </div>
 

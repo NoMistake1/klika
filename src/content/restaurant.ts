@@ -10,20 +10,11 @@ export const seatingZones: readonly SeatingZone[] = [
     id: "restaurant",
     name: { cs: "Restaurace", en: "Restaurant", de: "Restaurant" },
     description: {
-      cs: "Vnitřní nekuřácký prostor, jehož součástí je i původní městská hradba ze 14. století.",
-      en: "The indoor non-smoking space, built around a section of the original 14th-century city wall.",
-      de: "Der Innenraum für Nichtraucher, in den ein Teil der ursprünglichen Stadtmauer aus dem 14. Jahrhundert einbezogen ist.",
+      cs: "Vnitřní nekuřácký prostor pro 40 hostů s původní městskou hradbou ze 14. století. Otevřeno celoročně.",
+      en: "An indoor non-smoking space for 40 guests, built around the original 14th-century city wall. Open all year round.",
+      de: "Ein Innenraum für Nichtraucher mit Platz für 40 Gäste und der ursprünglichen Stadtmauer aus dem 14. Jahrhundert. Ganzjährig geöffnet.",
     },
     seats: 40,
-    features: {
-      cs: ["Původní hradba ze 14. století", "Nekuřácký prostor", "Celoroční provoz"],
-      en: ["Original 14th-century wall", "Non-smoking area", "Open all year"],
-      de: [
-        "Ursprüngliche Mauer aus dem 14. Jahrhundert",
-        "Nichtraucherbereich",
-        "Ganzjährig geöffnet",
-      ],
-    },
     image: {
       src: "/images/restaurant/zone-restaurant.webp",
       alt: {
@@ -39,16 +30,11 @@ export const seatingZones: readonly SeatingZone[] = [
     id: "conservatory",
     name: { cs: "Skleník", en: "Conservatory", de: "Wintergarten" },
     description: {
-      cs: "Prosklený interiér s výhledem na řeku. Světlo tu máte po celý den.",
-      en: "A glass interior with a view of the river, filled with light all day.",
-      de: "Ein verglaster Innenraum mit Blick auf den Fluss — den ganzen Tag lichtdurchflutet.",
+      cs: "Prosklený, celoročně využívaný prostor pro 20 hostů s dostatkem světla a výhledem směrem k řece.",
+      en: "A glazed, year-round space for 20 guests, full of light and looking out toward the river.",
+      de: "Ein verglaster, ganzjährig nutzbarer Raum für 20 Gäste mit viel Licht und Blick in Richtung Fluss.",
     },
     seats: 20,
-    features: {
-      cs: ["Prosklený interiér", "Výhled na řeku", "Celoroční provoz"],
-      en: ["Glass interior", "River view", "Open all year"],
-      de: ["Verglaster Innenraum", "Blick auf den Fluss", "Ganzjährig geöffnet"],
-    },
     image: {
       src: "/images/restaurant/zone-conservatory.webp",
       alt: {
@@ -56,25 +42,20 @@ export const seatingZones: readonly SeatingZone[] = [
         en: "The glazed conservatory seating",
         de: "Der verglaste Wintergarten mit Sitzplätzen",
       },
-      width: 1535,
-      height: 1024,
+      width: 1672,
+      height: 941,
     },
   },
   {
     id: "garden",
     name: { cs: "Zahrádka", en: "Garden", de: "Garten" },
     description: {
-      cs: "Venkovní posezení na slunci přímo u řeky. Otevíráme podle počasí a sezóny.",
-      en: "Outdoor seating in the sun, right by the river. Open according to the weather and the season.",
-      de: "Sitzplätze im Freien in der Sonne, direkt am Fluss. Geöffnet je nach Wetter und Saison.",
+      cs: "Sezónní venkovní posezení u řeky, ideální pro teplé dny a klidné večery.",
+      en: "Seasonal outdoor seating by the river, ideal for warm days and quiet evenings.",
+      de: "Saisonale Sitzplätze im Freien am Fluss, ideal für warme Tage und ruhige Abende.",
     },
     // The source does not state an exact terrace capacity.
     seats: null,
-    features: {
-      cs: ["Venkovní posezení", "Slunné místo u řeky", "Sezónní provoz", "Dětský koutek"],
-      en: ["Outdoor seating", "Sunny riverside spot", "Seasonal opening", "Children's area"],
-      de: ["Sitzplätze im Freien", "Sonniger Platz am Fluss", "Saisonbetrieb", "Kinderbereich"],
-    },
     image: {
       src: "/images/restaurant/zone-garden.webp",
       alt: {
