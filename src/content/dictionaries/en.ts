@@ -142,7 +142,7 @@ export const en: Dictionary = {
     restaurantTitle: "Klika Kitchen & Coffee",
     restaurantText:
       "Modern South Bohemian cooking from the younger Klika generation. We cook with the season, from producers we know by name.",
-    restaurantNote: "Straight from local farmers",
+    restaurantNote: "We cook with love",
   },
 
   numbers: {
@@ -351,6 +351,16 @@ export const en: Dictionary = {
     intro:
       "The restaurant has been run by the younger Klika generation since late 2016. We cook with seasonal ingredients from small South Bohemian farmers and suppliers. Part of the original 14th-century city wall runs through the interior.",
     handwritten: "Today's recommendation",
+    heroLede: "We cook with the season, from producers we know by name.",
+    collageEyebrow: "Seasonal kitchen",
+    collageTitle: "Every plate has its story",
+    collageTags: ["Seasonal kitchen", "Local ingredients", "Every plate has its story"],
+    menuNavEyebrow: "The menu",
+    menuNavTitle: "What are you in the mood for?",
+    menuNavText:
+      "The daily menu changes every day, the à la carte roughly once a month.",
+    dailyCard: "Today's daily menu",
+    permanentCard: "The à la carte menu",
     reopened:
       "We reopened after a major interior renovation on 14 February 2025.",
     jimeJih: "Founding member of the Jíme Jih association",

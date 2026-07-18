@@ -4,22 +4,21 @@ import type { Dictionary } from "@/content/dictionaries";
 import { localePath, type Locale } from "@/lib/i18n";
 import { bookStayHref, bookTableHref } from "@/content/navigation";
 import { Button } from "@/components/ui/Button";
-import { Waves } from "@/components/illustrations";
 
 /**
  * Closing split CTA. The two halves carry the two brand worlds — light blue for
  * the hotel, navy and cream for the restaurant — meeting edge to edge with no
  * gutter, so the page ends on the same duality it opened with.
+ *
+ * On a phone the order is reversed so the restaurant dinner invitation leads;
+ * the desktop two-column order (hotel left, restaurant right) is unchanged via
+ * `order` utilities.
  */
 export function FinalCta({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   return (
     <section aria-label={dict.finalCta.eyebrow} className="grid md:grid-cols-2">
-      {/* Hotel */}
-      <div className="relative flex flex-col justify-between gap-10 overflow-hidden bg-blue-light p-8 text-navy sm:p-12 lg:p-16">
-        <Waves
-          aria-hidden="true"
-          className="pointer-events-none absolute -bottom-2 left-0 h-12 w-full text-navy opacity-10"
-        />
+      {/* Hotel — second on mobile, left on desktop. */}
+      <div className="relative order-2 flex flex-col justify-between gap-10 overflow-hidden bg-blue-light p-8 text-navy sm:p-12 md:order-1 lg:p-16">
         <div className="relative">
           <p className="mb-4 text-xs font-semibold tracking-[0.2em] uppercase opacity-55">
             {dict.finalCta.eyebrow}
@@ -42,8 +41,9 @@ export function FinalCta({ locale, dict }: { locale: Locale; dict: Dictionary })
 
       {/* Restaurant — the dinner invitation, set over a photograph of the
           evening table, darkened enough that the cream and blue text stays
-          perfectly legible. Below the fold, so the image lazy-loads. */}
-      <div className="relative flex flex-col justify-between gap-10 overflow-hidden bg-navy p-8 text-cream sm:p-12 lg:p-16">
+          perfectly legible. Below the fold, so the image lazy-loads. First on
+          mobile, right on desktop. No decorative waves. */}
+      <div className="relative order-1 flex flex-col justify-between gap-10 overflow-hidden bg-navy p-8 text-cream sm:p-12 md:order-2 lg:p-16">
         <Image
           src="/images/food/vecere.webp"
           alt=""

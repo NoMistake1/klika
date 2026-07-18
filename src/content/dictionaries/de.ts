@@ -144,7 +144,7 @@ export const de: Dictionary = {
     restaurantTitle: "Klika Kitchen & Coffee",
     restaurantText:
       "Moderne südböhmische Küche der jüngeren Klika-Generation. Wir kochen saisonal, mit Zutaten von Erzeugern, die wir beim Namen kennen.",
-    restaurantNote: "Direkt von lokalen Bauern",
+    restaurantNote: "Wir kochen mit Liebe",
   },
 
   numbers: {
@@ -353,6 +353,16 @@ export const de: Dictionary = {
     intro:
       "Das Restaurant führt seit Ende 2016 die jüngere Klika-Generation. Wir kochen mit saisonalen Zutaten von kleinen südböhmischen Bauern und Lieferanten. Im Innenraum finden Sie auch einen Teil der ursprünglichen Stadtmauer aus dem 14. Jahrhundert.",
     handwritten: "Empfehlung des Tages",
+    heroLede: "Wir kochen saisonal, mit Zutaten von Erzeugern, die wir beim Namen kennen.",
+    collageEyebrow: "Saisonale Küche",
+    collageTitle: "Jeder Teller hat seine Geschichte",
+    collageTags: ["Saisonale Küche", "Regionale Zutaten", "Jeder Teller hat seine Geschichte"],
+    menuNavEyebrow: "Die Speisekarte",
+    menuNavTitle: "Worauf haben Sie Appetit?",
+    menuNavText:
+      "Das Tagesmenü wechselt täglich, die Speisekarte etwa einmal im Monat.",
+    dailyCard: "Heutiges Tagesmenü",
+    permanentCard: "Die Speisekarte",
     reopened:
       "Nach einer umfassenden Renovierung des Innenraums haben wir am 14. Februar 2025 wiedereröffnet.",
     jimeJih: "Gründungsmitglied der Vereinigung Jíme Jih",

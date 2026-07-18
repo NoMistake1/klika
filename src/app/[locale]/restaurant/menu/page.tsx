@@ -66,8 +66,10 @@ export default async function MenuPage({
           mobileSrc: "/images/restaurant/menu-mobile.webp",
           mobileWidth: 1402,
           mobileHeight: 1122,
-          // Focal point biased upward so more of the food shows under the scrim.
-          imgClassName: "object-[center_25%]",
+          // Desktop focal point pulled further up so the crop lands on the
+          // styled scene rather than the empty table edge. Mobile (its own
+          // portrait asset) keeps its framing.
+          imgClassName: "object-[center_25%] md:object-[center_12%]",
         }}
         aside={
           <Button href={localePath(locale, bookTableHref)} size="lg" variant="secondary">

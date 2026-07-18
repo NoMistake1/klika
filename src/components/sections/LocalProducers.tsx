@@ -20,7 +20,7 @@ export function LocalProducers({ locale, dict }: { locale: Locale; dict: Diction
           art is inverted to a faint cream and kept low. */}
       <DecorImage
         src="/images/food/zampion.webp"
-        className="-bottom-12 -left-16 h-64 w-64 opacity-20 [filter:brightness(0)_invert(1)] sm:-left-20 sm:h-80 sm:w-80 lg:h-96 lg:w-96"
+        className="-bottom-12 -left-16 h-64 w-64 opacity-20 [filter:brightness(0)_invert(1)] sm:-left-20 sm:h-80 sm:w-80 lg:-bottom-24 lg:h-96 lg:w-96"
       />
 
       <Container className="relative">
@@ -32,9 +32,13 @@ export function LocalProducers({ locale, dict }: { locale: Locale; dict: Diction
             <p className="text-xl leading-snug text-balance sm:text-2xl">
               {dict.producers.title}
             </p>
-            {/* Arrow leads left→right toward the supplier list; the arc is
-                flipped (curve="alt") per the mobile correction. */}
-            <HandwrittenNote className="mt-5" arrow="right" curve="alt">
+            {/* Mobile: the same open-V "downRight" geometry as the hotel
+                "Útulné spaní" note — left→right, tipping slightly down toward
+                the supplier list. Desktop keeps the flatter right/alt arc. */}
+            <HandwrittenNote className="mt-5 lg:hidden" arrow="downRight">
+              {dict.producers.note}
+            </HandwrittenNote>
+            <HandwrittenNote className="mt-5 hidden lg:inline-flex" arrow="right" curve="alt">
               {dict.producers.note}
             </HandwrittenNote>
           </div>

@@ -5,7 +5,6 @@ import { Container, Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
 import { CountUp } from "@/components/ui/CountUp";
 import { DecorImage } from "@/components/ui/DecorImage";
-import { Rooftops } from "@/components/illustrations";
 
 /**
  * Hotel in numbers.
@@ -16,16 +15,14 @@ import { Rooftops } from "@/components/illustrations";
 export function HotelNumbers({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   return (
     <Section tone="blue-light" spacing="tight" className="relative overflow-hidden">
-      {/* Desktop keeps the faint rooftops on the right. */}
-      <Rooftops
-        aria-hidden="true"
-        className="pointer-events-none absolute right-0 -bottom-1 hidden h-20 w-[36rem] text-navy opacity-[0.07] lg:block"
-      />
-      {/* Mobile: the hand-drawn houses in the bottom-left, bleeding a little
-          off-screen. The section clips the overflow, so no page scroll. */}
+      {/* One hand-drawn houses illustration on both layouts (no second SVG
+          system): bottom-left and bleeding off the edge on mobile, moved to
+          the right and enlarged on desktop. Kept clearly visible but low
+          enough in opacity to stay decorative behind the figures. The section
+          clips the overflow, so it never adds page scroll. */}
       <DecorImage
         src="/images/logos/drawings/houses-tr.webp"
-        className="-bottom-4 -left-8 h-20 w-72 opacity-15 lg:hidden"
+        className="-bottom-4 -left-8 h-24 w-80 opacity-30 sm:h-28 sm:w-96 lg:left-auto lg:-right-4 lg:-bottom-3 lg:h-36 lg:w-[44rem]"
       />
 
       <Container className="relative">

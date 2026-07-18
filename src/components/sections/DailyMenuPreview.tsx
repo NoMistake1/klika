@@ -63,11 +63,8 @@ export function DailyMenuPreview({ locale, dict }: { locale: Locale; dict: Dicti
               <DailyMenuList menu={menu} locale={locale} dict={dict} />
 
               <aside className="mt-10 flex flex-col gap-5 border-t border-navy/10 pt-6 lg:mt-0 lg:w-56 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-10">
-                {/* Arrow only on desktop (leading down-right to the buttons);
-                    on mobile the text sits flush-left above the buttons. */}
-                <HandwrittenNote arrow="downRight" arrowClassName="hidden lg:inline-block">
-                  {dict.dailyMenu.eyebrow}
-                </HandwrittenNote>
+                {/* Text only — no arrow on any breakpoint. */}
+                <HandwrittenNote>{dict.dailyMenu.eyebrow}</HandwrittenNote>
 
                 <div className="flex flex-col gap-3">
                   <Button href={`${menuHref}?view=daily`} variant="primary">

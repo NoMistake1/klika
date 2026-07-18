@@ -24,15 +24,14 @@ export function FamilyFriendly({ locale, dict }: { locale: Locale; dict: Diction
             <div className="card-float relative aspect-[4/5] overflow-hidden bg-cream lg:rotate-[-1.25deg] motion-reduce:rotate-0">
               <SafeImage
                 image={{
-                  src: "/images/restaurant/garden-children.png",
+                  src: "/images/restaurant/garden-children.webp",
                   alt: {
-                    cs: "Zástupný obrázek — dětský koutek na zahrádce",
-                    en: "Placeholder image — the children's area in the garden",
-                    de: "Platzhalterbild — Kinderbereich im Garten",
+                    cs: "Dětský koutek na zahrádce u řeky",
+                    en: "The children's area in the riverside garden",
+                    de: "Der Kinderbereich im Garten am Fluss",
                   },
-                  width: 1200,
-                  height: 1500,
-                  isPlaceholder: true,
+                  width: 1122,
+                  height: 1402,
                 }}
                 locale={locale}
                 fill

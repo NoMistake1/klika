@@ -146,7 +146,7 @@ export const cs = {
     restaurantTitle: "Klika Kitchen & Coffee",
     restaurantText:
       "Moderní jihočeská kuchyně od mladší generace Kliků. Vaříme podle sezóny, ze surovin od lidí, které známe jménem.",
-    restaurantNote: "Přímo od místních farmářů",
+    restaurantNote: "Vaříme s chutí",
   },
 
   numbers: {
@@ -349,8 +349,18 @@ export const cs = {
     intro:
       "Restauraci vede od konce roku 2016 mladší generace Kliků. Vaříme ze sezónních surovin od malých jihočeských farmářů a dodavatelů. V interiéru najdete i část původní městské hradby ze 14. století.",
     handwritten: "Dnešní doporučení",
+    heroLede: "Vaříme podle sezóny, ze surovin od farmářů, které známe jménem.",
     reopened: "Po velké rekonstrukci interiéru jsme otevřeli 14. února 2025.",
     jimeJih: "Zakládající člen sdružení Jíme Jih",
+    collageEyebrow: "Sezónní kuchyně",
+    collageTitle: "Každý talíř má svůj příběh",
+    collageTags: ["Sezónní kuchyně", "Lokální suroviny", "Každý talíř má svůj příběh"],
+    menuNavEyebrow: "Jídelní lístek",
+    menuNavTitle: "Na co máte dnes chuť?",
+    menuNavText:
+      "Denní menu se mění každý den, stálý lístek zhruba jednou za měsíc.",
+    dailyCard: "Dnešní denní menu",
+    permanentCard: "Stálý jídelní lístek",
     principlesTitle: "Jak vaříme",
     principles: [
       "Sezónní suroviny od místních farmářů",

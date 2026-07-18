@@ -66,9 +66,9 @@ export default async function ContactPage({
         // mobile too.
         className="pb-24 sm:pb-28 lg:pt-44 lg:pb-32"
         background={{
-          src: "/images/location/kontakt.webp",
-          width: 1828,
-          height: 860,
+          src: "/images/food/food25.webp",
+          width: 199,
+          height: 133,
           imgClassName: "object-center",
         }}
       />

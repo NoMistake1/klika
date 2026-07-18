@@ -54,7 +54,10 @@ export default async function GalleryPage({
           mobileSrc: "/images/gallery/window-mobile.webp",
           mobileWidth: 1350,
           mobileHeight: 1687,
-          imgClassName: "object-center",
+          // Desktop crop biased toward the top so the barista's face is in
+          // frame; the portrait mobile asset already frames her, so it keeps
+          // centre.
+          imgClassName: "object-center md:object-[center_28%]",
         }}
         aside={<HandwrittenNote arrow="left">{dict.hero.handwritten}</HandwrittenNote>}
       />

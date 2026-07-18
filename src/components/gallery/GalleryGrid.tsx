@@ -37,6 +37,7 @@ export function GalleryGrid({
   dict,
   showFilter = true,
   swipeOnMobile = false,
+  showCaptions = true,
 }: {
   items: readonly GalleryItem[];
   categories: readonly GalleryCategory[];
@@ -50,6 +51,8 @@ export function GalleryGrid({
    * is the whole point.
    */
   swipeOnMobile?: boolean;
+  /** Show the small caption under each thumbnail. Off for editorial embeds. */
+  showCaptions?: boolean;
 }) {
   const [filter, setFilter] = useState<Filter>("all");
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -176,7 +179,9 @@ export function GalleryGrid({
                   </span>
                 </button>
 
-                <p className="mt-2 text-xs opacity-55">{item.caption[locale]}</p>
+                {showCaptions ? (
+                  <p className="mt-2 text-xs opacity-55">{item.caption[locale]}</p>
+                ) : null}
               </li>
             );
           })}

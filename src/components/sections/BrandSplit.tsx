@@ -55,31 +55,32 @@ export function BrandSplit({ locale, dict }: { locale: Locale; dict: Dictionary 
                 sizes="(min-width: 1024px) 50vw, 100vw"
               />
             </div>
-            {/* Hand-drawn hotel mark in the bottom-right corner, replacing the
-                old wave motif. Bleeds a little past the photo; the section
-                clips the overflow. */}
-            <DecorImage
-              src="/images/logos/drawings/hotel-tr.webp"
-              className="-bottom-5 -right-3 h-24 w-32 sm:-bottom-7 sm:-right-4 sm:h-28 sm:w-40 lg:h-32 lg:w-44"
-            />
           </div>
 
-          {/* Content box, centred on and overlapping the photo. */}
-          <div className="bg-blue-light p-8 text-navy sm:p-12 lg:col-span-6 lg:-ml-12 lg:p-14">
-            <h2 className="font-display text-4xl leading-none sm:text-5xl">
-              {dict.split.hotelTitle}
-            </h2>
-            <p className="mt-5 text-base leading-relaxed text-pretty opacity-80 sm:text-lg">
-              {dict.split.hotelText}
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button href={localePath(locale, "/hotel")}>
-                {dict.actions.hotelDetail}
-                <ArrowRight aria-hidden="true" className="size-4" />
-              </Button>
-              <Button href={localePath(locale, "/hotel/rooms")} variant="outline">
-                {dict.actions.allRooms}
-              </Button>
+          {/* Content box, centred on and overlapping the photo. The hand-drawn
+              hotel mark lives INSIDE it, in the bottom-right corner, behind the
+              text — the box clips whatever bleeds past its edge. */}
+          <div className="relative overflow-hidden bg-blue-light p-8 text-navy sm:p-12 lg:col-span-6 lg:-ml-12 lg:p-14">
+            <DecorImage
+              src="/images/logos/drawings/hotel-tr.webp"
+              className="-right-6 -bottom-6 h-40 w-56 opacity-[0.16] sm:-right-8 sm:h-48 sm:w-72 lg:-right-6 lg:-bottom-8 lg:h-56 lg:w-80"
+            />
+            <div className="relative">
+              <h2 className="font-display text-4xl leading-none sm:text-5xl">
+                {dict.split.hotelTitle}
+              </h2>
+              <p className="mt-5 text-base leading-relaxed text-pretty opacity-80 sm:text-lg">
+                {dict.split.hotelText}
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Button href={localePath(locale, "/hotel")}>
+                  {dict.actions.hotelDetail}
+                  <ArrowRight aria-hidden="true" className="size-4" />
+                </Button>
+                <Button href={localePath(locale, "/hotel/rooms")} variant="outline">
+                  {dict.actions.allRooms}
+                </Button>
+              </div>
             </div>
           </div>
         </Reveal>
@@ -89,9 +90,13 @@ export function BrandSplit({ locale, dict }: { locale: Locale; dict: Dictionary 
         <Reveal className="mt-10 grid gap-8 lg:-mt-28 lg:grid-cols-12 lg:items-center lg:gap-0">
           <div className="relative order-1 lg:order-2 lg:col-span-6 lg:col-start-7">
             {/* Note above the photo, right-aligned; arrow descends to the left
-                into it — the mirror of the hotel note. */}
+                into it. Rotated a little further so it leads more clearly down
+                toward the food photo, while staying editorial rather than
+                vertical. */}
             <div className="mr-1 mb-4 flex justify-end">
-              <HandwrittenNote arrow="downLeft">{dict.split.restaurantNote}</HandwrittenNote>
+              <HandwrittenNote arrow="downLeft" arrowClassName="rotate-[18deg]">
+                {dict.split.restaurantNote}
+              </HandwrittenNote>
             </div>
 
             <div className="relative aspect-[3/4] overflow-hidden bg-cream">

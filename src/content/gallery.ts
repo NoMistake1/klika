@@ -2,13 +2,14 @@ import type { GalleryCategory, GalleryGroup, GalleryItem } from "@/types";
 
 /* ==========================================================================
    Gallery.
-   Every entry currently points at a labelled local placeholder. Real photos
-   drop in by replacing the file at `image.src` and removing `isPlaceholder`;
-   the layout is driven by the declared width/height, so swapping an asset of
-   the same aspect ratio causes no layout shift and no code change.
+   Real Klika photography where it exists; the few remaining entries that still
+   point at a labelled placeholder carry `isPlaceholder` so SafeImage renders a
+   neutral fallback rather than a broken image. Layout is driven by each item's
+   declared width/height, so swapping an asset of the same aspect ratio causes
+   no layout shift and no code change.
 
-   No stock photography is used: a random hotel photo presented as Hotel Klika
-   would be a misrepresentation.
+   No stock photography is used: a random photo presented as Hotel Klika would
+   be a misrepresentation.
    ========================================================================== */
 
 export const galleryCategoryOrder: readonly GalleryCategory[] = [
@@ -167,18 +168,36 @@ export const galleryItems: readonly GalleryItem[] = [
     },
   },
   {
+    id: "restaurant-indoor",
+    category: "restaurant",
+    image: {
+      src: "/images/restaurant/indoor.webp",
+      alt: {
+        cs: "Posezení v restauraci",
+        en: "Seating inside the restaurant",
+        de: "Sitzplätze im Restaurant",
+      },
+      width: 1080,
+      height: 1350,
+    },
+    caption: {
+      cs: "Nekuřácký vnitřní prostor",
+      en: "The indoor non-smoking space",
+      de: "Der Nichtraucher-Innenraum",
+    },
+  },
+  {
     id: "restaurant-bar",
     category: "restaurant",
     image: {
-      src: "/images/restaurant/bar.png",
+      src: "/images/restaurant/bar.webp",
       alt: {
-        cs: "Zástupný obrázek — bar s vitrínou dezertů",
-        en: "Placeholder image — the bar with the dessert cabinet",
-        de: "Platzhalterbild — Bar mit Dessertvitrine",
+        cs: "Bar s vitrínou dezertů",
+        en: "The bar with the dessert cabinet",
+        de: "Die Bar mit der Dessertvitrine",
       },
-      width: 1600,
-      height: 1200,
-      isPlaceholder: true,
+      width: 1402,
+      height: 1122,
     },
     caption: {
       cs: "Vitrína s dezerty u baru",
@@ -187,63 +206,269 @@ export const galleryItems: readonly GalleryItem[] = [
     },
   },
   {
-    id: "food-tartare",
-    category: "food",
+    id: "restaurant-outside",
+    category: "restaurant",
     image: {
-      src: "/images/food/tartare.png",
+      src: "/images/restaurant/outside-restaurant.webp",
       alt: {
-        cs: "Zástupný obrázek — tatarák ze stařeného hovězího",
-        en: "Placeholder image — steak tartare from aged beef",
-        de: "Platzhalterbild — Tatar vom gereiften Rindfleisch",
+        cs: "Restaurace zvenku",
+        en: "The restaurant from outside",
+        de: "Das Restaurant von außen",
       },
-      width: 1400,
-      height: 1400,
-      isPlaceholder: true,
+      width: 2400,
+      height: 1751,
     },
     caption: {
-      cs: "Tatarák ze stařeného hovězího z Volar",
-      en: "Steak tartare from aged Volary beef",
-      de: "Tatar vom gereiften Volary-Rind",
+      cs: "Vchod do restaurace",
+      en: "The restaurant entrance",
+      de: "Der Eingang zum Restaurant",
     },
   },
   {
-    id: "food-schnitzel",
+    id: "food-plate-1",
     category: "food",
     image: {
-      src: "/images/food/schnitzel.png",
+      src: "/images/food/food1.webp",
       alt: {
-        cs: "Zástupný obrázek — kuřecí řízek",
-        en: "Placeholder image — chicken schnitzel",
-        de: "Platzhalterbild — Hähnchenschnitzel",
+        cs: "Sezónní předkrm na talíři",
+        en: "A seasonal starter on the plate",
+        de: "Eine saisonale Vorspeise auf dem Teller",
       },
-      width: 1200,
-      height: 1500,
-      isPlaceholder: true,
+      width: 1440,
+      height: 1802,
     },
     caption: {
-      cs: "Kuřecí řízek ve strouhance z čerstvých rohlíků",
-      en: "Chicken schnitzel in breadcrumbs from fresh rolls",
-      de: "Hähnchenschnitzel in Paniermehl aus frischen Brötchen",
+      cs: "Sezónní předkrm",
+      en: "A seasonal starter",
+      de: "Eine saisonale Vorspeise",
     },
   },
   {
-    id: "food-dessert",
+    id: "food-main-1",
     category: "food",
     image: {
-      src: "/images/food/dessert.png",
+      src: "/images/food/food9.webp",
       alt: {
-        cs: "Zástupný obrázek — jahodové knedlíčky",
-        en: "Placeholder image — strawberry dumplings",
-        de: "Platzhalterbild — Erdbeerknödel",
+        cs: "Hlavní chod podle sezóny",
+        en: "A seasonal main course",
+        de: "Ein saisonales Hauptgericht",
       },
-      width: 1600,
-      height: 1200,
-      isPlaceholder: true,
+      width: 1350,
+      height: 1687,
     },
     caption: {
-      cs: "Jahodové knedlíčky obalené v perníku",
-      en: "Strawberry dumplings rolled in gingerbread",
-      de: "Erdbeerknödel in Lebkuchen gewälzt",
+      cs: "Hlavní chod",
+      en: "A main course",
+      de: "Ein Hauptgericht",
+    },
+  },
+  {
+    id: "food-plate-2",
+    category: "food",
+    image: {
+      src: "/images/food/food12.webp",
+      alt: {
+        cs: "Talíř dochucený čerstvými bylinkami",
+        en: "A plate finished with fresh herbs",
+        de: "Ein Teller mit frischen Kräutern",
+      },
+      width: 1080,
+      height: 1350,
+    },
+    caption: {
+      cs: "Talíř podle sezóny",
+      en: "A plate in season",
+      de: "Ein Teller nach Saison",
+    },
+  },
+  {
+    id: "food-plate-3",
+    category: "food",
+    image: {
+      src: "/images/food/food21.webp",
+      alt: {
+        cs: "Maso s omáčkou na talíři",
+        en: "Meat with sauce on the plate",
+        de: "Fleisch mit Sauce auf dem Teller",
+      },
+      width: 1440,
+      height: 1440,
+    },
+    caption: {
+      cs: "Poctivé maso",
+      en: "Honest meat",
+      de: "Ehrliches Fleisch",
+    },
+  },
+  {
+    id: "food-dessert-1",
+    category: "food",
+    image: {
+      src: "/images/food/food11.webp",
+      alt: {
+        cs: "Domácí dorty na patře",
+        en: "Homemade cakes on a stand",
+        de: "Hausgemachte Torten auf einer Etagere",
+      },
+      width: 1350,
+      height: 1687,
+    },
+    caption: {
+      cs: "Domácí dorty",
+      en: "Homemade cakes",
+      de: "Hausgemachte Torten",
+    },
+  },
+  {
+    id: "food-dessert-2",
+    category: "food",
+    image: {
+      src: "/images/food/food18.webp",
+      alt: {
+        cs: "Barevné dezerty a koláčky",
+        en: "Colourful desserts and tarts",
+        de: "Bunte Desserts und Törtchen",
+      },
+      width: 2048,
+      height: 2048,
+    },
+    caption: {
+      cs: "Dezerty a dorty",
+      en: "Desserts and cakes",
+      de: "Desserts und Torten",
+    },
+  },
+  {
+    id: "food-drink-1",
+    category: "food",
+    image: {
+      src: "/images/food/food17.webp",
+      alt: {
+        cs: "Domácí limonáda v ruce",
+        en: "A homemade lemonade in hand",
+        de: "Eine hausgemachte Limonade in der Hand",
+      },
+      width: 1440,
+      height: 1440,
+    },
+    caption: {
+      cs: "Domácí limonáda",
+      en: "A homemade lemonade",
+      de: "Eine hausgemachte Limonade",
+    },
+  },
+  {
+    id: "food-drink-2",
+    category: "food",
+    image: {
+      src: "/images/food/food5.webp",
+      alt: {
+        cs: "Pivo a polévka dne",
+        en: "Beer and the soup of the day",
+        de: "Bier und die Suppe des Tages",
+      },
+      width: 1080,
+      height: 1350,
+    },
+    caption: {
+      cs: "Pivo a polévka dne",
+      en: "Beer and the soup of the day",
+      de: "Bier und die Suppe des Tages",
+    },
+  },
+  {
+    id: "food-people-1",
+    category: "food",
+    image: {
+      src: "/images/food/food6.webp",
+      alt: {
+        cs: "V kuchyni Kliky",
+        en: "In the Klika kitchen",
+        de: "In der Klika-Küche",
+      },
+      width: 1194,
+      height: 1492,
+    },
+    caption: {
+      cs: "V kuchyni",
+      en: "In the kitchen",
+      de: "In der Küche",
+    },
+  },
+  {
+    id: "food-people-2",
+    category: "food",
+    image: {
+      src: "/images/food/food20.webp",
+      alt: {
+        cs: "Dochystání malých chodů",
+        en: "Plating small dishes",
+        de: "Anrichten kleiner Gerichte",
+      },
+      width: 1440,
+      height: 1440,
+    },
+    caption: {
+      cs: "Dochystání chodů",
+      en: "Plating the dishes",
+      de: "Anrichten der Gerichte",
+    },
+  },
+  {
+    id: "food-table-1",
+    category: "food",
+    image: {
+      src: "/images/food/food8.webp",
+      alt: {
+        cs: "Několik malých chodů na stole",
+        en: "A spread of small dishes on the table",
+        de: "Mehrere kleine Gerichte auf dem Tisch",
+      },
+      width: 1440,
+      height: 1440,
+    },
+    caption: {
+      cs: "Několik malých chodů",
+      en: "A spread of small dishes",
+      de: "Mehrere kleine Gerichte",
+    },
+  },
+  {
+    id: "food-table-2",
+    category: "food",
+    image: {
+      src: "/images/food/food24.webp",
+      alt: {
+        cs: "Oběd se sklenkou vína",
+        en: "Lunch with a glass of wine",
+        de: "Mittagessen mit einem Glas Wein",
+      },
+      width: 1402,
+      height: 1122,
+    },
+    caption: {
+      cs: "Oběd se sklenkou vína",
+      en: "Lunch with a glass of wine",
+      de: "Mittagessen mit einem Glas Wein",
+    },
+  },
+  {
+    id: "food-table-3",
+    category: "food",
+    image: {
+      src: "/images/food/food27.webp",
+      alt: {
+        cs: "Prostřený stůl s několika chody",
+        en: "A laid table with several dishes",
+        de: "Ein gedeckter Tisch mit mehreren Gerichten",
+      },
+      width: 2400,
+      height: 1701,
+    },
+    caption: {
+      cs: "Prostřený stůl",
+      en: "A laid table",
+      de: "Ein gedeckter Tisch",
     },
   },
   {
@@ -269,20 +494,19 @@ export const galleryItems: readonly GalleryItem[] = [
     id: "garden-children",
     category: "garden",
     image: {
-      src: "/images/restaurant/garden-children.png",
+      src: "/images/restaurant/garden-children.webp",
       alt: {
-        cs: "Zástupný obrázek — dětský koutek na zahrádce",
-        en: "Placeholder image — the children's area in the garden",
-        de: "Platzhalterbild — Kinderbereich im Garten",
+        cs: "Dětský koutek na zahrádce",
+        en: "The children's area in the garden",
+        de: "Der Kinderbereich im Garten",
       },
-      width: 1200,
-      height: 1500,
-      isPlaceholder: true,
+      width: 1122,
+      height: 1402,
     },
     caption: {
-      cs: "Pískoviště a houpačka na zahrádce",
-      en: "The sandbox and swing in the garden",
-      de: "Sandkasten und Schaukel im Garten",
+      cs: "Koutek pro děti na zahrádce",
+      en: "The children's corner in the garden",
+      de: "Die Kinderecke im Garten",
     },
   },
   {
@@ -360,25 +584,42 @@ function item(id: string): GalleryItem {
 }
 
 /**
- * The landing-page gallery groups. Each is one tall lead image plus two
- * stacked images, rendered as an irregular horizontally swipeable strip —
- * deliberately not a uniform grid. No image repeats inside a group.
+ * The landing-page gallery groups. Each is one tall lead image plus two stacked
+ * images, rendered as an irregular horizontally swipeable strip — deliberately
+ * not a uniform grid. The order leads with food and restaurant while keeping the
+ * hotel, rooms and location photography present, and no near-identical plated
+ * dish sits directly beside another. No image repeats inside a group.
  */
 export const landingGalleryGroups: readonly GalleryGroup[] = [
+  {
+    id: "group-food-1",
+    large: item("food-plate-1"),
+    stacked: [item("food-people-1"), item("food-dessert-1")],
+  },
+  {
+    id: "group-restaurant",
+    large: item("restaurant-indoor"),
+    stacked: [item("restaurant-conservatory"), item("food-table-1")],
+  },
+  {
+    id: "group-food-2",
+    large: item("food-main-1"),
+    stacked: [item("food-drink-1"), item("food-table-2")],
+  },
   {
     id: "group-hotel",
     large: item("hotel-facade"),
     stacked: [item("hotel-reception"), item("hotel-breakfast")],
   },
   {
-    id: "group-rooms",
-    large: item("room-apartment-sauna"),
-    stacked: [item("room-double"), item("restaurant-conservatory")],
+    id: "group-food-3",
+    large: item("food-plate-2"),
+    stacked: [item("food-dessert-2"), item("food-people-2")],
   },
   {
-    id: "group-restaurant",
-    large: item("garden-terrace"),
-    stacked: [item("room-triple"), item("restaurant-wall")],
+    id: "group-rooms",
+    large: item("room-apartment-sauna"),
+    stacked: [item("room-double"), item("garden-terrace")],
   },
 ];
 
