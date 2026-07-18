@@ -31,17 +31,20 @@ export function HandArrow({
   const mirrored = dir === "left" || dir === "downLeft";
   const steep = dir === "downLeft" || dir === "downRight";
 
-  // Base shaft sweeps left→right. `default` bulges up then descends; `alt`
-  // bulges the opposite way. Both end low-right so the head reads as leading
-  // downward toward what the note points at.
+  // Base shaft sweeps left→right and both variants converge on the SAME end
+  // point (90,30) with the SAME shared control point (66,20). That means the
+  // curve leaves at one consistent tangent (right, tilted ~22° down), so a
+  // single open-V head reads as following the line naturally for either arc.
+  // `default` bows up over the middle; `alt` bows down — a stronger, smoother
+  // bezier than before, so the stroke feels drawn in one confident sweep.
   const shaft =
     curve === "alt"
-      ? "M5 15 C 26 33, 52 33, 84 27"
-      : "M5 14 C 34 7, 60 20, 84 30";
+      ? "M6 16 C 30 42, 66 20, 90 30"
+      : "M6 26 C 30 6, 66 20, 90 30";
 
   return (
     <svg
-      viewBox="0 0 96 48"
+      viewBox="0 0 100 46"
       aria-hidden="true"
       focusable="false"
       fill="none"
@@ -50,17 +53,19 @@ export function HandArrow({
       strokeLinecap="round"
       strokeLinejoin="round"
       className={cn(
-        "pointer-events-none h-[0.8em] w-[1.75em] shrink-0",
+        "pointer-events-none h-[0.9em] w-[1.95em] shrink-0",
         // A small downward tilt for the "down" variants; the level ones lift
         // slightly so they don't droop.
-        steep ? "rotate-[8deg]" : "-rotate-[6deg]",
+        steep ? "rotate-[7deg]" : "-rotate-[7deg]",
         mirrored && "-scale-x-100",
         className,
       )}
     >
       <path d={shaft} />
-      {/* Open-V head at the shaft's end (84,~29). */}
-      <path d="M73 22 L86 30 L76 41" />
+      {/* Open-V head at the shaft's tip (90,30). Both barbs trail back ~30°
+          either side of the shared end tangent, so the V opens back up the
+          line and points cleanly along it — never a filled triangle. */}
+      <path d="M79 16 L90 30 L72 32" />
     </svg>
   );
 }

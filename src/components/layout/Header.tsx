@@ -67,11 +67,45 @@ export function Header({
    * links' own onClose never sees. Adjusting state during render is React's
    * documented pattern for reacting to a changed value; an effect would paint
    * the new route with the menu still open before closing it.
+   *
+   * A locale switch is the one navigation that should NOT close the panel, but
+   * it also remounts this component (so this render-time close never even runs
+   * for it) — that case is handled by the restore effect below. The
+   * locale-stripped comparison here is a belt-and-braces guard for the event
+   * that a locale change ever re-renders instead of remounting.
    */
   if (pathname !== lastPathname) {
+    const pagePath = (p: string) => p.replace(/^\/[^/]+/, "") || "/";
+    const samePage = pagePath(pathname) === pagePath(lastPathname);
     setLastPathname(pathname);
-    setMenuOpen(false);
+    if (!samePage) setMenuOpen(false);
   }
+
+  /**
+   * Re-open the panel after a mobile language switch. That navigation remounts
+   * the layout, resetting menu state, so the selector leaves a one-shot flag
+   * which we consume here on mount. Scheduled on the next frame so it runs from
+   * a callback rather than synchronously during the effect.
+   */
+  useEffect(() => {
+    let restore = false;
+    try {
+      restore = sessionStorage.getItem("klika:keep-menu-open") === "1";
+    } catch {}
+    if (!restore) return;
+    // The flag is consumed inside the callback, not the effect body: under
+    // React's dev double-invoke the first run's cleanup cancels this timer
+    // before it fires, and the surviving run then still sees the flag. A timer
+    // (not requestAnimationFrame) is used so it still runs if the page is
+    // momentarily backgrounded during the locale navigation.
+    const timer = window.setTimeout(() => {
+      setMenuOpen(true);
+      try {
+        sessionStorage.removeItem("klika:keep-menu-open");
+      } catch {}
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   return (
     <>

@@ -75,6 +75,7 @@ export default async function LocationPage({
         title={dict.locationPage.title}
         lede={dict.locationPage.intro}
         crumbs={[{ label: dict.locationPage.eyebrow }]}
+        className="lg:pt-44 lg:pb-32"
         background={{
           src: "/images/hotel/facade-desktop.webp",
           width: 1920,

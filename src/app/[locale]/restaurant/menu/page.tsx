@@ -58,11 +58,16 @@ export default async function MenuPage({
           { label: dict.restaurantPage.eyebrow, path: "/restaurant" },
           { label: dict.menuPage.title },
         ]}
+        className="lg:pt-44 lg:pb-32"
         background={{
-          src: "/images/restaurant/menu.webp",
+          src: "/images/restaurant/menu-desktop.webp",
           width: 1536,
           height: 1024,
-          imgClassName: "object-center",
+          mobileSrc: "/images/restaurant/menu-mobile.webp",
+          mobileWidth: 1402,
+          mobileHeight: 1122,
+          // Focal point biased upward so more of the food shows under the scrim.
+          imgClassName: "object-[center_25%]",
         }}
         aside={
           <Button href={localePath(locale, bookTableHref)} size="lg" variant="secondary">

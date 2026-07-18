@@ -46,6 +46,7 @@ export default async function GalleryPage({
         title={dict.gallery.title}
         lede={dict.gallery.subtitle}
         crumbs={[{ label: dict.gallery.eyebrow }]}
+        className="lg:pt-44 lg:pb-32"
         background={{
           src: "/images/gallery/window-desktop.webp",
           width: 1672,

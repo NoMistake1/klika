@@ -1,9 +1,10 @@
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import type { Dictionary } from "@/content/dictionaries";
 import { localePath, type Locale } from "@/lib/i18n";
 import { bookStayHref, bookTableHref } from "@/content/navigation";
 import { Button } from "@/components/ui/Button";
-import { Cup, Waves } from "@/components/illustrations";
+import { Waves } from "@/components/illustrations";
 
 /**
  * Closing split CTA. The two halves carry the two brand worlds — light blue for
@@ -39,11 +40,21 @@ export function FinalCta({ locale, dict }: { locale: Locale; dict: Dictionary })
         </Button>
       </div>
 
-      {/* Restaurant */}
+      {/* Restaurant — the dinner invitation, set over a photograph of the
+          evening table, darkened enough that the cream and blue text stays
+          perfectly legible. Below the fold, so the image lazy-loads. */}
       <div className="relative flex flex-col justify-between gap-10 overflow-hidden bg-navy p-8 text-cream sm:p-12 lg:p-16">
-        <Cup
+        <Image
+          src="/images/food/vecere.webp"
+          alt=""
           aria-hidden="true"
-          className="pointer-events-none absolute -right-4 -bottom-6 h-32 w-32 text-blue opacity-10"
+          fill
+          sizes="(min-width: 768px) 50vw, 100vw"
+          className="object-cover"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-br from-navy/90 via-navy/80 to-navy/65"
         />
         <div className="relative">
           <p className="mb-4 text-xs font-semibold tracking-[0.2em] uppercase text-blue/70">

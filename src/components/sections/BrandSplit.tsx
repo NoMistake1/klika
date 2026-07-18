@@ -7,7 +7,6 @@ import { HandwrittenNote } from "@/components/ui/HandwrittenNote";
 import { DecorImage } from "@/components/ui/DecorImage";
 import { Reveal } from "@/components/ui/Reveal";
 import { SafeImage } from "@/components/ui/SafeImage";
-import { Waves } from "@/components/illustrations";
 
 /**
  * The two Klika worlds.
@@ -56,9 +55,12 @@ export function BrandSplit({ locale, dict }: { locale: Locale; dict: Dictionary 
                 sizes="(min-width: 1024px) 50vw, 100vw"
               />
             </div>
-            <Waves
-              aria-hidden="true"
-              className="absolute right-0 -bottom-4 h-10 w-2/3 text-blue"
+            {/* Hand-drawn hotel mark in the bottom-right corner, replacing the
+                old wave motif. Bleeds a little past the photo; the section
+                clips the overflow. */}
+            <DecorImage
+              src="/images/logos/drawings/hotel-tr.webp"
+              className="-bottom-5 -right-3 h-24 w-32 sm:-bottom-7 sm:-right-4 sm:h-28 sm:w-40 lg:h-32 lg:w-44"
             />
           </div>
 
@@ -91,14 +93,6 @@ export function BrandSplit({ locale, dict }: { locale: Locale; dict: Dictionary 
             <div className="mr-1 mb-4 flex justify-end">
               <HandwrittenNote arrow="downLeft">{dict.split.restaurantNote}</HandwrittenNote>
             </div>
-
-            {/* Decorative mushroom, tucked behind the right edge of the photo:
-                it sits earlier in the DOM than the image, so the image paints
-                over it. Hidden on the smallest screens where it would crowd. */}
-            <DecorImage
-              src="/images/food/zampion.webp"
-              className="top-1/3 -right-14 hidden h-40 w-40 opacity-50 sm:block lg:-right-16 lg:h-52 lg:w-52"
-            />
 
             <div className="relative aspect-[3/4] overflow-hidden bg-cream">
               <SafeImage

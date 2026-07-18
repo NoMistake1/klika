@@ -36,9 +36,12 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
             {dict.hero.subheadline}
           </p>
 
-          {/* Two intentional actions. They stretch to equal width on a phone
-              and sit as a balanced pair from sm up. */}
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          {/* Two intentional actions. On a phone they size to their label
+              (narrower than the column, left-aligned) rather than stretching
+              full width; from sm up they sit as a balanced pair. Both carry the
+              same label size — the conversion variant's enforced 1.2rem — so the
+              pair reads as one weight. */}
+          <div className="mt-9 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap">
             <Button
               href={localePath(locale, bookStayHref)}
               variant="conversion"
@@ -51,7 +54,7 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
               href={localePath(locale, bookTableHref)}
               variant="secondary"
               size="lg"
-              className="justify-center sm:min-w-56"
+              className="justify-center text-[1.2rem] leading-none font-bold sm:min-w-56"
             >
               {dict.actions.bookTable}
             </Button>

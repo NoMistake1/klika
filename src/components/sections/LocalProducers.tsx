@@ -20,7 +20,7 @@ export function LocalProducers({ locale, dict }: { locale: Locale; dict: Diction
           art is inverted to a faint cream and kept low. */}
       <DecorImage
         src="/images/food/zampion.webp"
-        className="-bottom-10 -left-16 h-56 w-56 opacity-20 [filter:brightness(0)_invert(1)] sm:-left-20 sm:h-72 sm:w-72 lg:h-80 lg:w-80"
+        className="-bottom-12 -left-16 h-64 w-64 opacity-20 [filter:brightness(0)_invert(1)] sm:-left-20 sm:h-80 sm:w-80 lg:h-96 lg:w-96"
       />
 
       <Container className="relative">

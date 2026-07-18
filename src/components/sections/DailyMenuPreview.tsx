@@ -31,7 +31,7 @@ export function DailyMenuPreview({ locale, dict }: { locale: Locale; dict: Dicti
           left, leaving this corner clear. */}
       <DecorImage
         src="/images/food/rajce.webp"
-        className="-top-10 -right-16 h-64 w-64 opacity-30 sm:-top-14 sm:-right-20 sm:h-80 sm:w-80 lg:-top-20 lg:-right-16 lg:h-[26rem] lg:w-[26rem]"
+        className="-top-5 -right-16 h-64 w-64 opacity-30 sm:-top-9 sm:-right-20 sm:h-80 sm:w-80 lg:-top-[3.75rem] lg:-right-16 lg:h-[29rem] lg:w-[29rem]"
       />
 
       <Container className="relative">

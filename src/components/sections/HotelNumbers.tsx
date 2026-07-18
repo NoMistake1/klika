@@ -3,6 +3,8 @@ import type { Locale } from "@/lib/i18n";
 import { hotelStats } from "@/content/hotel";
 import { Container, Section } from "@/components/ui/Section";
 import { Reveal } from "@/components/ui/Reveal";
+import { CountUp } from "@/components/ui/CountUp";
+import { DecorImage } from "@/components/ui/DecorImage";
 import { Rooftops } from "@/components/illustrations";
 
 /**
@@ -14,9 +16,16 @@ import { Rooftops } from "@/components/illustrations";
 export function HotelNumbers({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   return (
     <Section tone="blue-light" spacing="tight" className="relative overflow-hidden">
+      {/* Desktop keeps the faint rooftops on the right. */}
       <Rooftops
         aria-hidden="true"
-        className="pointer-events-none absolute right-0 -bottom-1 h-20 w-[36rem] text-navy opacity-[0.07]"
+        className="pointer-events-none absolute right-0 -bottom-1 hidden h-20 w-[36rem] text-navy opacity-[0.07] lg:block"
+      />
+      {/* Mobile: the hand-drawn houses in the bottom-left, bleeding a little
+          off-screen. The section clips the overflow, so no page scroll. */}
+      <DecorImage
+        src="/images/logos/drawings/houses-tr.webp"
+        className="-bottom-4 -left-8 h-20 w-72 opacity-15 lg:hidden"
       />
 
       <Container className="relative">
@@ -34,21 +43,28 @@ export function HotelNumbers({ locale, dict }: { locale: Locale; dict: Dictionar
               row enters view. Under reduced-motion / no JS they are just
               visible (see the reveal utility). */}
           <dl className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4">
-            {hotelStats.map((stat, index) => (
-              <Reveal key={stat.id} delay={index * 110}>
-                <div className="border-t border-navy/20 pt-4">
-                  <dt className="sr-only">{stat.label[locale]}</dt>
-                  <dd>
-                    <span className="block font-display text-5xl leading-none text-navy sm:text-6xl">
-                      {stat.value}
-                    </span>
-                    <span className="mt-2 block text-sm opacity-70">
-                      {stat.label[locale]}
-                    </span>
-                  </dd>
-                </div>
-              </Reveal>
-            ))}
+            {hotelStats.map((stat, index) => {
+              const numeric = Number(stat.value);
+              return (
+                <Reveal key={stat.id} delay={index * 110}>
+                  <div className="border-t border-navy/20 pt-4">
+                    <dt className="sr-only">{stat.label[locale]}</dt>
+                    <dd>
+                      <span className="block font-display text-5xl leading-none text-navy sm:text-6xl">
+                        {Number.isFinite(numeric) ? (
+                          <CountUp value={numeric} />
+                        ) : (
+                          stat.value
+                        )}
+                      </span>
+                      <span className="mt-2 block text-sm opacity-70">
+                        {stat.label[locale]}
+                      </span>
+                    </dd>
+                  </div>
+                </Reveal>
+              );
+            })}
           </dl>
         </div>
       </Container>

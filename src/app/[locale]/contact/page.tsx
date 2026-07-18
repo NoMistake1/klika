@@ -62,6 +62,9 @@ export default async function ContactPage({
         eyebrow={dict.contactPage.eyebrow}
         title={dict.contactPage.title}
         crumbs={[{ label: dict.contactPage.eyebrow }]}
+        // Taller on every breakpoint — the one subpage hero that grows on
+        // mobile too.
+        className="pb-24 sm:pb-28 lg:pt-44 lg:pb-32"
         background={{
           src: "/images/location/kontakt.webp",
           width: 1828,

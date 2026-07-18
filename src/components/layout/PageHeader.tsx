@@ -51,6 +51,7 @@ export function PageHeader({
   aside,
   children,
   background,
+  className,
 }: {
   locale: Locale;
   dict: Dictionary;
@@ -62,6 +63,9 @@ export function PageHeader({
   aside?: ReactNode;
   children?: ReactNode;
   background?: PageHeaderBackground;
+  /** Extra classes on the masthead — e.g. taller padding for a more immersive
+   *  photographic hero on a given page. */
+  className?: string;
 }) {
   const toneClasses = {
     cream: "bg-cream text-navy",
@@ -75,6 +79,7 @@ export function PageHeader({
       className={cn(
         "relative overflow-hidden pt-28 pb-14 sm:pt-32 sm:pb-16 lg:pt-36",
         background ? "bg-navy text-cream" : toneClasses,
+        className,
       )}
     >
       {background ? <BackgroundImage {...background} /> : null}

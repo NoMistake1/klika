@@ -272,25 +272,9 @@ html[data-intro="show"] .intro-screen {
   display: flex;
 }
 
-/* The refined intro motion: the lockup eases in once, then breathes very
-   gently while the hero loads. Never runs under prefers-reduced-motion — the
-   IntroGate script skips the whole overlay there. */
-/* A single, calm fade-in with a subtle 0.97→1 scale — no spin, bounce, or
-   pulsing. Plays once over the first ~0.9s of the ~2s hold. */
-.intro-logo {
-  animation: intro-enter 0.9s var(--ease-editorial) both;
-}
-
-@keyframes intro-enter {
-  from {
-    opacity: 0;
-    transform: scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
+/* The intro's fade-in motion is driven from the component (it starts only once
+   the artwork has decoded, so it never pops in), so no CSS keyframes are needed
+   here — just the display gate above. */
 
 /* ==========================================================================
    Reduced motion

@@ -37,8 +37,10 @@ export const mainNavigation: readonly NavItem[] = [
     label: { cs: "Restaurace", en: "Restaurant", de: "Restaurant" },
     children: [
       {
+        // Deep-links to the menu subpage already on its daily-menu tab, rather
+        // than the standalone daily-menu page.
         id: "restaurant-daily-menu",
-        href: "/restaurant/daily-menu",
+        href: "/restaurant/menu?view=daily",
         label: { cs: "Denní menu", en: "Daily menu", de: "Tagesmenü" },
       },
       {

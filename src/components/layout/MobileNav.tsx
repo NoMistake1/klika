@@ -182,7 +182,17 @@ export function MobileNav({
                   <Link
                     href={switchLocalePath(currentPath, target)}
                     hrefLang={target}
-                    onClick={onClose}
+                    // Switching language keeps the panel open so the guest
+                    // closes it themselves. A locale change remounts the
+                    // layout (and this Header), so we can't just hold React
+                    // state — we leave a one-shot flag the remounted Header
+                    // reads to re-open itself.
+                    onClick={() => {
+                      if (isCurrent) return;
+                      try {
+                        sessionStorage.setItem("klika:keep-menu-open", "1");
+                      } catch {}
+                    }}
                     aria-current={isCurrent ? "true" : undefined}
                     className={cn(
                       "flex min-h-11 items-center justify-center gap-1.5 rounded-lg text-sm font-medium",
@@ -222,6 +232,9 @@ export function MobileNav({
               onClick={onClose}
               variant="secondary"
               size="lg"
+              // Match the conversion button's enforced 1.2rem label so both
+              // booking actions read at exactly the same text size.
+              className="text-[1.2rem] leading-none font-bold"
             >
               {dict.actions.bookTable}
             </Button>

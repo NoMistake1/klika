@@ -62,6 +62,7 @@ export function Logo({
   priority = false,
   decorative = false,
   className,
+  onLoad,
 }: {
   variant?: LogoVariant;
   /** Display height in CSS pixels; width follows the intrinsic ratio. */
@@ -72,6 +73,8 @@ export function Logo({
   /** Hides the image from assistive tech when a text label sits beside it. */
   decorative?: boolean;
   className?: string;
+  /** Fires once the artwork has loaded — used by the intro to time its fade-in. */
+  onLoad?: () => void;
 }) {
   const { src, ratio, alt } = art[variant];
   const width = Math.round(height * ratio);
@@ -85,6 +88,7 @@ export function Logo({
       height={height}
       priority={priority}
       quality={90}
+      onLoad={onLoad}
       className={cn("select-none", onDark && "logo-on-dark", className)}
     />
   );
