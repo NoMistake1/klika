@@ -32,7 +32,10 @@ export function BrandSplit({ locale, dict }: { locale: Locale; dict: Dictionary 
 
         {/* Hotel */}
         <Reveal className="grid gap-8 lg:grid-cols-12 lg:items-center lg:gap-0">
-          <div className="relative lg:col-span-6">
+          {/* On desktop the box pulls left over the photo; z-index puts the
+              photograph on top in that overlap so it reads as in front, while
+              the box's text (clear of the overlap zone) stays fully visible. */}
+          <div className="relative lg:z-10 lg:col-span-6">
             {/* Note above the photo; arrow descends to the right into it. */}
             <div className="mb-4 ml-1">
               <HandwrittenNote arrow="downRight">{dict.split.hotelNote}</HandwrittenNote>
@@ -60,7 +63,7 @@ export function BrandSplit({ locale, dict }: { locale: Locale; dict: Dictionary 
           {/* Content box, centred on and overlapping the photo. The hand-drawn
               hotel mark lives INSIDE it, in the bottom-right corner, behind the
               text — the box clips whatever bleeds past its edge. */}
-          <div className="relative overflow-hidden bg-blue-light p-8 text-navy sm:p-12 lg:col-span-6 lg:-ml-12 lg:p-14">
+          <div className="relative overflow-hidden bg-blue-light p-8 text-navy sm:p-12 lg:z-0 lg:col-span-6 lg:-ml-12 lg:p-14">
             <DecorImage
               src="/images/logos/drawings/hotel-tr.webp"
               className="-right-6 -bottom-6 h-40 w-56 opacity-[0.16] sm:-right-8 sm:h-48 sm:w-72 lg:-right-6 lg:-bottom-8 lg:h-56 lg:w-80"

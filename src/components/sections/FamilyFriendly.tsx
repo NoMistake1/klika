@@ -16,8 +16,14 @@ import { People } from "@/components/illustrations";
  */
 export function FamilyFriendly({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   return (
-    <Section tone="blue-light" spacing="loose">
-      <Container>
+    <Section tone="blue-light" spacing="loose" className="relative overflow-hidden">
+      {/* Two decorative figures tucked into the section's bottom-right corner,
+          behind the content on both layouts. The section clips the overflow. */}
+      <People
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-4 -bottom-6 h-24 w-24 text-navy opacity-20 sm:h-28 sm:w-28 lg:h-32 lg:w-32"
+      />
+      <Container className="relative">
         <div className="grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-20">
           <Reveal className="relative lg:col-span-5">
             {/* Floating card: rounded, lifted, inset from the section edge. */}
@@ -38,10 +44,6 @@ export function FamilyFriendly({ locale, dict }: { locale: Locale; dict: Diction
                 sizes="(min-width: 1024px) 40vw, 100vw"
               />
             </div>
-            <People
-              aria-hidden="true"
-              className="pointer-events-none absolute -right-3 -bottom-8 hidden h-24 w-24 text-navy opacity-20 lg:block"
-            />
           </Reveal>
 
           <div className="lg:col-span-7">

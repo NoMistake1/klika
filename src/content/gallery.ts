@@ -304,19 +304,19 @@ export const galleryItems: readonly GalleryItem[] = [
     id: "food-dessert-1",
     category: "food",
     image: {
-      src: "/images/food/food11.webp",
+      src: "/images/food/food23.webp",
       alt: {
-        cs: "Domácí dorty na patře",
-        en: "Homemade cakes on a stand",
-        de: "Hausgemachte Torten auf einer Etagere",
+        cs: "Maso s přílohou na talíři",
+        en: "A plated meat dish with garnish",
+        de: "Ein Fleischgericht mit Beilage auf dem Teller",
       },
-      width: 1350,
-      height: 1687,
+      width: 1793,
+      height: 1536,
     },
     caption: {
-      cs: "Domácí dorty",
-      en: "Homemade cakes",
-      de: "Hausgemachte Torten",
+      cs: "Poctivé maso na talíři",
+      en: "An honest plate of meat",
+      de: "Ein ehrlicher Fleischteller",
     },
   },
   {

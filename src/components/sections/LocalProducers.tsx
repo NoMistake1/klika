@@ -32,15 +32,19 @@ export function LocalProducers({ locale, dict }: { locale: Locale; dict: Diction
             <p className="text-xl leading-snug text-balance sm:text-2xl">
               {dict.producers.title}
             </p>
-            {/* Mobile: the same open-V "downRight" geometry as the hotel
-                "Útulné spaní" note — left→right, tipping slightly down toward
-                the supplier list. Desktop keeps the flatter right/alt arc. */}
-            <HandwrittenNote className="mt-5 lg:hidden" arrow="downRight">
-              {dict.producers.note}
-            </HandwrittenNote>
-            <HandwrittenNote className="mt-5 hidden lg:inline-flex" arrow="right" curve="alt">
-              {dict.producers.note}
-            </HandwrittenNote>
+            {/* Exactly one annotation shows per breakpoint. The display toggle
+                lives on wrapper divs (block by default) rather than on the
+                note's own inline-flex span, so `hidden` actually wins — cn() is
+                a plain join, not a tailwind-merge, so a `hidden` on the span
+                would sit alongside its base `inline-flex` and never hide it.
+                Mobile uses the open-V "downRight" geometry (like "Útulné
+                spaní"); desktop keeps the flatter right/alt arc. */}
+            <div className="mt-5 lg:hidden">
+              <HandwrittenNote arrow="downRight">{dict.producers.note}</HandwrittenNote>
+            </div>
+            <div className="mt-5 hidden lg:block">
+              <HandwrittenNote arrow="right" curve="alt">{dict.producers.note}</HandwrittenNote>
+            </div>
           </div>
 
           <ul className="grid grid-cols-2 gap-x-6 gap-y-6 self-center sm:grid-cols-3">

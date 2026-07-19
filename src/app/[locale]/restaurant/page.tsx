@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 // lucide-react no longer ships brand icons, so social links use a neutral
@@ -9,8 +10,7 @@ import { isLocale, localePath, resolveLocale, type Locale } from "@/lib/i18n";
 import { buildPageMetadata } from "@/lib/metadata";
 import { JsonLdScript, breadcrumbSchema, restaurantSchema } from "@/lib/structured-data";
 import { drinkGroups, instagramUrl, seatingZones, vouchers } from "@/content/restaurant";
-import { galleryItems } from "@/content/gallery";
-import type { GalleryItem } from "@/types";
+import type { GalleryGroup, GalleryItem, LocalizedText } from "@/types";
 import { bookTableHref } from "@/content/navigation";
 import { Button } from "@/components/ui/Button";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
@@ -19,7 +19,7 @@ import { Price } from "@/components/ui/MenuBadges";
 import { ZoneShowcase } from "@/components/restaurant/ZoneShowcase";
 import { LocalProducers } from "@/components/sections/LocalProducers";
 import { FamilyFriendly } from "@/components/sections/FamilyFriendly";
-import { GalleryGrid } from "@/components/gallery/GalleryGrid";
+import { EditorialGallery } from "@/components/gallery/EditorialGallery";
 import { SafeImage } from "@/components/ui/SafeImage";
 import { DecorImage } from "@/components/ui/DecorImage";
 import { Reveal } from "@/components/ui/Reveal";
@@ -40,12 +40,110 @@ export async function generateMetadata({
   });
 }
 
-/** Pick gallery items by id, in the given order, dropping any that are missing. */
-function pickGallery(ids: readonly string[]): GalleryItem[] {
-  return ids
-    .map((id) => galleryItems.find((entry) => entry.id === id))
-    .filter((entry): entry is GalleryItem => entry !== undefined);
+/** Compact GalleryItem builder for the restaurant editorial gallery. */
+function rgi(
+  id: string,
+  src: string,
+  width: number,
+  height: number,
+  alt: LocalizedText,
+): GalleryItem {
+  return { id, category: "food", image: { src, alt, width, height }, caption: alt };
 }
+
+/**
+ * Restaurant gallery — irregular editorial groups (one lead + two stacked),
+ * leading with the strongest plated dishes and interleaving interiors, drinks
+ * and atmosphere. Deliberately shares no photograph with the hero, the food
+ * collage, the seating zones, the menu cards or the children section.
+ */
+const restaurantGalleryGroups: readonly GalleryGroup[] = [
+  {
+    id: "rg-1",
+    large: rgi("rg-food21", "/images/food/food21.webp", 1440, 1440, {
+      cs: "Maso s omáčkou na talíři",
+      en: "Meat with sauce on the plate",
+      de: "Fleisch mit Sauce auf dem Teller",
+    }),
+    stacked: [
+      rgi("rg-indoor", "/images/restaurant/indoor.webp", 1080, 1350, {
+        cs: "Posezení v restauraci",
+        en: "Seating inside the restaurant",
+        de: "Sitzplätze im Restaurant",
+      }),
+      rgi("rg-food16", "/images/food/food16.webp", 1440, 1439, {
+        cs: "Barevný talíř podle sezóny",
+        en: "A colourful seasonal plate",
+        de: "Ein bunter saisonaler Teller",
+      }),
+    ],
+  },
+  {
+    id: "rg-2",
+    large: rgi("rg-food4", "/images/food/food4.webp", 1080, 1350, {
+      cs: "Servírování jídla u stolu",
+      en: "Serving a dish at the table",
+      de: "Ein Gericht wird am Tisch serviert",
+    }),
+    stacked: [
+      rgi("rg-food17", "/images/food/food17.webp", 1440, 1440, {
+        cs: "Domácí limonáda",
+        en: "A homemade lemonade",
+        de: "Eine hausgemachte Limonade",
+      }),
+      rgi("rg-food22", "/images/food/food22.webp", 1440, 1440, {
+        cs: "Barevný talíř",
+        en: "A colourful plate",
+        de: "Ein bunter Teller",
+      }),
+    ],
+  },
+  {
+    id: "rg-3",
+    large: rgi("rg-food2", "/images/food/food2.webp", 1080, 1350, {
+      cs: "Talíř podle sezóny",
+      en: "A seasonal plate",
+      de: "Ein saisonaler Teller",
+    }),
+    stacked: [
+      rgi("rg-outside", "/images/restaurant/outside-restaurant.webp", 2400, 1751, {
+        cs: "Restaurace zvenku",
+        en: "The restaurant from outside",
+        de: "Das Restaurant von außen",
+      }),
+      rgi("rg-food8", "/images/food/food8.webp", 1440, 1440, {
+        cs: "Několik malých chodů",
+        en: "A spread of small dishes",
+        de: "Mehrere kleine Gerichte",
+      }),
+    ],
+  },
+  {
+    id: "rg-4",
+    large: rgi("rg-conservatory", "/images/restaurant/conservatory-detail.webp", 1200, 1500, {
+      cs: "Detail skleníku",
+      en: "A corner of the conservatory",
+      de: "Ein Detail des Wintergartens",
+    }),
+    stacked: [
+      rgi("rg-food5", "/images/food/food5.webp", 1080, 1350, {
+        cs: "Pivo a polévka dne",
+        en: "Beer and the soup of the day",
+        de: "Bier und die Suppe des Tages",
+      }),
+      rgi("rg-food13", "/images/food/food13.webp", 1440, 1440, {
+        cs: "Talíř dochucený omáčkou",
+        en: "A plate finished with sauce",
+        de: "Ein Teller mit Sauce",
+      }),
+    ],
+  },
+];
+
+const restaurantGalleryItems: readonly GalleryItem[] = restaurantGalleryGroups.flatMap((group) => [
+  group.large,
+  ...group.stacked,
+]);
 
 export default async function RestaurantPage({
   params,
@@ -58,25 +156,6 @@ export default async function RestaurantPage({
   const locale: Locale = raw;
   const dict = getDictionary(locale);
   const menuHref = localePath(locale, "/restaurant/menu");
-
-  // Interleaved so no two similar plated dishes sit side by side — food,
-  // interiors, garden, people and drinks alternate down the strip.
-  const restaurantGallery = pickGallery([
-    "restaurant-indoor",
-    "food-plate-1",
-    "restaurant-conservatory",
-    "food-dessert-1",
-    "garden-terrace",
-    "food-drink-1",
-    "restaurant-wall",
-    "food-table-3",
-    "food-people-1",
-    "restaurant-bar",
-    "food-main-1",
-    "garden-children",
-    "food-plate-3",
-    "restaurant-outside",
-  ]);
 
   return (
     <>
@@ -174,18 +253,19 @@ export default async function RestaurantPage({
               <figure className="relative aspect-[4/5] overflow-hidden bg-warm-white">
                 <SafeImage
                   image={{
-                    src: "/images/food/food9.webp",
+                    src: "/images/food/food19.webp",
                     alt: {
-                      cs: "Hlavní chod podle sezóny",
-                      en: "A seasonal main course",
-                      de: "Ein saisonales Hauptgericht",
+                      cs: "Talíř podle sezóny",
+                      en: "A seasonal plate",
+                      de: "Ein saisonaler Teller",
                     },
-                    width: 1350,
-                    height: 1687,
+                    width: 1440,
+                    height: 1440,
                   }}
                   locale={locale}
                   fill
                   sizes="(min-width: 1024px) 28vw, 45vw"
+                  className="object-center"
                 />
               </figure>
               <figure className="relative col-span-2 aspect-[16/9] overflow-hidden bg-warm-white">
@@ -208,7 +288,9 @@ export default async function RestaurantPage({
             </div>
           </Reveal>
 
-          <ul className="mt-8 flex flex-wrap gap-x-8 gap-y-2 text-sm font-medium">
+          {/* Centered as one group under the collage on desktop; left-aligned
+              on mobile. */}
+          <ul className="mt-8 flex flex-wrap gap-x-8 gap-y-2 text-sm font-medium lg:justify-center">
             {dict.restaurantPage.collageTags.map((tag) => (
               <li key={tag} className="flex items-center gap-2.5">
                 <span aria-hidden="true" className="size-1.5 rounded-full bg-sand-ink" />
@@ -282,38 +364,101 @@ export default async function RestaurantPage({
         </Container>
       </Section>
 
-      {/* How we cook — the kitchen principles, kept as a compact scannable list. */}
-      <Section tone="navy" spacing="tight">
-        <Container>
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,20rem)_1fr] lg:gap-16">
+      {/* Events and catering — set over the laid wedding table, darkened on the
+          left so the invitation stays legible. Directly below the zones. */}
+      <Section tone="navy" className="relative overflow-hidden">
+        <Image
+          src="/images/restaurant/svatba.webp"
+          alt=""
+          aria-hidden="true"
+          fill
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/80 to-navy/45"
+        />
+        <Container className="relative">
+          <div className="max-w-xl">
+            <p className="mb-4 text-xs font-semibold tracking-[0.2em] text-blue/70 uppercase">
+              {dict.catering.eyebrow}
+            </p>
             <h2 className="text-heading font-semibold text-balance text-blue">
-              {dict.restaurantPage.principlesTitle}
+              {dict.catering.title}
             </h2>
-            <ul className="grid gap-x-10 sm:grid-cols-2">
-              {dict.restaurantPage.principles.map((principle) => (
-                <li
-                  key={principle}
-                  className="flex items-center gap-3 border-b border-cream/15 py-3 text-sm"
-                >
-                  <span aria-hidden="true" className="size-1.5 shrink-0 rounded-full bg-blue" />
-                  {principle}
-                </li>
-              ))}
-            </ul>
+            <p className="mt-5 leading-relaxed text-pretty text-cream/90">
+              {dict.catering.intro}
+            </p>
+            <p className="mt-4 text-sm text-cream/75">{dict.catering.capacityText}</p>
+            <Button
+              href={localePath(locale, "/restaurant/catering")}
+              variant="secondary"
+              size="lg"
+              className="mt-8"
+            >
+              {dict.catering.eyebrow}
+              <ArrowRight aria-hidden="true" className="size-4" />
+            </Button>
           </div>
         </Container>
       </Section>
 
-      {/* Local ingredients and suppliers */}
-      <LocalProducers locale={locale} dict={dict} />
+      {/* Gift vouchers — a distinct light composition beside the real voucher
+          photograph, so it never mirrors the dark catering band above. */}
+      <Section tone="cream">
+        <Container>
+          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+            <div>
+              <SectionHeading
+                eyebrow={dict.catering.vouchersTitle}
+                title={dict.catering.vouchersTitle}
+                lede={dict.catering.vouchersText}
+              />
+              <ul className="mt-8 flex flex-wrap gap-3">
+                {vouchers.map((voucher) => (
+                  <li
+                    key={voucher.id}
+                    className="border border-navy/25 px-5 py-2.5 text-base font-medium"
+                  >
+                    <span className="sr-only">{dict.catering.voucherValue} </span>
+                    <Price amountCzk={voucher.valueCzk} locale={locale} />
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-4 text-xs opacity-60">{dict.catering.vouchersNote}</p>
+            </div>
+
+            <figure className="relative aspect-[4/3] overflow-hidden bg-warm-white lg:order-first">
+              <SafeImage
+                image={{
+                  src: "/images/restaurant/poukazy.webp",
+                  alt: {
+                    cs: "Dárkové poukazy Klika",
+                    en: "Klika gift vouchers",
+                    de: "Klika-Geschenkgutscheine",
+                  },
+                  width: 1402,
+                  height: 1122,
+                }}
+                locale={locale}
+                fill
+                sizes="(min-width: 1024px) 45vw, 100vw"
+                className="object-cover object-center"
+              />
+            </figure>
+          </div>
+        </Container>
+      </Section>
 
       {/* Drinks and bar */}
       <Section tone="warm-white" className="relative overflow-hidden">
-        {/* Hand-drawn coffee mark, upper-right, sitting behind the content and
-            bleeding a little off the edge (clipped by the section). */}
+        {/* Hand-drawn coffee mark, upper-right and behind the content, bleeding
+            a little off the edge (clipped by the section). Sits lower on mobile
+            so it never crowds the heading. */}
         <DecorImage
           src="/images/logos/drawings/cafe-tr.webp"
-          className="-top-8 -right-10 h-44 w-44 opacity-[0.12] sm:h-52 sm:w-52 lg:-top-10 lg:-right-8 lg:h-72 lg:w-72"
+          className="top-28 -right-10 h-44 w-44 opacity-[0.12] sm:top-32 sm:h-52 sm:w-52 lg:-top-10 lg:-right-8 lg:h-72 lg:w-72"
         />
         <Container className="relative">
           <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
@@ -375,63 +520,47 @@ export default async function RestaurantPage({
         </Container>
       </Section>
 
-      {/* Families and garden */}
-      <FamilyFriendly locale={locale} dict={dict} />
+      {/* Local ingredients and suppliers */}
+      <LocalProducers locale={locale} dict={dict} />
 
-      {/* Events, catering and vouchers */}
-      <Section tone="cream">
+      {/* How we cook — the kitchen principles, kept as a compact scannable list.
+          Swapped to sit after the drinks and suppliers. */}
+      <Section tone="navy" spacing="tight">
         <Container>
-          <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
-            <div>
-              <SectionHeading
-                eyebrow={dict.catering.eyebrow}
-                title={dict.catering.title}
-                lede={dict.catering.intro}
-              />
-              <p className="mt-6 text-sm opacity-75">{dict.catering.capacityText}</p>
-              <Button href={localePath(locale, "/restaurant/catering")} className="mt-6">
-                {dict.catering.eyebrow}
-                <ArrowRight aria-hidden="true" className="size-4" />
-              </Button>
-            </div>
-
-            <div>
-              <SectionHeading
-                eyebrow={dict.catering.vouchersTitle}
-                title={dict.catering.vouchersTitle}
-                lede={dict.catering.vouchersText}
-              />
-              <ul className="mt-6 flex flex-wrap gap-3">
-                {vouchers.map((voucher) => (
-                  <li
-                    key={voucher.id}
-                    className="border border-navy/20 px-4 py-2 text-sm font-medium"
-                  >
-                    <span className="sr-only">{dict.catering.voucherValue} </span>
-                    <Price amountCzk={voucher.valueCzk} locale={locale} />
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-4 text-xs opacity-60">{dict.catering.vouchersNote}</p>
-            </div>
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,20rem)_1fr] lg:gap-16">
+            <h2 className="text-heading font-semibold text-balance text-blue">
+              {dict.restaurantPage.principlesTitle}
+            </h2>
+            <ul className="grid gap-x-10 sm:grid-cols-2">
+              {dict.restaurantPage.principles.map((principle) => (
+                <li
+                  key={principle}
+                  className="flex items-center gap-3 border-b border-cream/15 py-3 text-sm"
+                >
+                  <span aria-hidden="true" className="size-1.5 shrink-0 rounded-full bg-blue" />
+                  {principle}
+                </li>
+              ))}
+            </ul>
           </div>
         </Container>
       </Section>
 
-      {/* Expanded gallery — food, interiors, garden, people and drinks, swipeable
-          on phones, captions hidden for an editorial read. */}
+      {/* Families and garden */}
+      <FamilyFriendly locale={locale} dict={dict} />
+
+      {/* Expanded gallery — irregular editorial groups (lead + two stacked),
+          leading with the strongest plates and interleaving interiors, drinks
+          and atmosphere. Captions hidden; the shared lightbox is preserved. */}
       <Section tone="warm-white">
         <Container>
           <SectionHeading eyebrow={dict.gallery.eyebrow} title={dict.gallery.title} />
           <div className="mt-10">
-            <GalleryGrid
-              items={restaurantGallery}
-              categories={["restaurant", "food", "garden"]}
+            <EditorialGallery
+              groups={restaurantGalleryGroups}
+              items={restaurantGalleryItems}
               locale={locale}
               dict={dict}
-              showFilter={false}
-              swipeOnMobile
-              showCaptions={false}
             />
           </div>
           <div className="mt-8 flex flex-wrap gap-3">
