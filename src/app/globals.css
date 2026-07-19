@@ -268,13 +268,18 @@
   display: none;
 }
 
-html[data-intro="show"] .intro-screen {
+/* Visible while the intro is running AND while it fades out ("leaving"), so the
+   overlay actually animates away instead of blinking off the moment the intro
+   state changes. It only hides for good once the component sets "done" (and
+   unmounts). */
+html[data-intro="show"] .intro-screen,
+html[data-intro="leaving"] .intro-screen {
   display: flex;
 }
 
-/* The intro's fade-in motion is driven from the component (it starts only once
-   the artwork has decoded, so it never pops in), so no CSS keyframes are needed
-   here — just the display gate above. */
+/* The intro's motion (logo entrance, progress, fade-out) is driven entirely
+   from the component, so no CSS keyframes are needed here — just the display
+   gate above. */
 
 /* ==========================================================================
    Reduced motion

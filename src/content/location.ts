@@ -128,8 +128,10 @@ export const travelOptions: readonly TravelOption[] = [
   },
   {
     id: "motorcycle",
+    // lucide-react has no motorcycle glyph, so the bicycle icon is the
+    // closest two-wheeled fallback (kept consistent with the bicycle option).
     label: { cs: "Motorka", en: "Motorcycle", de: "Motorrad" },
-    icon: "Car",
+    icon: "Bike",
     summary: {
       cs: "Stejná trasa jako autem. Motorku zaparkujete v uzamčené garáži.",
       en: "The same route as by car. Your motorcycle goes into a locked garage.",

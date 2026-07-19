@@ -377,7 +377,6 @@ export const cs = {
     drinksSubtitle:
       "Budvar, nepasterizovaná ležáky z malých pivovarů, domácí limonády a káva.",
     drinksNote: "Kompletní nápojový lístek najdete u nás na stole.",
-    drinksPending: "Nápojový lístek připravujeme.",
     instagramText: "Co se u nás právě děje, najdete na Instagramu.",
     followInstagram: "Sledovat @klikakitchen",
     bookingTitle: "Rezervace stolu",

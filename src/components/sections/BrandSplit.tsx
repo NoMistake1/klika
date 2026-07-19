@@ -63,7 +63,7 @@ export function BrandSplit({ locale, dict }: { locale: Locale; dict: Dictionary 
           {/* Content box, centred on and overlapping the photo. The hand-drawn
               hotel mark lives INSIDE it, in the bottom-right corner, behind the
               text — the box clips whatever bleeds past its edge. */}
-          <div className="relative overflow-hidden bg-blue-light p-8 text-navy sm:p-12 lg:z-0 lg:col-span-6 lg:-ml-12 lg:p-14">
+          <div className="relative overflow-hidden bg-blue-light p-8 text-navy sm:p-12 lg:z-0 lg:col-span-6 lg:-ml-12 lg:py-14 lg:pr-14 lg:pl-[6.5rem]">
             <DecorImage
               src="/images/logos/drawings/hotel-tr.webp"
               className="-right-6 -bottom-6 h-40 w-56 opacity-[0.16] sm:-right-8 sm:h-48 sm:w-72 lg:-right-6 lg:-bottom-8 lg:h-56 lg:w-80"
@@ -93,11 +93,15 @@ export function BrandSplit({ locale, dict }: { locale: Locale; dict: Dictionary 
         <Reveal className="mt-10 grid gap-8 lg:-mt-28 lg:grid-cols-12 lg:items-center lg:gap-0">
           <div className="relative order-1 lg:order-2 lg:col-span-6 lg:col-start-7">
             {/* Note above the photo, right-aligned; arrow descends to the left
-                into it. Rotated a little further so it leads more clearly down
-                toward the food photo, while staying editorial rather than
-                vertical. */}
+                into it. An explicit transform (mirror + a steeper rotation)
+                makes it point clearly down-left toward the food photo — a
+                deterministic inline style, since two competing rotate-* classes
+                would resolve unpredictably. */}
             <div className="mr-1 mb-4 flex justify-end">
-              <HandwrittenNote arrow="downLeft" arrowClassName="rotate-[18deg]">
+              <HandwrittenNote
+                arrow="downLeft"
+                arrowStyle={{ transform: "rotate(48deg) scaleX(-1)" }}
+              >
                 {dict.split.restaurantNote}
               </HandwrittenNote>
             </div>

@@ -71,7 +71,7 @@ export default async function CateringPage({
       <Section tone="warm-white" className="relative overflow-hidden">
         <Plate
           aria-hidden="true"
-          className="pointer-events-none absolute top-12 -right-10 h-48 w-48 text-sand opacity-30"
+          className="pointer-events-none absolute top-12 -right-10 h-48 w-48 text-sand opacity-30 lg:top-2"
         />
         <Container className="relative">
           <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">

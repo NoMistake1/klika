@@ -22,7 +22,7 @@ export function HotelNumbers({ locale, dict }: { locale: Locale; dict: Dictionar
           clips the overflow, so it never adds page scroll. */}
       <DecorImage
         src="/images/logos/drawings/houses-tr.webp"
-        className="-bottom-4 -left-8 h-28 w-96 opacity-40 sm:h-32 sm:w-[26rem] lg:left-auto lg:-right-4 lg:-bottom-3 lg:h-36 lg:w-[44rem]"
+        className="-bottom-4 -left-8 h-28 w-96 opacity-50 sm:h-32 sm:w-[26rem] lg:left-auto lg:-right-4 lg:-bottom-3 lg:h-36 lg:w-[44rem]"
       />
 
       <Container className="relative">

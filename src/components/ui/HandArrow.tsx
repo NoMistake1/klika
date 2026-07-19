@@ -23,10 +23,18 @@ export function HandArrow({
   dir,
   curve = "default",
   className,
+  style,
 }: {
   dir: ArrowDir;
   curve?: "default" | "alt";
   className?: string;
+  /**
+   * Escape hatch for a deterministic transform (e.g. a bespoke rotation). An
+   * inline `transform` fully replaces the class-based one, so callers that set
+   * it must include the mirror themselves — cn() is a plain join, so competing
+   * `rotate-*` utility classes would otherwise resolve by stylesheet order.
+   */
+  style?: React.CSSProperties;
 }) {
   const mirrored = dir === "left" || dir === "downLeft";
   const steep = dir === "downLeft" || dir === "downRight";
@@ -52,6 +60,7 @@ export function HandArrow({
       strokeWidth={4}
       strokeLinecap="round"
       strokeLinejoin="round"
+      style={style}
       className={cn(
         "pointer-events-none h-[0.9em] w-[1.95em] shrink-0",
         // A small downward tilt for the "down" variants; the level ones lift

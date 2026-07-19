@@ -1,106 +1,117 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Logo } from "@/components/ui/Logo";
 import { cn } from "@/lib/utils";
 
-/** The overlay fade-out duration; must match the CSS transition below. */
-const FADE_MS = 700;
-/** Floor the intro stays up, so the logo's ease-in reads as intentional. */
-const MIN_VISIBLE_MS = 1200;
+/** Nominal time for the progress meter to travel 0 → 100. */
+const PROGRESS_MS = 2200;
+/** How long the complete (100) state holds before the overlay fades. */
+const HOLD_MS = 260;
+/** The overlay fade-out duration; matches the CSS transition below. */
+const FADE_MS = 600;
 /** Hard cap: the intro can never trap the page, whatever fails to load. */
-const SAFETY_MS = 4000;
-/** Fallback for the logo fade-in if next/image's onLoad never fires. */
-const LOGO_FALLBACK_MS = 700;
+const SAFETY_MS = 5000;
 
-/** The real above-the-fold hero posters, so we reveal only once one is ready. */
+/** The real above-the-fold hero posters — progress tracks whichever loads. */
 const POSTER_DESKTOP = "/images/hero/fallback-desktop.webp";
 const POSTER_MOBILE = "/images/hero/fallback-mobile.webp";
 
 /**
- * First-visit intro: the real Klika lockup easing in on the brand blue
- * (#AED3FA), navy artwork, while the hero media loads underneath.
+ * First-visit intro on the brand blue (#AED3FA): the real navy Klika lockup
+ * emerges from small, a restrained 0–100 progress counter runs beneath it, and
+ * once it completes the overlay fades to reveal the already-playing hero video.
  *
- * The motion is deliberately calm and Apple-like: the lockup starts invisible
- * and a touch small (opacity 0, scale 0.88) and glides to full size on a long
- * ease-out — but only once the artwork has actually decoded, so it never pops
- * in half-finished. The overlay then fades away only once three things are
- * true — the logo is in, the hero poster is ready, and a minimum on-screen time
- * has passed — revealing the already-playing hero video. A safety cap guarantees
- * it always leaves.
+ * The sequence is component-driven and deterministic:
+ * - The logo renders hidden and small first (opacity 0, scale 0.72, +8px), and
+ *   only after the first paint does a rAF flip it to its resting state, so the
+ *   ease never plays from a full-opacity frame and there is no pop.
+ * - Progress is a time-based easeOut advanced by requestAnimationFrame, capped
+ *   just below 100 until the hero poster for this viewport has actually loaded,
+ *   so it responds to readiness and never lands on a blank hero. A safety timer
+ *   guarantees completion if the poster or rAF ever stalls.
+ * - At 100 the state holds briefly, then the overlay fades over ~600ms (kept
+ *   visible by the CSS `leaving` rule) before the component unmounts.
  *
- * Visibility is decided before first paint by `IntroGate`, not by React state:
- * an overlay that appears a frame after the page paints would be worse than
- * none. The markup is always server-rendered and kept hidden by CSS until the
- * inline gate stamps data-intro="show".
- *
- * Rules it follows deliberately:
- * - shown once per browser session, never on internal navigation
- * - the hero video autoplays underneath from mount, so there is no empty flash
- * - skipped entirely under prefers-reduced-motion (CSS gate) and without JS
+ * Visibility is decided before first paint by `IntroGate`, not React state: the
+ * markup is always server-rendered and hidden by CSS until the inline gate
+ * stamps data-intro="show". Shown once per session; skipped entirely under
+ * prefers-reduced-motion and without JavaScript.
  */
 export function LoadingScreen() {
+  const [progress, setProgress] = useState(0);
   const [logoIn, setLogoIn] = useState(false);
-  const [mediaReady, setMediaReady] = useState(false);
-  const [minElapsed, setMinElapsed] = useState(false);
   const [leaving, setLeaving] = useState(false);
   const [removed, setRemoved] = useState(false);
+  const posterReady = useRef(false);
 
-  // Mount: only run for a genuine first visit (the gate set data-intro="show").
-  // Otherwise unmount immediately — nothing should animate for returning
-  // visitors or under reduced motion, where the overlay is already hidden.
+  // Mount: run the sequence only for a genuine first visit; otherwise unmount.
   useEffect(() => {
     if (document.documentElement.dataset.intro !== "show") {
-      // Nothing to show (returning visitor / reduced motion): unmount. Deferred
-      // to a callback so it is not a synchronous setState during the effect.
       const skip = window.setTimeout(() => setRemoved(true), 0);
       return () => window.clearTimeout(skip);
     }
 
-    const minTimer = window.setTimeout(() => setMinElapsed(true), MIN_VISIBLE_MS);
-    // If onLoad is missed (cache quirks), still fade the logo in.
-    const logoTimer = window.setTimeout(() => setLogoIn(true), LOGO_FALLBACK_MS);
-    // Whatever happens, don't hold the page hostage.
-    const safety = window.setTimeout(() => {
-      setLogoIn(true);
-      setMediaReady(true);
-      setMinElapsed(true);
-    }, SAFETY_MS);
+    // Flip the logo to its resting state only after the hidden/small state has
+    // painted (double rAF), with a timer fallback if rAF is throttled.
+    const paint = requestAnimationFrame(() =>
+      requestAnimationFrame(() => setLogoIn(true)),
+    );
+    const logoFallback = window.setTimeout(() => setLogoIn(true), 220);
 
-    // Wait on the real hero poster for this viewport, not a proxy timer.
+    // Preload the correct hero poster; mark ready on load or error.
     const isMobile = window.matchMedia("(max-width: 767px)").matches;
     const poster = new window.Image();
-    const onPoster = () => setMediaReady(true);
+    const onPoster = () => {
+      posterReady.current = true;
+    };
     poster.onload = onPoster;
     poster.onerror = onPoster;
     poster.src = isMobile ? POSTER_MOBILE : POSTER_DESKTOP;
     if (poster.complete) onPoster();
 
+    // Smooth progress: easeOut over PROGRESS_MS, held below 100 until the poster
+    // is ready so the number tracks real readiness rather than only the clock.
+    const start = performance.now();
+    let frame = requestAnimationFrame(function tick(now) {
+      const t = Math.min(1, (now - start) / PROGRESS_MS);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const target = posterReady.current ? eased * 100 : Math.min(eased * 100, 90);
+      setProgress((prev) => Math.max(prev, Math.round(target)));
+      if (target >= 100 && posterReady.current) return;
+      frame = requestAnimationFrame(tick);
+    });
+
+    // Safety: guarantee completion even if the poster or rAF never resolves.
+    const safety = window.setTimeout(() => {
+      posterReady.current = true;
+      setLogoIn(true);
+      setProgress(100);
+    }, SAFETY_MS);
+
     return () => {
-      window.clearTimeout(minTimer);
-      window.clearTimeout(logoTimer);
+      cancelAnimationFrame(paint);
+      cancelAnimationFrame(frame);
+      window.clearTimeout(logoFallback);
       window.clearTimeout(safety);
       poster.onload = null;
       poster.onerror = null;
     };
   }, []);
 
-  // Begin the fade-out once the logo is in, the hero poster is ready and the
-  // minimum on-screen time has elapsed. Scheduled via a timer (not
-  // requestAnimationFrame, which pauses while the tab is backgrounded) so the
-  // hand-off still completes if the visitor tabs away mid-intro, and so the
-  // state change runs from a callback rather than synchronously in render.
+  // Once progress reaches 100, hold briefly then begin the fade. Setting
+  // data-intro="leaving" both keeps the overlay displayed (CSS) through the fade
+  // and signals the hero, whose video is already playing underneath.
   useEffect(() => {
-    if (removed || leaving) return;
-    if (!(logoIn && mediaReady && minElapsed)) return;
+    if (removed || leaving || progress < 100) return;
     const timer = window.setTimeout(() => {
       setLeaving(true);
       document.documentElement.dataset.intro = "leaving";
-    }, 0);
+    }, HOLD_MS);
     return () => window.clearTimeout(timer);
-  }, [logoIn, mediaReady, minElapsed, leaving, removed]);
+  }, [progress, leaving, removed]);
 
-  // After the fade completes, unmount and let the hero take over.
+  // After the fade completes, unmount and hand the page to the hero.
   useEffect(() => {
     if (!leaving) return;
     const timer = window.setTimeout(() => {
@@ -118,17 +129,19 @@ export function LoadingScreen() {
       data-leaving={leaving}
       className={cn(
         // bg-blue is the authoritative #AED3FA brand token.
-        "intro-screen fixed inset-0 z-[100] items-center justify-center bg-blue",
-        "transition-opacity duration-700 ease-[cubic-bezier(0.22,0.61,0.36,1)]",
+        "intro-screen fixed inset-0 z-[100] flex-col items-center justify-center bg-blue",
+        "transition-opacity duration-[600ms] ease-[cubic-bezier(0.22,0.61,0.36,1)]",
         "data-[leaving=true]:pointer-events-none data-[leaving=true]:opacity-0",
       )}
     >
       <div
         className={cn(
           "px-10 will-change-[opacity,transform]",
-          // The premium ease-out (easeOutExpo-like): a long, decelerating glide.
-          "transition-[opacity,transform] duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
-          logoIn ? "scale-100 opacity-100" : "scale-[0.88] opacity-0",
+          // Premium ease-out; ~1s glide from small/low to resting.
+          "transition-[opacity,transform] duration-[1000ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
+          logoIn
+            ? "translate-y-0 scale-100 opacity-100"
+            : "translate-y-2 scale-[0.72] opacity-0",
         )}
       >
         <Logo
@@ -138,6 +151,19 @@ export function LoadingScreen() {
           onLoad={() => setLogoIn(true)}
           className="h-auto w-56 sm:w-72"
         />
+      </div>
+
+      {/* Progress — a restrained number over a thin line, below the logo. */}
+      <div className="mt-10 flex w-40 flex-col items-center gap-2.5 sm:w-48">
+        <span className="text-sm font-semibold tracking-[0.25em] text-navy/55 tabular-nums">
+          {progress}
+        </span>
+        <span className="relative block h-px w-full overflow-hidden bg-navy/15">
+          <span
+            className="absolute inset-y-0 left-0 bg-navy/55"
+            style={{ width: `${progress}%` }}
+          />
+        </span>
       </div>
     </div>
   );

@@ -382,7 +382,6 @@ export const de: Dictionary = {
     drinksSubtitle:
       "Budvar, unpasteurisierte Lager aus kleinen Brauereien, hausgemachte Limonaden und Kaffee.",
     drinksNote: "Die komplette Getränkekarte finden Sie bei uns am Tisch.",
-    drinksPending: "Die Getränkekarte wird vorbereitet.",
     instagramText: "Was bei uns gerade los ist, sehen Sie auf Instagram.",
     followInstagram: "@klikakitchen folgen",
     bookingTitle: "Tischreservierung",

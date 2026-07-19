@@ -380,7 +380,6 @@ export const en: Dictionary = {
     drinksSubtitle:
       "Budvar, unpasteurized lagers from small breweries, homemade lemonades and coffee.",
     drinksNote: "You will find the full drinks list on your table.",
-    drinksPending: "The drinks menu is being prepared.",
     instagramText: "See what is happening right now on Instagram.",
     followInstagram: "Follow @klikakitchen",
     bookingTitle: "Table booking",
