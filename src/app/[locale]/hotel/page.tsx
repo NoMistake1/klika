@@ -18,7 +18,7 @@ import {
   specialOffers,
 } from "@/content/hotel";
 import { breakfastHours } from "@/content/contact";
-import { galleryItems } from "@/content/gallery";
+import { hotelGalleryGroups, hotelGalleryItems } from "@/content/gallery";
 import { bookStayHref } from "@/content/navigation";
 import { Button } from "@/components/ui/Button";
 import { Container, Section, SectionHeading } from "@/components/ui/Section";
@@ -28,7 +28,7 @@ import { Icon } from "@/components/ui/Icon";
 import { Reveal } from "@/components/ui/Reveal";
 import { RoomSlider } from "@/components/hotel/RoomSlider";
 import { PricingList } from "@/components/hotel/PricingList";
-import { GalleryGrid } from "@/components/gallery/GalleryGrid";
+import { EditorialGallery } from "@/components/gallery/EditorialGallery";
 import { Waves } from "@/components/illustrations";
 import { cn } from "@/lib/utils";
 
@@ -58,10 +58,6 @@ export default async function HotelPage({
 
   const locale: Locale = raw;
   const dict = getDictionary(locale);
-  const hotelGallery = galleryItems.filter(
-    (item) => item.category === "hotel" || item.category === "rooms",
-  );
-
   return (
     <>
       <PageHeader
@@ -74,7 +70,18 @@ export default async function HotelPage({
         tone="blue-light"
         aside={
           <div className="flex flex-col items-start gap-5 lg:items-end">
-            <HandwrittenNote arrow="left">{dict.hotelPage.handwritten}</HandwrittenNote>
+            {/* On a phone the note stands alone — no arrow, and no leftover
+                space where one used to be. The desktop note keeps its arrow,
+                which still points correctly into the column beside it. The
+                display toggle lives on wrapper divs rather than on the note's
+                own inline-flex span, since cn() is a plain join and a `hidden`
+                there would never win. */}
+            <div className="lg:hidden">
+              <HandwrittenNote>{dict.hotelPage.handwritten}</HandwrittenNote>
+            </div>
+            <div className="hidden lg:block">
+              <HandwrittenNote arrow="left">{dict.hotelPage.handwritten}</HandwrittenNote>
+            </div>
             <Button href={localePath(locale, bookStayHref)} size="lg">
               {dict.actions.bookStay}
               <ArrowRight aria-hidden="true" className="size-4" />
@@ -349,13 +356,14 @@ export default async function HotelPage({
         <Container>
           <SectionHeading eyebrow={dict.gallery.eyebrow} title={dict.hotelPage.galleryTitle} />
           <div className="mt-10">
-            <GalleryGrid
-              items={hotelGallery}
-              categories={["hotel", "rooms"]}
+            {/* Same editorial system as the restaurant gallery, deliberately a
+                different story: the house, the rooms and the stay lead, and the
+                restaurant appears only at the end as an amenity. */}
+            <EditorialGallery
+              groups={hotelGalleryGroups}
+              items={hotelGalleryItems}
               locale={locale}
               dict={dict}
-              showFilter={false}
-              swipeOnMobile
             />
           </div>
           <div className="mt-8">

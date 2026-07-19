@@ -56,7 +56,9 @@ const photos: readonly CollagePhoto[] = [
       en: "A freshly prepared main dish",
       de: "Ein frisch zubereitetes Hauptgericht",
     },
-    wrap: "w-[calc(50%-0.5rem)] aspect-[3/4] lg:w-[36%] lg:aspect-[4/5] lg:translate-y-10",
+    // Dropped a little further on desktop than the outer pair; its note is
+    // absolutely positioned inside this wrapper, so it travels with the image.
+    wrap: "w-[calc(50%-0.5rem)] aspect-[3/4] lg:w-[36%] lg:aspect-[4/5] lg:translate-y-16",
     sizes: "(min-width: 1024px) 36vw, 45vw",
   },
   {
@@ -69,7 +71,8 @@ const photos: readonly CollagePhoto[] = [
       en: "A spread of small dishes to share",
       de: "Mehrere kleine Gerichte zum Teilen",
     },
-    wrap: "mt-14 w-[calc(50%-0.5rem)] aspect-[4/5] lg:mt-0 lg:w-[30%] lg:aspect-[3/4] lg:-translate-y-6",
+    // Dropped on mobile to open the deliberate gap the Caveat note sits in.
+    wrap: "mt-20 w-[calc(50%-0.5rem)] aspect-[4/5] lg:mt-0 lg:w-[30%] lg:aspect-[3/4] lg:-translate-y-6",
     sizes: "(min-width: 1024px) 30vw, 45vw",
   },
 ];
@@ -145,10 +148,17 @@ export function FoodCollage({ locale, dict }: { locale: Locale; dict: Dictionary
                 </div>
               ) : null}
 
-              {/* Mobile: one note in the gap above the lower-right image. */}
+              {/* Mobile: one note in the gap above the lower-right image. The
+                  wrapper spans exactly that image's column (inset-x-0) and
+                  centres the note over it, so the composition stays balanced on
+                  the image and can never reach across into its neighbour. The
+                  whole note is set on a slight diagonal — handwriting, not a
+                  label — and the arrow is steepened so it points down into the
+                  photograph rather than sideways. Text wraps to two lines here,
+                  which is what keeps it inside the column. */}
               {index === 2 ? (
-                <div className="absolute -top-12 right-0 z-10 block lg:hidden">
-                  <HandwrittenNote arrow="downRight" className="whitespace-nowrap">
+                <div className="absolute inset-x-0 -top-16 z-10 flex -rotate-6 justify-center lg:hidden">
+                  <HandwrittenNote arrow="downRight" tilt={34}>
                     {dict.foodCollage.note}
                   </HandwrittenNote>
                 </div>

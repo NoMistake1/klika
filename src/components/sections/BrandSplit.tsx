@@ -99,9 +99,13 @@ export function BrandSplit({ locale, dict }: { locale: Locale; dict: Dictionary 
             {/* Note above the photo, right-aligned; the shared downLeft arrow
                 (a mirror of the hotel note's downRight) curves from beside the
                 text down-left toward the food photo, with the open-V head at the
-                lower-left target end. Restrained by design — no bespoke tilt. */}
+                lower-left target end. The tilt is NEGATIVE because this arrow is
+                mirrored and CSS scales before it rotates — see HandArrow; −20°
+                leads the eye down into the photograph without going vertical. */}
             <div className="mr-1 mb-4 flex justify-end">
-              <HandwrittenNote arrow="downLeft">{dict.split.restaurantNote}</HandwrittenNote>
+              <HandwrittenNote arrow="downLeft" tilt={-20}>
+                {dict.split.restaurantNote}
+              </HandwrittenNote>
             </div>
 
             <div className="relative aspect-[3/4] overflow-hidden bg-cream">

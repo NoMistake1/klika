@@ -230,11 +230,9 @@ export const de: Dictionary = {
     subtitle: "Hotel, Zimmer, Restaurant, Essen, Garten und Umgebung.",
     categories: {
       all: "Alle",
-      hotel: "Hotel",
-      rooms: "Zimmer",
-      restaurant: "Restaurant",
       food: "Essen",
-      garden: "Garten",
+      restaurant: "Restaurant",
+      hotel: "Hotel",
       surroundings: "Umgebung",
     },
     empty: "In dieser Kategorie gibt es noch keine Fotos.",
@@ -242,6 +240,8 @@ export const de: Dictionary = {
     filterLabel: "Nach Kategorie filtern",
     openImage: "Bild öffnen",
     lightboxLabel: "Fotoansicht",
+    loadMore: "Mehr laden",
+    allShown: "Sie haben alle Fotos gesehen.",
   },
 
   finalCta: {
@@ -258,7 +258,7 @@ export const de: Dictionary = {
     title: "Ein Familienhotel am Piaristické náměstí",
     intro:
       "Das Hotel Klika liegt im historischen Zentrum von České Budějovice, nur wenige Schritte von der Insel Sokolský ostrov und dem Zusammenfluss von Vltava und Malše entfernt. Wir befinden uns in einem ruhigen Teil des Zentrums — zum Hauptplatz sind es drei Minuten zu Fuß, der Trubel der Hauptstraßen bleibt jedoch um die Ecke.",
-    handwritten: "Hier schläft man gut",
+    handwritten: "Ihre Ruhe im Zentrum",
     areasTitle: "Wo Sie wohnen",
     areasSubtitle:
       "Die Unterkunft verteilt sich auf vier Gebäude mit einer gemeinsamen Rezeption.",

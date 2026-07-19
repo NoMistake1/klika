@@ -12,6 +12,7 @@ import { Container, Section, SectionHeading } from "@/components/ui/Section";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Price } from "@/components/ui/MenuBadges";
 import { HandwrittenNote } from "@/components/ui/HandwrittenNote";
+import { BackgroundPhoto } from "@/components/ui/BackgroundPhoto";
 import { Plate } from "@/components/illustrations";
 import { telLink } from "@/lib/utils";
 
@@ -54,12 +55,25 @@ export default async function CateringPage({
           { label: dict.restaurantPage.eyebrow, path: "/restaurant" },
           { label: dict.catering.eyebrow },
         ]}
-        tone="cream"
+        className="lg:pt-44 lg:pb-32"
+        // The laid wedding table carries the masthead: the portrait crop on
+        // phones, the wide frame on desktop, each with its own focal point, and
+        // both under the shared dark scrim so the cream text stays readable
+        // without washing the photograph out.
+        background={{
+          src: "/images/restaurant/svatba-desktop.webp",
+          width: 1672,
+          height: 941,
+          mobileSrc: "/images/restaurant/svatba.webp",
+          mobileWidth: 1402,
+          mobileHeight: 1122,
+          imgClassName: "object-[center_58%] md:object-[center_42%]",
+        }}
         aside={
-          <div className="flex items-center gap-3 text-navy">
-            <Users aria-hidden="true" className="size-5 opacity-50" />
+          <div className="flex items-center gap-3 text-cream">
+            <Users aria-hidden="true" className="size-5 opacity-60" />
             <p>
-              <span className="block text-xs tracking-wide uppercase opacity-55">
+              <span className="block text-xs tracking-wide uppercase opacity-70">
                 {dict.catering.capacityTitle}
               </span>
               <span className="block text-sm">{dict.catering.capacityText}</span>
@@ -89,9 +103,20 @@ export default async function CateringPage({
                 ))}
               </ul>
 
-              <HandwrittenNote className="mt-10" arrow="right">
-                {dict.catering.contactTitle}
-              </HandwrittenNote>
+              {/* On a phone the planning panel sits BELOW this list, so the
+                  arrow has to lead downward into it rather than sideways off
+                  the screen; on desktop the panel is the column to the right,
+                  where the level arrow is already correct. Display is toggled
+                  on wrappers, never with `hidden` on the note's own inline-flex
+                  span — cn() is a plain join, so that would never win. */}
+              <div className="mt-10 lg:hidden">
+                <HandwrittenNote arrow="downRight" tilt={34}>
+                  {dict.catering.contactTitle}
+                </HandwrittenNote>
+              </div>
+              <div className="mt-10 hidden lg:block">
+                <HandwrittenNote arrow="right">{dict.catering.contactTitle}</HandwrittenNote>
+              </div>
             </div>
 
             <aside className="lg:col-span-5">
@@ -127,40 +152,72 @@ export default async function CateringPage({
         </Container>
       </Section>
 
-      {/* Vouchers */}
-      <Section tone="blue-light">
-        <Container>
-          <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
-            <div className="lg:col-span-5">
-              <SectionHeading
-                eyebrow={dict.catering.vouchersTitle}
-                title={dict.catering.vouchersTitle}
-                lede={dict.catering.vouchersText}
-              />
+      {/* Gift vouchers — the voucher photograph is the section itself, not a
+          picture placed on it. The scrim is directional: dense behind the text
+          column and thinning across the frame, so the printed detail of the
+          voucher stays visible instead of disappearing under a flat card. */}
+      <Section tone="navy" className="relative overflow-hidden">
+        <BackgroundPhoto
+          src="/images/restaurant/poukazy.webp"
+          width={1402}
+          height={1122}
+          sizes="100vw"
+          className="object-[center_45%]"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-b from-navy/88 via-navy/70 to-navy/62 lg:bg-gradient-to-r lg:from-navy/94 lg:via-navy/70 lg:to-navy/20"
+        />
+
+        <Container className="relative">
+          <div className="max-w-xl">
+            <h2 className="font-display text-4xl leading-none text-blue sm:text-5xl">
+              {dict.catering.vouchersTitle}
+            </h2>
+            <p className="mt-5 text-base leading-relaxed text-pretty text-cream/90 sm:text-lg">
+              {dict.catering.vouchersText}
+            </p>
+
+            {/* The three values, as frosted plates rather than an opaque card. */}
+            <ul className="mt-8 flex flex-wrap gap-3">
+              {vouchers.map((voucher) => (
+                <li
+                  key={voucher.id}
+                  className="border border-cream/25 bg-navy/25 px-6 py-4 backdrop-blur-sm"
+                >
+                  <span className="block text-[0.7rem] tracking-[0.18em] text-cream/60 uppercase">
+                    {dict.catering.voucherValue}
+                  </span>
+                  <Price
+                    amountCzk={voucher.valueCzk}
+                    locale={locale}
+                    className="mt-1 block font-display text-3xl text-blue"
+                  />
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Button href={telLink(restaurantPhone.e164)} variant="secondary" size="lg">
+                <Phone aria-hidden="true" className="size-4" />
+                {dict.actions.callRestaurant}
+              </Button>
+              <Button
+                href={`mailto:${restaurantEmail}?subject=${encodeURIComponent(dict.catering.vouchersTitle)}`}
+                variant="outline"
+                size="lg"
+                className="border-cream/40 text-cream hover:bg-cream/10"
+              >
+                <Mail aria-hidden="true" className="size-4" />
+                {dict.actions.sendEmail}
+              </Button>
             </div>
 
-            <div className="lg:col-span-7">
-              <ul className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                {vouchers.map((voucher) => (
-                  <li
-                    key={voucher.id}
-                    className="flex flex-col items-start justify-between gap-6 border border-navy/20 bg-warm-white p-5"
-                  >
-                    <span className="text-xs tracking-wide uppercase opacity-55">
-                      {dict.catering.voucherValue}
-                    </span>
-                    <Price
-                      amountCzk={voucher.valueCzk}
-                      locale={locale}
-                      className="font-display text-3xl"
-                    />
-                  </li>
-                ))}
-              </ul>
-
-              {/* No payment system is implemented, and none is implied. */}
-              <p className="mt-6 text-sm opacity-70">{dict.catering.vouchersNote}</p>
-            </div>
+            {/* No payment system is implemented, and none is implied. */}
+            {/* Kept at /80 rather than /70: the scrim is deliberately thinner
+                here so the voucher print stays visible, so the smallest text
+                needs the extra weight to stay comfortably legible. */}
+            <p className="mt-6 max-w-md text-sm text-cream/80">{dict.catering.vouchersNote}</p>
           </div>
         </Container>
       </Section>

@@ -230,18 +230,18 @@ export const cs = {
     subtitle: "Hotel, pokoje, restaurace, jídlo, zahrádka a okolí.",
     categories: {
       all: "Vše",
-      hotel: "Hotel",
-      rooms: "Pokoje",
-      restaurant: "Restaurace",
       food: "Jídlo",
-      garden: "Zahrádka",
-      surroundings: "Okolí",
+      restaurant: "Restaurace",
+      hotel: "Hotel",
+      surroundings: "Okolí a atmosféra",
     },
     empty: "V této kategorii zatím nejsou žádné fotografie.",
     emptyHint: "Vyberte prosím jinou kategorii.",
     filterLabel: "Filtrovat podle kategorie",
     openImage: "Otevřít obrázek",
     lightboxLabel: "Prohlížeč fotografií",
+    loadMore: "Načíst další",
+    allShown: "Zobrazili jste všechny fotografie.",
   },
 
   finalCta: {
@@ -257,7 +257,7 @@ export const cs = {
     title: "Rodinný hotel u Piaristického náměstí",
     intro:
       "Hotel Klika stojí v historickém centru Českých Budějovic, kousek od Sokolského ostrova a soutoku Vltavy a Malše. Jsme v klidné části centra — na náměstí dojdete pěšky za tři minuty, ruch hlavních ulic ale zůstane za rohem.",
-    handwritten: "Tady se dobře spí",
+    handwritten: "Váš klid v centru",
     areasTitle: "Kde budete bydlet",
     areasSubtitle:
       "Ubytování je rozdělené do čtyř budov. Recepce je pro všechny společná.",

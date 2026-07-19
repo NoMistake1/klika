@@ -237,13 +237,12 @@ export interface GeoCoordinates {
 /* Gallery                                                                    */
 /* -------------------------------------------------------------------------- */
 
-export type GalleryCategory =
-  | "hotel"
-  | "rooms"
-  | "restaurant"
-  | "food"
-  | "garden"
-  | "surroundings";
+/**
+ * Gallery filters. Four worlds rather than six: rooms belong to the hotel and
+ * the garden is part of the restaurant, so the filter bar stays scannable on a
+ * phone instead of splitting the same place across near-duplicate tabs.
+ */
+export type GalleryCategory = "food" | "restaurant" | "hotel" | "surroundings";
 
 export interface GalleryItem {
   readonly id: string;

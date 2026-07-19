@@ -21,6 +21,7 @@ export function HandwrittenNote({
   arrow,
   curve = "default",
   arrowClassName,
+  tilt,
   tone = "accent",
 }: {
   children: ReactNode;
@@ -30,6 +31,8 @@ export function HandwrittenNote({
   curve?: "default" | "alt";
   /** Extra classes on the arrow, e.g. to hide it at a breakpoint. */
   arrowClassName?: string;
+  /** Steepen the arrow, in degrees — see HandArrow. Larger reads further down. */
+  tilt?: number;
   /** `accent` is the standard annotation colour on every surface. */
   tone?: "accent" | "navy" | "cream";
 }) {
@@ -53,11 +56,21 @@ export function HandwrittenNote({
       )}
     >
       {hasArrow && before ? (
-        <HandArrow dir={arrow} curve={curve} className={cn(down && "mb-1", arrowClassName)} />
+        <HandArrow
+          dir={arrow}
+          curve={curve}
+          tilt={tilt}
+          className={cn(down && "mb-1", arrowClassName)}
+        />
       ) : null}
       <span className="-rotate-1">{children}</span>
       {hasArrow && !before ? (
-        <HandArrow dir={arrow} curve={curve} className={cn(down && "mb-1", arrowClassName)} />
+        <HandArrow
+          dir={arrow}
+          curve={curve}
+          tilt={tilt}
+          className={cn(down && "mb-1", arrowClassName)}
+        />
       ) : null}
     </span>
   );

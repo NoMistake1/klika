@@ -23,10 +23,25 @@ export function HandArrow({
   dir,
   curve = "default",
   className,
+  tilt,
 }: {
   dir: ArrowDir;
   curve?: "default" | "alt";
   className?: string;
+  /**
+   * Overrides the default tilt, in degrees, for notes that need to lead the eye
+   * further down. Written to the CSS `rotate` property rather than `transform`:
+   * Tailwind v4 sets rotate and scale as separate properties, so an inline
+   * `rotate` cleanly replaces the class while the mirror (`scale`) still
+   * applies.
+   *
+   * Mind the sign. CSS applies the individual transform properties in the order
+   * translate → rotate → scale, which means the mirror is applied to the points
+   * BEFORE the rotation. So for the right-facing variants a POSITIVE tilt swings
+   * the head further down, while for the mirrored left-facing ones (`left`,
+   * `downLeft`) a NEGATIVE tilt does — a positive one would lift it up instead.
+   */
+  tilt?: number;
 }) {
   const mirrored = dir === "left" || dir === "downLeft";
   const steep = dir === "downLeft" || dir === "downRight";
@@ -52,6 +67,7 @@ export function HandArrow({
       strokeWidth={4}
       strokeLinecap="round"
       strokeLinejoin="round"
+      style={tilt === undefined ? undefined : { rotate: `${tilt}deg` }}
       className={cn(
         "pointer-events-none h-[0.9em] w-[1.95em] shrink-0",
         // A small downward tilt for the "down" variants; the level ones lift
