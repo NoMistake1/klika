@@ -5,7 +5,7 @@ import { isLocale, resolveLocale } from "@/lib/i18n";
 import { buildPageMetadata } from "@/lib/metadata";
 import { JsonLdScript, hotelSchema, restaurantSchema } from "@/lib/structured-data";
 import { Hero } from "@/components/sections/Hero";
-import { DailyMenuPreview } from "@/components/sections/DailyMenuPreview";
+import { FoodCollage } from "@/components/sections/FoodCollage";
 import { BrandSplit } from "@/components/sections/BrandSplit";
 import { HotelNumbers } from "@/components/sections/HotelNumbers";
 import { FeaturedRooms } from "@/components/sections/FeaturedRooms";
@@ -47,7 +47,7 @@ export default async function HomePage({
   return (
     <>
       <Hero locale={locale} dict={dict} />
-      <DailyMenuPreview locale={locale} dict={dict} />
+      <FoodCollage locale={locale} dict={dict} />
       <BrandSplit locale={locale} dict={dict} />
       <HotelNumbers locale={locale} dict={dict} />
       <FeaturedRooms locale={locale} dict={dict} />

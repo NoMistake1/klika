@@ -5,7 +5,14 @@ import { useEffect, useRef } from "react";
 import { ArrowUpRight, Check, X } from "lucide-react";
 import type { NavItem } from "@/types";
 import type { Dictionary } from "@/content/dictionaries";
-import { localeLabels, localePath, locales, switchLocalePath, type Locale } from "@/lib/i18n";
+import {
+  activeNavHref,
+  localeLabels,
+  localePath,
+  locales,
+  switchLocalePath,
+  type Locale,
+} from "@/lib/i18n";
 import { bookStayHref, bookTableHref } from "@/content/navigation";
 import { Button } from "@/components/ui/Button";
 import { Waves } from "@/components/illustrations";
@@ -49,6 +56,13 @@ export function MobileNav({
   useEffect(() => {
     if (open) closeButtonRef.current?.focus();
   }, [open]);
+
+  // The single active nav item, by longest matching href — so /restaurant/menu
+  // highlights only "Menu", never also its parent "Restaurace".
+  const currentNavHref = activeNavHref(
+    currentPath,
+    items.map((item) => localePath(locale, item.href)),
+  );
 
   return (
     <div
@@ -106,7 +120,7 @@ export function MobileNav({
           <ul className="flex flex-col gap-0.5">
             {items.map((item, index) => {
               const href = localePath(locale, item.href);
-              const isCurrent = currentPath === href || currentPath.startsWith(`${href}/`);
+              const isCurrent = href === currentNavHref;
 
               return (
                 <li

@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { Menu } from "lucide-react";
 import type { NavItem } from "@/types";
 import type { Dictionary } from "@/content/dictionaries";
-import { localePath, type Locale } from "@/lib/i18n";
+import { activeNavHref, localePath, type Locale } from "@/lib/i18n";
 import { bookStayHref, bookTableHref } from "@/content/navigation";
 import { Button } from "@/components/ui/Button";
 import { Logo } from "@/components/ui/Logo";
@@ -40,6 +40,12 @@ export function Header({
   // Only the homepage has a hero to sit over.
   const isHome = pathname === localePath(locale) || pathname === `${localePath(locale)}/`;
   const overlay = isHome && !scrolled;
+
+  // The single active nav item, by longest matching href.
+  const currentNavHref = activeNavHref(
+    pathname,
+    items.map((item) => localePath(locale, item.href)),
+  );
 
   useScrollLock(menuOpen);
 
@@ -154,7 +160,9 @@ export function Header({
             <ul className="flex items-center gap-1">
               {items.map((item) => {
                 const href = localePath(locale, item.href);
-                const isCurrent = pathname === href || pathname.startsWith(`${href}/`);
+                // Longest-match so /restaurant/menu highlights only "Menu", not
+                // its parent "Restaurace" as a broad prefix would.
+                const isCurrent = href === currentNavHref;
 
                 return (
                   <li key={item.id}>

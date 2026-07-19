@@ -364,93 +364,95 @@ export default async function RestaurantPage({
         </Container>
       </Section>
 
-      {/* Events & gift vouchers — two comparable photographic cards, each a full
-          background photo with its own overlay. Side by side on desktop, stacked
-          on mobile (events first). The dark wedding card and the light voucher
-          card read as clearly distinct. */}
-      <Section tone="warm-white">
-        <Container>
-          <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
-            {/* Akce a catering — over the laid wedding table. */}
-            <div className="relative flex min-h-[26rem] flex-col justify-end overflow-hidden bg-navy p-8 text-cream sm:p-12 lg:min-h-[30rem] lg:p-14">
-              <BackgroundPhoto
-                src="/images/restaurant/svatba-desktop.webp"
-                width={1672}
-                height={941}
-                mobileSrc="/images/restaurant/svatba.webp"
-                mobileWidth={1402}
-                mobileHeight={1122}
-                sizes="(min-width: 1024px) 50vw, 100vw"
-                className="object-[center_55%] lg:object-center"
-              />
-              <div
-                aria-hidden="true"
-                className="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/70 to-navy/35"
-              />
-              <div className="relative">
-                <p className="mb-3 text-xs font-semibold tracking-[0.2em] text-blue/80 uppercase">
-                  {dict.catering.eyebrow}
-                </p>
-                <h2 className="font-display text-4xl leading-none text-blue sm:text-5xl">
-                  {dict.catering.title}
-                </h2>
-                <p className="mt-5 max-w-md leading-relaxed text-pretty text-cream/90">
-                  {dict.catering.intro}
-                </p>
-                <p className="mt-3 text-sm text-cream/75">{dict.catering.capacityText}</p>
-                <Button
-                  href={localePath(locale, "/restaurant/catering")}
-                  variant="secondary"
-                  size="lg"
-                  className="mt-8"
-                >
-                  {dict.catering.eyebrow}
-                  <ArrowRight aria-hidden="true" className="size-4" />
-                </Button>
-              </div>
-            </div>
-
-            {/* Dárkové poukazy — over the voucher photograph, kept light with a
-                restrained warm-white wash so the navy text and values read. */}
-            <div className="relative flex min-h-[26rem] flex-col justify-end overflow-hidden bg-cream p-8 text-navy sm:p-12 lg:min-h-[30rem] lg:p-14">
-              <BackgroundPhoto
-                src="/images/restaurant/poukazy.webp"
-                width={1402}
-                height={1122}
-                sizes="(min-width: 1024px) 50vw, 100vw"
-                className="object-[center_35%]"
-              />
-              <div
-                aria-hidden="true"
-                className="absolute inset-0 bg-gradient-to-t from-warm-white via-warm-white/90 to-warm-white/35"
-              />
-              <div className="relative">
-                <p className="mb-3 text-xs font-semibold tracking-[0.2em] uppercase opacity-55">
-                  {dict.catering.vouchersTitle}
-                </p>
-                <h2 className="font-display text-4xl leading-none sm:text-5xl">
-                  {dict.catering.vouchersTitle}
-                </h2>
-                <p className="mt-5 max-w-md leading-relaxed text-pretty opacity-80">
-                  {dict.catering.vouchersText}
-                </p>
-                <ul className="mt-6 flex flex-wrap gap-3">
-                  {vouchers.map((voucher) => (
-                    <li
-                      key={voucher.id}
-                      className="border border-navy/25 bg-warm-white/70 px-5 py-2.5 text-base font-medium backdrop-blur-sm"
-                    >
-                      <span className="sr-only">{dict.catering.voucherValue} </span>
-                      <Price amountCzk={voucher.valueCzk} locale={locale} />
-                    </li>
-                  ))}
-                </ul>
-                <p className="mt-4 text-xs opacity-60">{dict.catering.vouchersNote}</p>
-              </div>
-            </div>
+      {/* Events & gift vouchers — one full-bleed editorial split band that
+          follows the seating zones with no warm-white gutter above or around
+          it. Two 50/50 photographic panels meet with a clean join (no gap, no
+          rounded corners between them): the dark wedding card and the light
+          voucher card. Stacked on mobile (events first) with no gap between. */}
+      <section
+        aria-label={`${dict.catering.eyebrow} · ${dict.catering.vouchersTitle}`}
+        className="grid grid-cols-1 lg:grid-cols-2"
+      >
+        {/* Akce a catering — over the laid wedding table. */}
+        <div className="relative flex min-h-[28rem] flex-col justify-end overflow-hidden bg-navy p-8 text-cream sm:p-12 lg:min-h-[34rem] lg:p-16">
+          <BackgroundPhoto
+            src="/images/restaurant/svatba-desktop.webp"
+            width={1672}
+            height={941}
+            mobileSrc="/images/restaurant/svatba.webp"
+            mobileWidth={1402}
+            mobileHeight={1122}
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            className="object-[center_55%] lg:object-center"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/70 to-navy/35"
+          />
+          <div className="relative max-w-lg">
+            <p className="mb-3 text-xs font-semibold tracking-[0.2em] text-blue/80 uppercase">
+              {dict.catering.eyebrow}
+            </p>
+            <h2 className="font-display text-4xl leading-none text-blue sm:text-5xl">
+              {dict.catering.title}
+            </h2>
+            <p className="mt-5 max-w-md leading-relaxed text-pretty text-cream/90">
+              {dict.catering.intro}
+            </p>
+            <p className="mt-3 text-sm text-cream/75">{dict.catering.capacityText}</p>
+            <Button
+              href={localePath(locale, "/restaurant/catering")}
+              variant="secondary"
+              size="lg"
+              className="mt-8"
+            >
+              {dict.catering.eyebrow}
+              <ArrowRight aria-hidden="true" className="size-4" />
+            </Button>
           </div>
-        </Container>
-      </Section>
+        </div>
+
+        {/* Dárkové poukazy — the voucher photograph shown clearly. Only a
+            restrained, bottom-anchored warm-white gradient sits behind the text
+            for legibility; the upper part of the photo reads with no beige
+            wash. The values keep their own frosted chips. */}
+        <div className="relative flex min-h-[28rem] flex-col justify-end overflow-hidden bg-cream p-8 text-navy sm:p-12 lg:min-h-[34rem] lg:p-16">
+          <BackgroundPhoto
+            src="/images/restaurant/poukazy.webp"
+            width={1402}
+            height={1122}
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            className="object-[center_40%]"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-warm-white via-warm-white/75 to-transparent"
+          />
+          <div className="relative max-w-lg">
+            <p className="mb-3 text-xs font-semibold tracking-[0.2em] text-navy/70 uppercase">
+              {dict.catering.vouchersTitle}
+            </p>
+            <h2 className="font-display text-4xl leading-none [text-shadow:0_1px_10px_var(--color-warm-white)] sm:text-5xl">
+              {dict.catering.vouchersTitle}
+            </h2>
+            <p className="mt-5 max-w-md leading-relaxed text-pretty text-navy/85">
+              {dict.catering.vouchersText}
+            </p>
+            <ul className="mt-6 flex flex-wrap gap-3">
+              {vouchers.map((voucher) => (
+                <li
+                  key={voucher.id}
+                  className="border border-navy/25 bg-warm-white/75 px-5 py-2.5 text-base font-medium backdrop-blur-sm"
+                >
+                  <span className="sr-only">{dict.catering.voucherValue} </span>
+                  <Price amountCzk={voucher.valueCzk} locale={locale} />
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4 text-xs text-navy/65">{dict.catering.vouchersNote}</p>
+          </div>
+        </div>
+      </section>
 
       {/* Drinks and bar */}
       <Section tone="warm-white" className="relative overflow-hidden">
@@ -526,10 +528,16 @@ export default async function RestaurantPage({
       {/* How we cook — the kitchen principles, kept as a compact scannable list.
           Swapped to sit after the drinks and suppliers. A hairline on desktop
           separates it from the suppliers band above (both are navy); on mobile
-          the section boundary already reads as a break. */}
-      <Section tone="navy" spacing="tight">
+          the section boundary already reads as a break.
+
+          Desktop: the section is pulled up and loses its top padding so the
+          hairline rises to sit just under the suppliers block — roughly level
+          with the bottom of the decorative mushroom — instead of floating in a
+          wide empty navy band. "Jak vaříme" then sits close beneath the line
+          (lg:pt-8, down from pt-12). Mobile spacing is untouched. */}
+      <Section tone="navy" spacing="tight" className="lg:-mt-6 lg:pt-0">
         <Container>
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,20rem)_1fr] lg:gap-16 lg:border-t lg:border-cream/12 lg:pt-12">
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,20rem)_1fr] lg:gap-16 lg:border-t lg:border-cream/12 lg:pt-8">
             <h2 className="text-heading font-semibold text-balance text-blue">
               {dict.restaurantPage.principlesTitle}
             </h2>

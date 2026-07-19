@@ -31,7 +31,9 @@ export function BrandSplit({ locale, dict }: { locale: Locale; dict: Dictionary 
         </p>
 
         {/* Hotel */}
-        <Reveal className="grid gap-8 lg:grid-cols-12 lg:items-center lg:gap-0">
+        {/* Mobile: no row gap, so the photo and the light-blue box meet with no
+            warm-white strip between them; desktop keeps its overlapping layout. */}
+        <Reveal className="grid gap-0 lg:grid-cols-12 lg:items-center lg:gap-0">
           {/* On desktop the box pulls left over the photo; z-index puts the
               photograph on top in that overlap so it reads as in front, while
               the box's text (clear of the overlap zone) stays fully visible. */}
@@ -90,20 +92,16 @@ export function BrandSplit({ locale, dict }: { locale: Locale; dict: Dictionary 
 
         {/* Restaurant — mirrored, and pulled up so the two blocks interlock
             with a continuous transition rather than a wide gap. */}
-        <Reveal className="mt-10 grid gap-8 lg:-mt-28 lg:grid-cols-12 lg:items-center lg:gap-0">
+        {/* Mobile: photo and navy box meet directly (no row gap); desktop keeps
+            the pulled-up interlock. */}
+        <Reveal className="mt-10 grid gap-0 lg:-mt-28 lg:grid-cols-12 lg:items-center lg:gap-0">
           <div className="relative order-1 lg:order-2 lg:col-span-6 lg:col-start-7">
-            {/* Note above the photo, right-aligned; arrow descends to the left
-                into it. An explicit transform (mirror + a steeper rotation)
-                makes it point clearly down-left toward the food photo — a
-                deterministic inline style, since two competing rotate-* classes
-                would resolve unpredictably. */}
+            {/* Note above the photo, right-aligned; the shared downLeft arrow
+                (a mirror of the hotel note's downRight) curves from beside the
+                text down-left toward the food photo, with the open-V head at the
+                lower-left target end. Restrained by design — no bespoke tilt. */}
             <div className="mr-1 mb-4 flex justify-end">
-              <HandwrittenNote
-                arrow="downLeft"
-                arrowStyle={{ transform: "rotate(48deg) scaleX(-1)" }}
-              >
-                {dict.split.restaurantNote}
-              </HandwrittenNote>
+              <HandwrittenNote arrow="downLeft">{dict.split.restaurantNote}</HandwrittenNote>
             </div>
 
             <div className="relative aspect-[3/4] overflow-hidden bg-cream">

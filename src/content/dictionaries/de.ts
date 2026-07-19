@@ -135,6 +135,13 @@ export const de: Dictionary = {
     },
   },
 
+  foodCollage: {
+    eyebrow: "Heutige Empfehlung",
+    title: "Klika entdecken",
+    text: "Saisonale südböhmische Küche, regionale Zutaten und Gerichte, zu denen Sie gerne zurückkehren.",
+    note: "Saisonal und ehrlich",
+  },
+
   split: {
     eyebrow: "Zwei Welten, eine Adresse",
     hotelTitle: "Hotel Klika",

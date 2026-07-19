@@ -133,6 +133,13 @@ export const en: Dictionary = {
     },
   },
 
+  foodCollage: {
+    eyebrow: "Today's picks",
+    title: "Taste Klika",
+    text: "Seasonal South Bohemian cooking, local ingredients and dishes you'll want to come back to.",
+    note: "In season, done right",
+  },
+
   split: {
     eyebrow: "Two worlds, one address",
     hotelTitle: "Hotel Klika",

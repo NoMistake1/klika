@@ -137,6 +137,13 @@ export const cs = {
     },
   },
 
+  foodCollage: {
+    eyebrow: "Dnešní doporučení",
+    title: "Ochutnejte Kliku",
+    text: "Sezónní jihočeská kuchyně, lokální suroviny a jídla, ke kterým se budete chtít vrátit.",
+    note: "Sezónně a poctivě",
+  },
+
   split: {
     eyebrow: "Dva světy, jedna adresa",
     hotelTitle: "Hotel Klika",

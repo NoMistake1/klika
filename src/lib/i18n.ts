@@ -63,6 +63,27 @@ export function switchLocalePath(pathname: string, nextLocale: Locale): string {
   return segments.length > 0 ? `/${nextLocale}/${segments.join("/")}` : `/${nextLocale}`;
 }
 
+/**
+ * Decides which single nav href is active for a pathname, using longest-match
+ * so a nested route highlights only its own item and never also its parent:
+ * on `/cs/restaurant/menu` both `/cs/restaurant` and `/cs/restaurant/menu`
+ * match, but the longer one wins, so "Menu" lights up and "Restaurace" does not.
+ * An item matches when the pathname equals its href or is a descendant segment
+ * of it; among all matches the longest href wins, so exactly one item is active.
+ */
+export function activeNavHref(
+  pathname: string,
+  hrefs: readonly string[],
+): string | null {
+  let best: string | null = null;
+  for (const href of hrefs) {
+    if (pathname === href || pathname.startsWith(`${href}/`)) {
+      if (best === null || href.length > best.length) best = href;
+    }
+  }
+  return best;
+}
+
 /** Strips the locale prefix from a pathname: "/cs/hotel/rooms" -> "/hotel/rooms". */
 export function stripLocale(pathname: string): string {
   const segments = pathname.split("/").filter(Boolean);
