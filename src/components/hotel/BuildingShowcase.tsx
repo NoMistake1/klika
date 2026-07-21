@@ -140,12 +140,22 @@ export function BuildingShowcase({
 
             {/* Two layers, not one heavy scrim: the flat tint evens out four
                 photographs shot in different light, the gradient does the
-                actual contrast work under the copy. Measured over the
-                brightest of the four, the cream text clears 6:1. */}
-            <span aria-hidden="true" className="absolute inset-0 bg-navy/20" />
+                actual contrast work under the copy.
+
+                The lightening is weighted, not uniform. The top stop carries it
+                — 0.30 → 0.22, and the flat tint 0.20 → 0.15, so the upper two
+                thirds of every panel (where the photograph is actually on show)
+                sits ~23% lighter. The middle stop gives back less, because that
+                is where the description line lands: measured against the
+                brightest pixel under it, the three darker photographs put that
+                line at 4.1–4.5:1 when this stop was dropped the full 25%, so it
+                holds at 0.78 and the line returns to 4.7–5.5:1 on both the
+                landscape and the portrait crop. Direction, stop positions and
+                falloff are unchanged. */}
+            <span aria-hidden="true" className="absolute inset-0 bg-navy/15" />
             <span
               aria-hidden="true"
-              className="absolute inset-0 bg-gradient-to-t from-navy via-navy/90 to-navy/30"
+              className="absolute inset-0 bg-gradient-to-t from-navy/82 via-navy/78 to-navy/22"
             />
 
             <div className="relative p-6 sm:p-7">

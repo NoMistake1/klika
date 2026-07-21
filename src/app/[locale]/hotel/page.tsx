@@ -349,10 +349,10 @@ export default async function HotelPage({
           sizes="100vw"
           className="object-[center_55%] lg:object-[center_65%]"
         />
-        <span aria-hidden="true" className="absolute inset-0 bg-navy/28" />
+        <span aria-hidden="true" className="absolute inset-0 bg-navy/21" />
         <span
           aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-b from-navy/95 via-navy/72 to-navy/80 lg:bg-gradient-to-r lg:from-navy lg:via-navy/88 lg:to-navy/55"
+          className="absolute inset-0 bg-gradient-to-b from-navy/72 via-navy/54 to-navy/60 lg:bg-gradient-to-r lg:from-navy/78 lg:via-navy/66 lg:to-navy/42"
         />
 
         <Container className="relative">
@@ -393,7 +393,13 @@ export default async function HotelPage({
                 locale={locale}
                 dict={dict}
               />
-              <p className="mt-4 text-xs text-cream/70">{dict.pricingPage.exceptionNote}</p>
+              {/* cream/85, matching the card body copy. This footnote is the
+                  one run of text sitting on the thin end of the gradient, over
+                  a sunlit wall in the photograph. At /70 it measures 3.9:1
+                  against that highlight — under AA for 12px, and it was
+                  already only 4.2:1 before the overlay was lightened, so the
+                  margin was never really there. */}
+              <p className="mt-4 text-xs text-cream/85">{dict.pricingPage.exceptionNote}</p>
             </div>
           </div>
         </Container>
