@@ -121,7 +121,10 @@ export function FoodCollage({ locale, dict }: { locale: Locale; dict: Dictionary
         {/* Three-image editorial row. `overflow-hidden` is on each inner frame,
             not the wrapper, so the Caveat notes can sit above the images without
             being clipped. Sharp corners and a restrained float shadow. */}
-        <Reveal className="mt-12 flex flex-wrap gap-4 lg:mt-16 lg:flex-nowrap lg:items-center lg:gap-6">
+        {/* Desktop drops the whole row a little further below the header —
+            applied to the row, not the individual wrappers, so each image keeps
+            its own editorial offset and the middle image keeps its note. */}
+        <Reveal className="mt-12 flex flex-wrap gap-4 lg:mt-24 lg:flex-nowrap lg:items-center lg:gap-6">
           {photos.map((photo, index) => (
             <div key={photo.src} className={`relative shrink-0 ${photo.wrap}`}>
               <div className="group relative h-full w-full overflow-hidden bg-cream shadow-[0_20px_45px_-28px_rgba(10,26,49,0.5)]">
@@ -157,8 +160,38 @@ export function FoodCollage({ locale, dict }: { locale: Locale; dict: Dictionary
                   photograph rather than sideways. Text wraps to two lines here,
                   which is what keeps it inside the column. */}
               {index === 2 ? (
-                <div className="absolute inset-x-0 -top-16 z-10 flex -rotate-6 justify-center lg:hidden">
-                  <HandwrittenNote arrow="downRight" tilt={34}>
+                <div className="absolute inset-x-0 -top-16 z-10 flex -rotate-6 justify-center max-[451px]:-top-20 lg:hidden">
+                  {/* Narrow phones (450px and below) only: the note is pulled up
+                      into the gap, and the max-widths keep the whole composition
+                      clear of the left-hand image — tighter again at 360px and
+                      below, where the column is narrowest.
+
+                      The bounds read 451/361 because Tailwind's `max-*` variant
+                      compiles to `width < n`, so the named width itself would
+                      otherwise fall outside the rule. Keeping them in the
+                      `max-*` family matters: Tailwind sorts those descending, so
+                      the narrower rule reliably wins on the smallest screens. */}
+                  {/* downLeft is the exact horizontal mirror of the desktop
+                      note's downRight: the shared arrow flips on its own axis AND
+                      moves to the left of the text, which pushes the words right
+                      and brings the arrow in toward the centre of the row. The
+                      tilt is negated to match — for mirrored arrows CSS scales
+                      before it rotates, so −34° reproduces the +34° descent
+                      exactly, just handed the other way. Left-aligned lines keep
+                      the text hugging the arrow, and with the arrow bottom-
+                      aligned it leaves the text around the "Sezónně / poctivě"
+                      break and runs down into the photograph's top-left corner. */}
+                  <HandwrittenNote
+                    arrow="downLeft"
+                    tilt={-34}
+                    // `self-center` rather than a competing items-* or margin
+                    // class: it is the only align-self rule on the arrow, so it
+                    // deterministically overrides the note's items-end and lifts
+                    // the arrow to begin around the "Sezónně / poctivě" break
+                    // instead of level with the second line.
+                    arrowClassName="max-[451px]:self-center"
+                    className="max-[451px]:max-w-[11.5rem] max-[451px]:text-left max-[361px]:max-w-[9.5rem]"
+                  >
                     {dict.foodCollage.note}
                   </HandwrittenNote>
                 </div>

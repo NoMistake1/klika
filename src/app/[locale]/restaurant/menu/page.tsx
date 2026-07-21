@@ -66,10 +66,12 @@ export default async function MenuPage({
           mobileSrc: "/images/restaurant/menu-mobile.webp",
           mobileWidth: 1402,
           mobileHeight: 1122,
-          // Desktop focal point pinned to the very bottom so the crop exposes
-          // the lower part of the scene. Mobile (its own portrait asset) keeps
-          // its framing.
-          imgClassName: "object-[center_25%] md:object-bottom",
+          // Same focal points as the table-booking hero, which shares these two
+          // files: both crops sit well down the frame so the printed booklet and
+          // its Klika/MENU lettering land in the visible band instead of the
+          // empty tabletop above it. The desktop file needs to sit lower still
+          // than the taller mobile one.
+          imgClassName: "object-[center_62%] md:object-[center_74%]",
         }}
         aside={
           <Button href={localePath(locale, bookTableHref)} size="lg" variant="secondary">

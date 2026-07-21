@@ -12,7 +12,8 @@ import { Button } from "@/components/ui/Button";
 import { Container, Section } from "@/components/ui/Section";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { PricingList } from "@/components/hotel/PricingList";
-import { formatDate, telLink } from "@/lib/utils";
+import { ICON_LIST_ITEM, ICON_MARKER_OFFSET } from "@/components/ui/BulletList";
+import { cn, formatDate, telLink } from "@/lib/utils";
 
 export async function generateMetadata({
   params,
@@ -99,12 +100,18 @@ export default async function PricingPage({
 
             <aside className="lg:col-span-5">
               <div className="bg-cream p-6 sm:p-8">
+                {/* Same alignment rule as every other list on the hotel pages:
+                    the icon gets its own 1rem track and is centred on the first
+                    line, so a wrapped item runs under the text. */}
                 <h2 className="text-lg font-semibold">{dict.pricingPage.includedTitle}</h2>
                 <ul className="mt-4 space-y-2">
                   {dict.pricingPage.included.map((item) => (
-                    <li key={item} className="flex items-center gap-2.5 text-sm">
-                      <Check aria-hidden="true" className="size-4 shrink-0 text-sand-ink" />
-                      {item}
+                    <li key={item} className={ICON_LIST_ITEM}>
+                      <Check
+                        aria-hidden="true"
+                        className={cn(ICON_MARKER_OFFSET, "size-4 text-sand-ink")}
+                      />
+                      <span>{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -114,9 +121,9 @@ export default async function PricingPage({
                 </h2>
                 <ul className="mt-4 space-y-2">
                   {dict.pricingPage.notIncluded.map((item) => (
-                    <li key={item} className="flex items-center gap-2.5 text-sm opacity-70">
-                      <X aria-hidden="true" className="size-4 shrink-0" />
-                      {item}
+                    <li key={item} className={cn(ICON_LIST_ITEM, "opacity-70")}>
+                      <X aria-hidden="true" className={cn(ICON_MARKER_OFFSET, "size-4")} />
+                      <span>{item}</span>
                     </li>
                   ))}
                 </ul>

@@ -53,7 +53,22 @@ export default async function RestaurantBookingPage({
           { label: dict.restaurantPage.eyebrow, path: "/restaurant" },
           { label: dict.restaurantBooking.eyebrow },
         ]}
-        tone="cream"
+        className="lg:pt-44 lg:pb-32"
+        // The printed menu on a laid table — the clearest possible "book a
+        // table" signal. Both crops are pulled well down the frame so the
+        // booklet and its Klika/MENU lettering land in the visible band rather
+        // than the empty tabletop above it; the wide desktop file needs to sit
+        // lower still than the taller mobile one. The shared PageHeader scrim
+        // and priority loading come with the background prop.
+        background={{
+          src: "/images/restaurant/menu-desktop.webp",
+          width: 1536,
+          height: 1024,
+          mobileSrc: "/images/restaurant/menu-mobile.webp",
+          mobileWidth: 1402,
+          mobileHeight: 1122,
+          imgClassName: "object-[center_62%] md:object-[center_74%]",
+        }}
       />
 
       <Section tone="warm-white">

@@ -29,7 +29,8 @@ import { Reveal } from "@/components/ui/Reveal";
 import { RoomSlider } from "@/components/hotel/RoomSlider";
 import { PricingList } from "@/components/hotel/PricingList";
 import { EditorialGallery } from "@/components/gallery/EditorialGallery";
-import { Waves } from "@/components/illustrations";
+import { BackgroundPhoto } from "@/components/ui/BackgroundPhoto";
+import { BulletList, ICON_LIST_ITEM, ICON_MARKER_OFFSET } from "@/components/ui/BulletList";
 import { cn } from "@/lib/utils";
 
 export async function generateMetadata({
@@ -67,7 +68,22 @@ export default async function HotelPage({
         title={dict.hotelPage.title}
         lede={dict.hotelPage.intro}
         crumbs={[{ label: dict.hotelPage.eyebrow }]}
-        tone="blue-light"
+        className="lg:pt-44 lg:pb-32"
+        // The house itself, art-directed: the wide street view on desktop and
+        // the portrait crop on phones, so only one file is ever downloaded.
+        // Both focal points sit above centre — the desktop frame skips the
+        // foreground cobbles, the portrait one skips the sky — so the HOTEL
+        // lettering and the Klika café sign stay in the band. PageHeader adds
+        // the shared scrim and loads this one with priority.
+        background={{
+          src: "/images/hotel/facade-desktop.webp",
+          width: 1536,
+          height: 1024,
+          mobileSrc: "/images/hotel/facade.webp",
+          mobileWidth: 1023,
+          mobileHeight: 1537,
+          imgClassName: "object-[center_45%] md:object-[center_40%]",
+        }}
         aside={
           <div className="flex flex-col items-start gap-5 lg:items-end">
             {/* On a phone the note stands alone — no arrow, and no leftover
@@ -82,14 +98,17 @@ export default async function HotelPage({
             <div className="hidden lg:block">
               <HandwrittenNote arrow="left">{dict.hotelPage.handwritten}</HandwrittenNote>
             </div>
-            <Button href={localePath(locale, bookStayHref)} size="lg">
+            {/* The masthead is navy now that it carries the facade photograph,
+                so the navy primary would vanish into it — the light-blue
+                secondary is the same button the other photo heroes use. */}
+            <Button href={localePath(locale, bookStayHref)} size="lg" variant="secondary">
               {dict.actions.bookStay}
               <ArrowRight aria-hidden="true" className="size-4" />
             </Button>
           </div>
         }
       >
-        <dl className="mt-10 grid grid-cols-2 gap-6 border-t border-navy/15 pt-6 sm:grid-cols-4">
+        <dl className="mt-10 grid grid-cols-2 gap-6 border-t border-cream/25 pt-6 sm:grid-cols-4">
           {hotelStats.map((stat) => (
             <div key={stat.id}>
               <dt className="sr-only">{stat.label[locale]}</dt>
@@ -105,17 +124,14 @@ export default async function HotelPage({
       {/* Facilities */}
       <Section tone="warm-white" spacing="tight">
         <Container>
-          <ul className="grid grid-cols-1 gap-x-10 sm:grid-cols-2 lg:grid-cols-3">
-            {hotelFacilities[locale].map((facility) => (
-              <li
-                key={facility}
-                className="flex items-center gap-3 border-b border-navy/10 py-3.5 text-sm"
-              >
-                <span aria-hidden="true" className="size-1.5 rounded-full bg-blue" />
-                {facility}
-              </li>
-            ))}
-          </ul>
+          {/* Bordered rows carry their own rhythm, so the list's own spacing is
+              switched off rather than fighting the grid. */}
+          <BulletList
+            items={hotelFacilities[locale]}
+            spacing={false}
+            className="grid grid-cols-1 gap-x-10 sm:grid-cols-2 lg:grid-cols-3"
+            itemClassName="border-b border-navy/10 py-3.5"
+          />
         </Container>
       </Section>
 
@@ -176,17 +192,11 @@ export default async function HotelPage({
                 <p className="mt-2 text-sm leading-relaxed opacity-75">
                   {area.description[locale]}
                 </p>
-                <ul className="mt-4 space-y-1.5">
-                  {area.details[locale].map((detail) => (
-                    <li key={detail} className="flex items-baseline gap-2.5 text-sm">
-                      <span
-                        aria-hidden="true"
-                        className="size-1 shrink-0 translate-y-1.5 rounded-full bg-sand-ink"
-                      />
-                      <span className="opacity-80">{detail}</span>
-                    </li>
-                  ))}
-                </ul>
+                <BulletList
+                  items={area.details[locale]}
+                  className="mt-4"
+                  itemClassName="opacity-80"
+                />
               </Reveal>
             ))}
           </ol>
@@ -197,27 +207,43 @@ export default async function HotelPage({
       <Section tone="warm-white">
         <Container>
           <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
-            <div className="lg:col-span-5">
-              <SectionHeading
-                eyebrow={dict.hotelPage.breakfastTitle}
-                title={dict.hotelPage.breakfastTitle}
-                lede={dict.hotelPage.breakfastSubtitle}
-              />
-              <p className="mt-6 flex items-center gap-2.5 text-sm font-medium">
-                <Croissant aria-hidden="true" className="size-4 opacity-60" />
-                <time>{breakfastHours}</time>
-              </p>
-              <ul className="mt-5 space-y-2.5">
-                {breakfastFacts.items[locale].map((item) => (
-                  <li key={item} className="flex items-baseline gap-3 text-sm">
-                    <span
-                      aria-hidden="true"
-                      className="size-1.5 shrink-0 translate-y-1.5 rounded-full bg-sand-ink"
-                    />
-                    {item}
-                  </li>
-                ))}
-              </ul>
+            {/* Breakfast. On a phone the buffet photograph moves behind this
+                column — the desktop layout is deliberately left alone, where the
+                text already has the whole warm-white field to itself. */}
+            <div className="relative overflow-hidden lg:col-span-5 lg:overflow-visible">
+              <div aria-hidden="true" className="absolute inset-0 lg:hidden">
+                <BackgroundPhoto
+                  src="/images/hotel/breakfast.webp"
+                  width={2400}
+                  height={1350}
+                  sizes="100vw"
+                  className="object-[center_55%]"
+                />
+                {/* Denser at the foot where the list sits, but it never thins
+                    past ~68%: the top of this photograph is a brightly lit
+                    shelf, and a lighter scrim there dropped the cream lede to
+                    ~3.4:1. At 68% the buffet is still plainly a buffet and the
+                    body copy clears AA. */}
+                <div className="absolute inset-0 bg-gradient-to-t from-navy/92 via-navy/80 to-navy/68" />
+              </div>
+
+              <div className="relative p-6 text-cream sm:p-8 lg:p-0 lg:text-ink">
+                <SectionHeading
+                  eyebrow={dict.hotelPage.breakfastTitle}
+                  title={dict.hotelPage.breakfastTitle}
+                  lede={dict.hotelPage.breakfastSubtitle}
+                />
+                <p className="mt-6 flex items-center gap-2.5 text-sm font-medium">
+                  <Croissant aria-hidden="true" className="size-4 opacity-60" />
+                  <time>{breakfastHours}</time>
+                </p>
+                <BulletList
+                  items={breakfastFacts.items[locale]}
+                  tone="cream"
+                  markerClassName="lg:bg-sand-ink"
+                  className="mt-5"
+                />
+              </div>
             </div>
 
             <div className="lg:col-span-7">
@@ -226,14 +252,20 @@ export default async function HotelPage({
                 title={dict.hotelPage.servicesTitle}
                 lede={dict.hotelPage.servicesSubtitle}
               />
+              {/* Icon-marked rows, aligned by the same rule the dot lists use:
+                  the icon sits in its own 1rem track and is centred on the
+                  first line, so a wrapped German label runs under the text. */}
               <ul className="mt-8 grid grid-cols-1 gap-x-8 sm:grid-cols-2">
                 {receptionServices.map((service) => (
                   <li
                     key={service.id}
-                    className="flex items-center gap-3 border-b border-navy/10 py-3 text-sm"
+                    className={cn(ICON_LIST_ITEM, "border-b border-navy/10 py-3")}
                   >
-                    <Icon name={service.icon} className="size-4 shrink-0 opacity-55" />
-                    {service.label[locale]}
+                    <Icon
+                      name={service.icon}
+                      className={cn(ICON_MARKER_OFFSET, "size-4 opacity-55")}
+                    />
+                    <span>{service.label[locale]}</span>
                   </li>
                 ))}
               </ul>
@@ -242,49 +274,67 @@ export default async function HotelPage({
         </Container>
       </Section>
 
-      {/* Parking, children and pets */}
-      <Section tone="blue-light" spacing="tight" className="relative overflow-hidden">
-        <Waves
-          aria-hidden="true"
-          className="pointer-events-none absolute -bottom-2 left-0 h-10 w-full text-navy opacity-10"
-        />
-        <Container className="relative">
-          <div className="grid gap-10 sm:grid-cols-2 lg:gap-16">
-            <div>
-              <h2 className="flex items-center gap-2.5 text-heading font-semibold">
-                <ParkingSquare aria-hidden="true" className="size-5 opacity-60" />
-                {dict.hotelPage.parkingTitle}
-              </h2>
-              <ul className="mt-5 space-y-2.5">
-                {parkingFacts[locale].map((fact) => (
-                  <li key={fact} className="flex items-baseline gap-3 text-sm">
-                    <span
-                      aria-hidden="true"
-                      className="size-1.5 shrink-0 translate-y-1.5 rounded-full bg-sand-ink"
-                    />
-                    {fact}
-                  </li>
-                ))}
-              </ul>
+      {/* Parking, children and pets — two photographic panels rather than one
+          flat blue text block. On desktop they are equal-height columns (grid
+          items stretch); on a phone they stack full width with enough height
+          that each photograph still reads. The decorative wave that used to run
+          under this band is gone: the photographs carry it now. */}
+      <Section tone="cream" spacing="tight">
+        <Container>
+          <div className="grid gap-5 sm:grid-cols-2 sm:gap-6">
+            <div className="relative flex min-h-[20rem] flex-col justify-end overflow-hidden bg-navy p-7 text-cream sm:min-h-[24rem] sm:p-9 lg:p-10">
+              <BackgroundPhoto
+                src="/images/hotel/parking.webp"
+                width={1672}
+                height={941}
+                sizes="(min-width: 640px) 50vw, 100vw"
+                className="object-[center_45%]"
+              />
+              {/* Dense only where the text sits; the marked bays above stay
+                  visible as a photograph rather than a dark wash. */}
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/72 to-navy/25"
+              />
+              <div className="relative">
+                <h2 className="flex items-center gap-2.5 text-heading font-semibold">
+                  <ParkingSquare aria-hidden="true" className="size-5 shrink-0 opacity-70" />
+                  {dict.hotelPage.parkingTitle}
+                </h2>
+                <BulletList items={parkingFacts[locale]} tone="cream" className="mt-5" />
+              </div>
             </div>
 
-            <div>
-              <h2 className="flex items-center gap-2.5 text-heading font-semibold">
-                <Baby aria-hidden="true" className="size-5 opacity-60" />
-                {dict.hotelPage.childrenTitle}
-                <Dog aria-hidden="true" className="size-5 opacity-60" />
-              </h2>
-              <ul className="mt-5 space-y-2.5">
-                {childrenAndPetsFacts[locale].map((fact) => (
-                  <li key={fact} className="flex items-baseline gap-3 text-sm">
-                    <span
-                      aria-hidden="true"
-                      className="size-1.5 shrink-0 translate-y-1.5 rounded-full bg-sand-ink"
-                    />
-                    {fact}
-                  </li>
-                ))}
-              </ul>
+            <div className="relative flex min-h-[20rem] flex-col justify-end overflow-hidden bg-navy p-7 text-cream sm:min-h-[24rem] sm:p-9 lg:p-10">
+              <BackgroundPhoto
+                src="/images/hotel/pet.webp"
+                width={1672}
+                height={941}
+                sizes="(min-width: 640px) 50vw, 100vw"
+                className="object-[62%_center]"
+              />
+              {/* Related to the parking panel but deliberately not identical:
+                  the dog sits on the right of the frame, so from sm up the
+                  scrim runs left-to-right and leaves the animal clear. On a
+                  phone the text spans the full width, so it falls back to the
+                  bottom-anchored scrim — a sideways one would leave text over
+                  the dog's white chest. */}
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/72 to-navy/30 sm:bg-gradient-to-r sm:from-navy/95 sm:via-navy/70 sm:to-navy/20"
+              />
+              <div className="relative">
+                <h2 className="flex items-center gap-2.5 text-heading font-semibold">
+                  <Baby aria-hidden="true" className="size-5 shrink-0 opacity-70" />
+                  {dict.hotelPage.childrenTitle}
+                  <Dog aria-hidden="true" className="size-5 shrink-0 opacity-70" />
+                </h2>
+                <BulletList
+                  items={childrenAndPetsFacts[locale]}
+                  tone="cream"
+                  className="mt-5"
+                />
+              </div>
             </div>
           </div>
         </Container>
@@ -325,10 +375,16 @@ export default async function HotelPage({
                 title={dict.hotelPage.pricingTitle}
                 lede={dict.hotelPage.pricingTeaser}
               />
+              {/* The rate card is the moment to book, so the booking action
+                  sits beside the full price list rather than only in the
+                  footer band. */}
               <div className="mt-8 flex flex-wrap gap-3">
-                <Button href={localePath(locale, "/hotel/pricing")}>
-                  {dict.actions.pricing}
+                <Button href={localePath(locale, bookStayHref)}>
+                  {dict.actions.bookStay}
                   <ArrowRight aria-hidden="true" className="size-4" />
+                </Button>
+                <Button href={localePath(locale, "/hotel/pricing")} variant="outline">
+                  {dict.actions.pricing}
                 </Button>
               </div>
             </div>
