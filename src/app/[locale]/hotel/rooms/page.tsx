@@ -5,7 +5,7 @@ import { getDictionary, interpolate } from "@/content/dictionaries";
 import { isLocale, localePath, resolveLocale, type Locale } from "@/lib/i18n";
 import { buildPageMetadata } from "@/lib/metadata";
 import { JsonLdScript, breadcrumbSchema } from "@/lib/structured-data";
-import { rooms } from "@/content/hotel";
+import { presentedRooms } from "@/content/hotel";
 import { bookStayHref } from "@/content/navigation";
 import { Button } from "@/components/ui/Button";
 import { Container, Section } from "@/components/ui/Section";
@@ -54,7 +54,18 @@ export default async function RoomsPage({
           { label: dict.hotelPage.eyebrow, path: "/hotel" },
           { label: dict.roomsPage.title },
         ]}
-        tone="blue-light"
+        className="lg:pt-44 lg:pb-32"
+        // One asset serves both: the frame is wide, so a phone crops it
+        // horizontally (the bed spans the full width, hence the centred X) while
+        // desktop crops vertically — where 45% keeps the headboard and pillows
+        // in the band instead of drifting onto the bedspread. Same height as the
+        // other hotel subpages, and PageHeader adds the shared scrim.
+        background={{
+          src: "/images/hotel/bed.webp",
+          width: 1672,
+          height: 941,
+          imgClassName: "object-[center_50%] md:object-[center_45%]",
+        }}
       />
 
       <Section tone="warm-white">
@@ -62,7 +73,7 @@ export default async function RoomsPage({
           {/* Alternating image side keeps a six-item list from turning into a
               grid of identical cards. */}
           <ul className="space-y-20 lg:space-y-28">
-            {rooms.map((room, index) => {
+            {presentedRooms.map((room, index) => {
               const isReversed = index % 2 === 1;
 
               return (

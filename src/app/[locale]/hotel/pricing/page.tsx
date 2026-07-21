@@ -69,9 +69,25 @@ export default async function PricingPage({
           { label: dict.hotelPage.eyebrow, path: "/hotel" },
           { label: dict.pricingPage.title },
         ]}
-        tone="blue-light"
+        className="lg:pt-44 lg:pb-32"
+        // Art-directed: the wide street view on desktop, the portrait crop on
+        // phones, so only one file is fetched per viewport. Both focal points
+        // sit below centre — the top of each frame is sky — which keeps the
+        // hotel building, the tower and the street in the visible band while
+        // still catching the arc of the rainbow.
+        background={{
+          src: "/images/hotel/pricing.webp",
+          width: 1242,
+          height: 828,
+          mobileSrc: "/images/hotel/pricing-mobile.webp",
+          mobileWidth: 1122,
+          mobileHeight: 1402,
+          imgClassName: "object-[center_55%] md:object-[center_65%]",
+        }}
         aside={
-          <Button href={localePath(locale, bookStayHref)} size="lg">
+          // The masthead is navy now that it carries a photograph, so the navy
+          // primary would disappear into it.
+          <Button href={localePath(locale, bookStayHref)} size="lg" variant="secondary">
             {dict.actions.bookStay}
             <ArrowRight aria-hidden="true" className="size-4" />
           </Button>

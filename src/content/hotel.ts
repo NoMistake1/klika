@@ -286,11 +286,16 @@ export function getRoomById(id: string): Room | undefined {
 }
 
 /**
- * The landing-page carousel. The long-stay apartments are deliberately absent
- * — they have no published rate or photo and belong on the hotel and rooms
- * subpages, not in the homepage showcase.
+ * The room categories presented to guests — every list, slider and carousel on
+ * the site reads this, not `rooms`. The long-stay apartments are deliberately
+ * absent: they carry no published rate and no photograph of their own, so they
+ * are not offered as a browsable category.
+ *
+ * The full `rooms` dataset stays intact on purpose. `getRoomById` still
+ * resolves every id, so an existing `?room=apartment-long-stay` link into the
+ * booking wizard keeps working rather than silently losing its selection.
  */
-export const featuredRooms: readonly Room[] = rooms.filter(
+export const presentedRooms: readonly Room[] = rooms.filter(
   (room) => room.id !== "apartment-long-stay",
 );
 

@@ -51,7 +51,15 @@ export default async function HotelBookingPage({
           { label: dict.hotelPage.eyebrow, path: "/hotel" },
           { label: dict.hotelBooking.eyebrow },
         ]}
-        tone="blue-light"
+        // Same asset and same height as the rooms hero, so arriving here from
+        // a room card feels continuous rather than like a different site.
+        className="lg:pt-44 lg:pb-32"
+        background={{
+          src: "/images/hotel/bed.webp",
+          width: 1672,
+          height: 941,
+          imgClassName: "object-[center_50%] md:object-[center_45%]",
+        }}
       />
 
       <Section tone="warm-white">

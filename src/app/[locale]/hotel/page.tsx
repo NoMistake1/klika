@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ArrowRight, Baby, Croissant, Dog, ParkingSquare } from "lucide-react";
+import { ArrowRight, Croissant } from "lucide-react";
 import { getDictionary } from "@/content/dictionaries";
 import { isLocale, localePath, resolveLocale, type Locale } from "@/lib/i18n";
 import { buildPageMetadata } from "@/lib/metadata";
@@ -12,9 +12,9 @@ import {
   hotelFacilities,
   hotelStats,
   parkingFacts,
+  presentedRooms,
   pricingRows,
   receptionServices,
-  rooms,
   specialOffers,
 } from "@/content/hotel";
 import { breakfastHours } from "@/content/contact";
@@ -153,7 +153,7 @@ export default async function HotelPage({
             </Button>
           </div>
           <div className="mt-12">
-            <RoomSlider rooms={rooms} locale={locale} dict={dict} />
+            <RoomSlider rooms={presentedRooms} locale={locale} dict={dict} />
           </div>
         </Container>
       </Section>
@@ -297,10 +297,7 @@ export default async function HotelPage({
                 className="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/72 to-navy/25"
               />
               <div className="relative">
-                <h2 className="flex items-center gap-2.5 text-heading font-semibold">
-                  <ParkingSquare aria-hidden="true" className="size-5 shrink-0 opacity-70" />
-                  {dict.hotelPage.parkingTitle}
-                </h2>
+                <h2 className="text-heading font-semibold">{dict.hotelPage.parkingTitle}</h2>
                 <BulletList items={parkingFacts[locale]} tone="cream" className="mt-5" />
               </div>
             </div>
@@ -324,11 +321,7 @@ export default async function HotelPage({
                 className="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/72 to-navy/30 sm:bg-gradient-to-r sm:from-navy/95 sm:via-navy/70 sm:to-navy/20"
               />
               <div className="relative">
-                <h2 className="flex items-center gap-2.5 text-heading font-semibold">
-                  <Baby aria-hidden="true" className="size-5 shrink-0 opacity-70" />
-                  {dict.hotelPage.childrenTitle}
-                  <Dog aria-hidden="true" className="size-5 shrink-0 opacity-70" />
-                </h2>
+                <h2 className="text-heading font-semibold">{dict.hotelPage.childrenTitle}</h2>
                 <BulletList
                   items={childrenAndPetsFacts[locale]}
                   tone="cream"
