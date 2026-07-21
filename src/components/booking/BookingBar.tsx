@@ -145,7 +145,14 @@ export function BookingBar({
 
 function inputClasses(hasError: boolean): string {
   return cn(
-    "min-h-11 w-full rounded-lg border bg-navy/45 px-3.5 py-2 text-sm text-cream",
+    // min-w-0 is the real fix for the mobile overflow: a native
+    // `input[type="date"]` carries an intrinsic content width (the date text
+    // plus the calendar indicator), and with the CSS default `min-width: auto`
+    // that intrinsic width wins over `w-full`, so the field refuses to shrink
+    // to its column and spills past the card's right edge. Letting it shrink to
+    // zero hands control back to `width: 100%`. box-sizing is border-box
+    // globally, so the padding stays inside the field.
+    "min-h-11 w-full min-w-0 rounded-lg border bg-navy/45 px-3.5 py-2 text-sm text-cream",
     // [color-scheme:dark] gives the native date picker a dark UI, so the popup
     // matches the field it drops out of instead of flashing white.
     "[color-scheme:dark] transition-[border-color,background-color] duration-200",
@@ -167,7 +174,10 @@ function BarField({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-1.5">
+    // min-w-0 so this grid/flex child may shrink below the intrinsic width of
+    // the native date input it wraps; without it the column, not the field,
+    // is what overflows.
+    <div className="flex min-w-0 flex-col gap-1.5">
       <label htmlFor={id} className="text-xs font-medium tracking-wide text-cream/70">
         {label}
       </label>

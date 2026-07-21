@@ -15,7 +15,6 @@ import {
 } from "@/lib/i18n";
 import { bookStayHref, bookTableHref } from "@/content/navigation";
 import { Button } from "@/components/ui/Button";
-import { Waves } from "@/components/illustrations";
 import { useFocusTrap } from "@/lib/use-focus-trap";
 import { cn } from "@/lib/utils";
 
@@ -98,7 +97,7 @@ export function MobileNav({
         )}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 pt-5 pb-4">
+        <div className="flex items-center justify-between px-6 pt-4 pb-3">
           <span className="text-[0.7rem] font-semibold tracking-[0.2em] text-navy/45 uppercase">
             {dict.a11y.mainNavigation}
           </span>
@@ -115,7 +114,7 @@ export function MobileNav({
 
         <nav
           aria-label={dict.a11y.mainNavigation}
-          className="flex-1 overflow-y-auto overscroll-contain px-4 pb-4"
+          className="flex-1 overflow-y-auto overscroll-contain px-4 pb-2"
         >
           <ul className="flex flex-col gap-0.5">
             {items.map((item, index) => {
@@ -138,7 +137,7 @@ export function MobileNav({
                     onClick={onClose}
                     aria-current={isCurrent ? "page" : undefined}
                     className={cn(
-                      "group flex min-h-14 items-center justify-between gap-4 rounded-xl px-3 py-2",
+                      "group flex min-h-11 items-center justify-between gap-4 rounded-xl px-3 py-2",
                       "transition-[background-color,transform] duration-200",
                       "active:scale-[0.98] motion-reduce:active:scale-100",
                       isCurrent ? "bg-navy text-warm-white" : "hover:bg-navy/[0.06]",
@@ -159,7 +158,7 @@ export function MobileNav({
                   </Link>
 
                   {item.children ? (
-                    <ul className="mt-0.5 mb-1 flex flex-wrap gap-x-1 gap-y-0.5 pl-3">
+                    <ul className="mt-0.5 mb-0.5 flex flex-wrap gap-x-1 gap-y-0.5 pl-3">
                       {item.children.map((child) => (
                         <li key={child.id}>
                           <Link
@@ -181,10 +180,10 @@ export function MobileNav({
 
         {/* Language selector — inside the menu, as its own navigation landmark
             so it is reachable directly rather than only by walking the list. */}
-        <nav aria-labelledby="mobile-language-label" className="px-6 pt-2 pb-4">
+        <nav aria-labelledby="mobile-language-label" className="px-6 pt-1 pb-2">
           <p
             id="mobile-language-label"
-            className="mb-2 text-[0.7rem] font-semibold tracking-[0.2em] text-navy/45 uppercase"
+            className="mb-1.5 text-[0.7rem] font-semibold tracking-[0.2em] text-navy/45 uppercase"
           >
             {dict.a11y.chooseLanguage}
           </p>
@@ -231,13 +230,11 @@ export function MobileNav({
           </ul>
         </nav>
 
-        {/* Actions */}
-        <div className="relative overflow-hidden border-t border-navy/10 px-6 pt-4 pb-6">
-          <Waves
-            className="pointer-events-none absolute -bottom-3 left-0 h-8 w-full text-navy opacity-10"
-            aria-hidden="true"
-          />
-          <div className="relative flex flex-col gap-2.5">
+        {/* Actions. The decorative waves used to live here; they were removed so
+            this band claims only the height its two buttons need, which is part
+            of what lets Kontakt sit above the fold. */}
+        <div className="border-t border-navy/10 px-6 pt-3 pb-4">
+          <div className="flex flex-col gap-2.5">
             <Button href={localePath(locale, bookStayHref)} onClick={onClose} variant="conversion" size="lg">
               {dict.actions.bookStay}
             </Button>
