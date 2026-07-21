@@ -59,7 +59,12 @@ export default async function GalleryPage({
           // centre.
           imgClassName: "object-center md:object-[center_28%]",
         }}
+        // The handwritten Caveat note is a desktop-only flourish here: on phones
+        // the hero stays a clean photograph with just the breadcrumb, title and
+        // lede. Hiding the whole aside cell (not only the note) keeps the grid
+        // from leaving a phantom row gap where the note used to sit.
         aside={<HandwrittenNote arrow="left">{dict.hero.handwritten}</HandwrittenNote>}
+        asideClassName="hidden lg:block"
       />
 
       <Section tone="warm-white">

@@ -49,6 +49,7 @@ export function PageHeader({
   crumbs = [],
   tone = "cream",
   aside,
+  asideClassName,
   children,
   background,
   className,
@@ -61,6 +62,10 @@ export function PageHeader({
   crumbs?: readonly Crumb[];
   tone?: "cream" | "blue-light" | "navy" | "warm-white";
   aside?: ReactNode;
+  /** Extra classes on the aside cell — e.g. `hidden lg:block` to drop a
+   *  decorative note on phones. Applied to the wrapper, so hiding it removes
+   *  the grid item entirely and leaves no phantom row gap. */
+  asideClassName?: string;
   children?: ReactNode;
   background?: PageHeaderBackground;
   /** Extra classes on the masthead — e.g. taller padding for a more immersive
@@ -131,7 +136,14 @@ export function PageHeader({
           </div>
 
           {aside ? (
-            <div className="lg:col-span-5 lg:self-end lg:justify-self-end">{aside}</div>
+            <div
+              className={cn(
+                "lg:col-span-5 lg:self-end lg:justify-self-end",
+                asideClassName,
+              )}
+            >
+              {aside}
+            </div>
           ) : null}
         </div>
       </Container>

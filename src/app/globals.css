@@ -173,6 +173,37 @@
   input[type="time"]::-webkit-calendar-picker-indicator:hover {
     opacity: 1;
   }
+
+  /* iOS Safari sizes input[type="date"] to an intrinsic content width driven by
+     its native appearance and ::-webkit-date-and-time-value. That intrinsic
+     width beats width:100% even with min-width:0, so on a phone the field
+     overflows its grid column and spills past the booking panel's right edge —
+     desktop Chrome/Safari don't do this, which is why min-width:0 alone looked
+     fixed on desktop but not on the actual iPhone. Below the desktop breakpoint
+     — where iOS Safari runs — resetting the native appearance makes the field
+     size like an ordinary block, so width:100% finally wins. The wheel picker
+     still opens on tap because that is bound to the input type, not to its
+     appearance. Desktop (>=1024px) is untouched and keeps its calendar
+     indicator. */
+  @media (max-width: 1023px) {
+    input[type="date"] {
+      -webkit-appearance: none;
+      appearance: none;
+      display: block;
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* The value/placeholder is a shrinkable, left-aligned box, so it can never
+       push the field wider than its column. */
+    input[type="date"]::-webkit-date-and-time-value {
+      text-align: left;
+      min-width: 0;
+      margin: 0;
+    }
+  }
 }
 
 /* ==========================================================================
