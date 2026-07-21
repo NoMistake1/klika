@@ -7,6 +7,7 @@ export type ButtonVariant =
   | "primary"
   | "secondary"
   | "outline"
+  | "outline-cream"
   | "ghost"
   | "cream";
 export type ButtonSize = "sm" | "md" | "lg";
@@ -21,7 +22,9 @@ export type ButtonSize = "sm" | "md" | "lg";
  *    additional small text.
  * 2. `primary` — dark navy, warm-white text (17.1:1).
  * 3. `secondary` — light brand blue, navy text (11.2:1).
- * 4. `outline` / `ghost` — quiet actions. `cream` — for dark surfaces.
+ * 4. `outline` / `ghost` — quiet actions. `cream` — for dark surfaces, with
+ *    `outline-cream` as its quiet counterpart when a dark band needs a second,
+ *    subordinate action beside a filled one.
  *
  * Depth comes from a hairline shadow that deepens on hover and collapses on
  * press; geometry stays a 3px radius so the interface reads editorial rather
@@ -38,6 +41,10 @@ const variantClasses: Record<ButtonVariant, string> = {
   // Flat by design: no lift, so they stay quiet next to a filled action.
   outline:
     "bg-transparent text-navy border border-navy/25 hover:border-navy hover:bg-navy/[0.04] active:bg-navy/[0.08] shadow-none hover:shadow-none active:shadow-none active:translate-y-0",
+  // The same flat treatment as `outline`, inverted for navy and photographic
+  // surfaces where navy-on-navy would vanish.
+  "outline-cream":
+    "bg-transparent text-cream border border-cream/35 hover:border-cream hover:bg-cream/[0.08] active:bg-cream/[0.14] shadow-none hover:shadow-none active:shadow-none active:translate-y-0",
   ghost:
     "bg-transparent text-navy border border-transparent hover:bg-navy/[0.05] active:bg-navy/[0.09] underline-offset-4 shadow-none hover:shadow-none active:shadow-none active:translate-y-0",
   // For dark surfaces, where cream is the brightest available fill.

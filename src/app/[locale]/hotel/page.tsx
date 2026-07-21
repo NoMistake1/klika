@@ -25,8 +25,8 @@ import { Container, Section, SectionHeading } from "@/components/ui/Section";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { HandwrittenNote } from "@/components/ui/HandwrittenNote";
 import { Icon } from "@/components/ui/Icon";
-import { Reveal } from "@/components/ui/Reveal";
 import { RoomSlider } from "@/components/hotel/RoomSlider";
+import { BuildingShowcase } from "@/components/hotel/BuildingShowcase";
 import { PricingList } from "@/components/hotel/PricingList";
 import { EditorialGallery } from "@/components/gallery/EditorialGallery";
 import { BackgroundPhoto } from "@/components/ui/BackgroundPhoto";
@@ -167,39 +167,9 @@ export default async function HotelPage({
             lede={dict.hotelPage.areasSubtitle}
           />
 
-          {/* Four detailed cards stack into most of a phone screen each, so on
-              mobile they swipe; from sm up they return to the hairline grid. */}
-          <ol
-            className={cn(
-              "scrollbar-none -mx-5 mt-12 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-1 [scroll-padding-inline:1.25rem]",
-              "sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-px sm:overflow-x-visible sm:bg-navy/10 sm:px-0 sm:pb-0",
-            )}
-          >
-            {accommodationAreas.map((area, index) => (
-              <Reveal
-                key={area.id}
-                as="li"
-                delay={index * 60}
-                className="card-float snap-start shrink-0 basis-[82%] bg-cream p-6 sm:basis-auto sm:rounded-none sm:p-8 sm:shadow-none"
-              >
-                <p
-                  aria-hidden="true"
-                  className="font-display text-3xl leading-none text-navy/25"
-                >
-                  {`0${index + 1}`}
-                </p>
-                <h3 className="mt-3 text-lg font-semibold text-pretty">{area.name[locale]}</h3>
-                <p className="mt-2 text-sm leading-relaxed opacity-75">
-                  {area.description[locale]}
-                </p>
-                <BulletList
-                  items={area.details[locale]}
-                  className="mt-4"
-                  itemClassName="opacity-80"
-                />
-              </Reveal>
-            ))}
-          </ol>
+          {/* Each building now carries its own photograph as the panel
+              background — a swipe carousel on phones, a 2×2 grid from md up. */}
+          <BuildingShowcase areas={accommodationAreas} locale={locale} dict={dict} />
         </Container>
       </Section>
 
@@ -358,9 +328,34 @@ export default async function HotelPage({
         </Container>
       </Section>
 
-      {/* Pricing teaser */}
-      <Section tone="cream">
-        <Container>
+      {/* Pricing teaser.
+
+          The street view sits behind the whole band rather than beside it as a
+          standalone picture. Two overlays keep the rates scannable without
+          flattening the photograph: a light navy wash across the image, and a
+          left-to-right gradient that goes near-opaque under the heading column
+          and thins out over the right, where the photograph stays visible past
+          the rate card. On phones the columns stack, so the gradient turns
+          vertical and runs full strength the whole way down — a side gradient
+          would leave the rows sitting on bare photograph. */}
+      <Section tone="navy" className="relative overflow-hidden">
+        <BackgroundPhoto
+          src="/images/hotel/pricing.webp"
+          width={1242}
+          height={828}
+          mobileSrc="/images/hotel/pricing-mobile.webp"
+          mobileWidth={1122}
+          mobileHeight={1402}
+          sizes="100vw"
+          className="object-[center_55%] lg:object-[center_65%]"
+        />
+        <span aria-hidden="true" className="absolute inset-0 bg-navy/28" />
+        <span
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-b from-navy/95 via-navy/72 to-navy/80 lg:bg-gradient-to-r lg:from-navy lg:via-navy/88 lg:to-navy/55"
+        />
+
+        <Container className="relative">
           <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
             <div className="lg:col-span-4">
               <SectionHeading
@@ -370,13 +365,14 @@ export default async function HotelPage({
               />
               {/* The rate card is the moment to book, so the booking action
                   sits beside the full price list rather than only in the
-                  footer band. */}
+                  footer band. The band is navy now that it carries the
+                  photograph, so the navy primary would disappear into it. */}
               <div className="mt-8 flex flex-wrap gap-3">
-                <Button href={localePath(locale, bookStayHref)}>
+                <Button href={localePath(locale, bookStayHref)} variant="secondary">
                   {dict.actions.bookStay}
                   <ArrowRight aria-hidden="true" className="size-4" />
                 </Button>
-                <Button href={localePath(locale, "/hotel/pricing")} variant="outline">
+                <Button href={localePath(locale, "/hotel/pricing")} variant="outline-cream">
                   {dict.actions.pricing}
                 </Button>
               </div>
@@ -384,7 +380,10 @@ export default async function HotelPage({
 
             <div className="lg:col-span-8">
               {/* Room rates only; fees and the tourist charge live on the full
-                  pricing page so this stays a teaser rather than a duplicate. */}
+                  pricing page so this stays a teaser rather than a duplicate.
+                  The list draws its rules from `currentColor`, so on cream it
+                  reads as navy hairlines and here as cream ones — no change to
+                  the rows, the prices or the notes themselves. */}
               <PricingList
                 rows={pricingRows.filter((row) =>
                   ["double-single-use", "double", "triple", "apartment-sauna", "apartment-four"].includes(
@@ -394,7 +393,7 @@ export default async function HotelPage({
                 locale={locale}
                 dict={dict}
               />
-              <p className="mt-4 text-xs opacity-60">{dict.pricingPage.exceptionNote}</p>
+              <p className="mt-4 text-xs text-cream/70">{dict.pricingPage.exceptionNote}</p>
             </div>
           </div>
         </Container>

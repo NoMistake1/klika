@@ -15,12 +15,18 @@ import { Reveal } from "@/components/ui/Reveal";
 export function LocalProducers({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   return (
     <Section tone="navy" spacing="tight" className="relative overflow-hidden">
-      {/* Decorative mushroom near the left edge, bleeding past it (clipped by
-          the section). The navy surface needs a light mark, so the brown line
-          art is inverted to a faint cream and kept low. */}
+      {/* Decorative mushroom near the left edge. The asset is a 2000×2000
+          square whose drawing only occupies the middle — roughly 13% padding
+          left/right and 17%/15% top/bottom — so with object-contain the visible
+          illustration sits well inside the box. Each offset is one eighth of
+          the box, which bleeds only that transparent padding past the section
+          edge: the mushroom still hugs the left edge decoratively, but the cap
+          and stem stay whole. The section is ~300px tall on desktop, so a
+          larger negative bottom would cut the stem off. The navy surface needs
+          a light mark, so the brown line art is inverted to a faint cream. */}
       <DecorImage
         src="/images/food/zampion.webp"
-        className="-bottom-12 -left-16 h-64 w-64 opacity-20 [filter:brightness(0)_invert(1)] sm:-left-20 sm:h-80 sm:w-80 lg:-bottom-24 lg:h-96 lg:w-96"
+        className="-bottom-8 -left-8 h-64 w-64 opacity-20 [filter:brightness(0)_invert(1)] sm:-bottom-10 sm:-left-10 sm:h-80 sm:w-80 lg:-bottom-12 lg:-left-12 lg:h-96 lg:w-96"
       />
 
       <Container className="relative">

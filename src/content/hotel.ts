@@ -459,6 +459,18 @@ export const accommodationAreas: readonly AccommodationArea[] = [
         "Blick auf Sokolský ostrov und die Malše",
       ],
     },
+    // The hotel's own facade — the one building on this list we can name in a
+    // photograph. Pulled slightly above centre so the panel keeps the house
+    // rather than the sky above it.
+    photo: {
+      src: "/images/hotel/facade-desktop.webp",
+      width: 1536,
+      height: 1024,
+      mobileSrc: "/images/hotel/facade.webp",
+      mobileWidth: 1023,
+      mobileHeight: 1537,
+      imgClassName: "object-[center_45%]",
+    },
   },
   {
     id: "historical-buildings",
@@ -476,6 +488,17 @@ export const accommodationAreas: readonly AccommodationArea[] = [
       cs: ["6 pokojů", "2 čtyřlůžkové apartmány", "Výhled na řeku nebo Piaristické náměstí"],
       en: ["6 rooms", "2 four-person apartments", "River or Piaristické náměstí views"],
       de: ["6 Zimmer", "2 Vierbettapartments", "Blick auf den Fluss oder das Piaristické náměstí"],
+    },
+    // Riverside townhouses at golden hour. The houses sit in the middle band of
+    // the frame, so the crop favours it over the sky.
+    photo: {
+      src: "/images/hotel/hotel02-desktop.webp",
+      width: 1672,
+      height: 941,
+      mobileSrc: "/images/hotel/hotel02-mobile.webp",
+      mobileWidth: 1122,
+      mobileHeight: 1402,
+      imgClassName: "object-[center_55%]",
     },
   },
   {
@@ -498,6 +521,17 @@ export const accommodationAreas: readonly AccommodationArea[] = [
         "Für längere Aufenthalte geeignet",
         "Etwa 50 Meter von der Rezeption",
       ],
+    },
+    // The arcaded houses around the square. The rooftops fill the upper third,
+    // so the crop drops to the buildings themselves.
+    photo: {
+      src: "/images/hotel/hotel03-desktop.webp",
+      width: 1672,
+      height: 941,
+      mobileSrc: "/images/hotel/hotel03-mobile.webp",
+      mobileWidth: 1122,
+      mobileHeight: 1402,
+      imgClassName: "object-[center_60%]",
     },
   },
   {
@@ -531,6 +565,16 @@ export const accommodationAreas: readonly AccommodationArea[] = [
         "Seit 2022 vom Hotel verwaltet",
         "Etwa 200 Meter von der Rezeption",
       ],
+    },
+    // A cobbled street at dusk — the short walk, not a specific address.
+    photo: {
+      src: "/images/hotel/hotel04-desktop.webp",
+      width: 1672,
+      height: 941,
+      mobileSrc: "/images/hotel/hotel04-mobile.webp",
+      mobileWidth: 1122,
+      mobileHeight: 1402,
+      imgClassName: "object-[center_50%]",
     },
   },
 ];

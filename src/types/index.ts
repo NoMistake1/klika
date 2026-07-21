@@ -89,6 +89,22 @@ export interface AccommodationArea {
   readonly name: LocalizedText;
   readonly description: LocalizedText;
   readonly details: LocalizedList;
+  /**
+   * Decorative panel background, art directed: a wide crop for the desktop
+   * grid and a portrait one for the mobile carousel card. Purely atmospheric —
+   * it is rendered `alt=""` / `aria-hidden`, so it never stands in for the
+   * factual copy above and makes no claim about which building is pictured.
+   */
+  readonly photo: {
+    readonly src: string;
+    readonly width: number;
+    readonly height: number;
+    readonly mobileSrc: string;
+    readonly mobileWidth: number;
+    readonly mobileHeight: number;
+    /** Object-position utilities picking the focal point of this photograph. */
+    readonly imgClassName: string;
+  };
 }
 
 export interface HotelService {

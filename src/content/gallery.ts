@@ -385,17 +385,12 @@ const surroundingsItems: readonly GalleryItem[] = [
     en: "The service window onto the street",
     de: "Das Ausgabefenster zur Straße",
   }),
-  gi("around-piaristicke", "surroundings", "/images/location/piaristicke.png", 1400, 1400, {
+  gi("around-piaristicke", "surroundings", "/images/location/piaristicke.webp", 1280, 846, {
     cs: "Piaristické náměstí hned vedle hotelu",
     en: "Piaristické náměstí right next to the hotel",
     de: "Das Piaristické náměstí direkt neben dem Hotel",
   }),
-  gi("around-square", "surroundings", "/images/location/square.png", 1200, 1500, {
-    cs: "Náměstí Přemysla Otakara II.",
-    en: "Přemysl Otakar II Square",
-    de: "Der Platz Přemysl Otakar II.",
-  }),
-  gi("around-river", "surroundings", "/images/location/river.png", 1600, 1200, {
+  gi("around-river", "surroundings", "/images/location/river.webp", 1360, 900, {
     cs: "Soutok Vltavy a Malše",
     en: "Where the Vltava and Malše meet",
     de: "Zusammenfluss von Moldau und Maltsch",
@@ -481,6 +476,39 @@ export const landingGalleryGroups: readonly GalleryGroup[] = [
 export const landingGalleryItems: readonly GalleryItem[] = landingGalleryGroups.flatMap(
   (group) => [group.large, ...group.stacked],
 );
+
+/**
+ * The set behind the landing food collage.
+ *
+ * The collage shows three photographs; opening any of them hands this curated
+ * run of fifteen to the shared lightbox, so the collage stays a composition
+ * rather than becoming a carousel. Built from the same gallery items the rest
+ * of the site uses, which is what keeps the captions localized in all three
+ * languages and guarantees every file exists — `item()` throws at module load
+ * on an unknown id, so a typo fails the build rather than shipping a gap.
+ *
+ * Sequenced as a meal rather than by filename: the kitchen, then plates, a
+ * soup, tables, desserts and finally the drinks. The three collage photographs
+ * (food-19, food-38, food-8) sit spaced through it, so wherever a guest enters
+ * there is something different on either side.
+ */
+export const landingFoodLightboxItems: readonly GalleryItem[] = [
+  item("food-6"), // in the kitchen — preparation
+  item("food-19"), // on the collage
+  item("food-37"), // duck breast
+  item("food-36"), // mushroom course by the river
+  item("food-38"), // on the collage
+  item("food-15"), // pea soup
+  item("food-8"), // on the collage
+  item("food-27"), // a laid table
+  item("food-24"), // lunch with a glass of wine
+  item("food-vecere"), // a toast over roast duck
+  item("food-34"), // cheesecake
+  item("food-29"), // fruit dumplings
+  item("food-32"), // pastries out on the street
+  item("food-35"), // a flowered drink
+  item("food-25"), // coffee, poured
+];
 
 /**
  * Hotel subpage gallery — the same editorial system as the restaurant, but a

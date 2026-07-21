@@ -16,12 +16,20 @@ export function Reveal({
   className,
   as: Tag = "div",
   delay = 0,
+  elementRef,
 }: {
   children: ReactNode;
   className?: string;
   as?: ElementType;
   /** Stagger in ms. Keep small — this is a nudge, not a performance. */
   delay?: number;
+  /**
+   * Optional handle on the rendered element, for callers that also need to
+   * measure or scroll it — a carousel deriving its active card from rects, for
+   * instance. Reveal keeps using its own ref for the observer either way, so
+   * this only ever adds a reader.
+   */
+  elementRef?: (node: HTMLElement | null) => void;
 }) {
   const ref = useRef<HTMLElement>(null);
   const [visible, setVisible] = useState(false);
@@ -56,7 +64,10 @@ export function Reveal({
 
   return (
     <Tag
-      ref={ref}
+      ref={(node: HTMLElement | null) => {
+        ref.current = node;
+        elementRef?.(node);
+      }}
       data-visible={visible}
       className={cn("reveal", className)}
       style={delay ? { transitionDelay: `${delay}ms` } : undefined}

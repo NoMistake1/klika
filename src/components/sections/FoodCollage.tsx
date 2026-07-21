@@ -1,13 +1,11 @@
 import { ArrowRight } from "lucide-react";
 import type { Dictionary } from "@/content/dictionaries";
 import { localePath, type Locale } from "@/lib/i18n";
-import type { LocalizedText } from "@/types";
 import { Button } from "@/components/ui/Button";
 import { Container, Section } from "@/components/ui/Section";
 import { HandwrittenNote } from "@/components/ui/HandwrittenNote";
 import { DecorImage } from "@/components/ui/DecorImage";
-import { SafeImage } from "@/components/ui/SafeImage";
-import { Reveal } from "@/components/ui/Reveal";
+import { FoodCollageRow, type CollagePhoto } from "@/components/sections/FoodCollageRow";
 
 /**
  * Landing food collage — the editorial teaser that replaced the old full daily
@@ -20,17 +18,11 @@ import { Reveal } from "@/components/ui/Reveal";
  * Klika system: warm-white surface, navy/blue type, the single terracotta
  * accent for the handwriting, sharp corners and the site container — no foreign
  * tokens, pills or wording.
+ *
+ * The section stays a server component; only the image row is interactive (each
+ * photograph opens the shared gallery lightbox), so that part alone is a client
+ * island in FoodCollageRow.
  */
-
-type CollagePhoto = {
-  src: string;
-  width: number;
-  height: number;
-  alt: LocalizedText;
-  /** Wrapper geometry: mobile size/offset, then the desktop editorial step. */
-  wrap: string;
-  sizes: string;
-};
 
 const photos: readonly CollagePhoto[] = [
   {
@@ -118,87 +110,7 @@ export function FoodCollage({ locale, dict }: { locale: Locale; dict: Dictionary
           </div>
         </div>
 
-        {/* Three-image editorial row. `overflow-hidden` is on each inner frame,
-            not the wrapper, so the Caveat notes can sit above the images without
-            being clipped. Sharp corners and a restrained float shadow. */}
-        {/* Desktop drops the whole row a little further below the header —
-            applied to the row, not the individual wrappers, so each image keeps
-            its own editorial offset and the middle image keeps its note. */}
-        <Reveal className="mt-12 flex flex-wrap gap-4 lg:mt-24 lg:flex-nowrap lg:items-center lg:gap-6">
-          {photos.map((photo, index) => (
-            <div key={photo.src} className={`relative shrink-0 ${photo.wrap}`}>
-              <div className="group relative h-full w-full overflow-hidden bg-cream shadow-[0_20px_45px_-28px_rgba(10,26,49,0.5)]">
-                <SafeImage
-                  image={{
-                    src: photo.src,
-                    alt: photo.alt,
-                    width: photo.width,
-                    height: photo.height,
-                  }}
-                  locale={locale}
-                  fill
-                  sizes={photo.sizes}
-                  className="transition-transform duration-500 ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover:scale-[1.04]"
-                />
-              </div>
-
-              {/* Desktop: one note centred above the middle image, arrow down. */}
-              {index === 1 ? (
-                <div className="absolute -top-14 left-1/2 z-10 hidden -translate-x-1/2 lg:block">
-                  <HandwrittenNote arrow="downRight" className="whitespace-nowrap">
-                    {dict.foodCollage.note}
-                  </HandwrittenNote>
-                </div>
-              ) : null}
-
-              {/* Mobile: one note in the gap above the lower-right image. The
-                  wrapper spans exactly that image's column (inset-x-0) and
-                  centres the note over it, so the composition stays balanced on
-                  the image and can never reach across into its neighbour. The
-                  whole note is set on a slight diagonal — handwriting, not a
-                  label — and the arrow is steepened so it points down into the
-                  photograph rather than sideways. Text wraps to two lines here,
-                  which is what keeps it inside the column. */}
-              {index === 2 ? (
-                <div className="absolute inset-x-0 -top-16 z-10 flex -rotate-6 justify-center max-[451px]:-top-20 lg:hidden">
-                  {/* Narrow phones (450px and below) only: the note is pulled up
-                      into the gap, and the max-widths keep the whole composition
-                      clear of the left-hand image — tighter again at 360px and
-                      below, where the column is narrowest.
-
-                      The bounds read 451/361 because Tailwind's `max-*` variant
-                      compiles to `width < n`, so the named width itself would
-                      otherwise fall outside the rule. Keeping them in the
-                      `max-*` family matters: Tailwind sorts those descending, so
-                      the narrower rule reliably wins on the smallest screens. */}
-                  {/* downLeft is the exact horizontal mirror of the desktop
-                      note's downRight: the shared arrow flips on its own axis AND
-                      moves to the left of the text, which pushes the words right
-                      and brings the arrow in toward the centre of the row. The
-                      tilt is negated to match — for mirrored arrows CSS scales
-                      before it rotates, so −34° reproduces the +34° descent
-                      exactly, just handed the other way. Left-aligned lines keep
-                      the text hugging the arrow, and with the arrow bottom-
-                      aligned it leaves the text around the "Sezónně / poctivě"
-                      break and runs down into the photograph's top-left corner. */}
-                  <HandwrittenNote
-                    arrow="downLeft"
-                    tilt={-34}
-                    // `self-center` rather than a competing items-* or margin
-                    // class: it is the only align-self rule on the arrow, so it
-                    // deterministically overrides the note's items-end and lifts
-                    // the arrow to begin around the "Sezónně / poctivě" break
-                    // instead of level with the second line.
-                    arrowClassName="max-[451px]:self-center"
-                    className="max-[451px]:max-w-[11.5rem] max-[451px]:text-left max-[361px]:max-w-[9.5rem]"
-                  >
-                    {dict.foodCollage.note}
-                  </HandwrittenNote>
-                </div>
-              ) : null}
-            </div>
-          ))}
-        </Reveal>
+        <FoodCollageRow photos={photos} locale={locale} dict={dict} />
 
         {/* Mobile CTAs — stacked, full width, below the collage. */}
         <div className="mt-10 flex flex-col gap-3 lg:hidden">
